@@ -3,11 +3,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap'
-import Logo from '../../../assets/logo.png';
+import Logo from '../../../assets/img/logo.png';
 import styled from 'styled-components';
 
 const Styles = styled.div`
-
     .navbar {
         background-color: rgb(192,192,192);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);

@@ -1,14 +1,14 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import GitHubLogo from '../../../assets/GitHubLogo.png';
+import GitHubLogo from '../../../assets/img/GitHubLogo.png';
 import styled from 'styled-components';
 import NavItem from 'react-bootstrap/NavItem';
 
 const Styles = styled.div`
-
     .navbar {
         background-color: rgb(192,192,192);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 `;
 
