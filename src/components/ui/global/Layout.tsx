@@ -6,6 +6,8 @@ import { NavigationBar } from '../home/HomeNav';
 import { DashNav } from '../dashboard/DashNav'
 import { Footer } from '../home/HomeFooter';
 
+import Container from 'react-bootstrap/Container';
+
 interface ILayout {
     children: React.ReactNode
     authenticated: boolean
@@ -14,19 +16,21 @@ interface ILayout {
 export const Layout = (props: ILayout) => {
     return (
         <React.Fragment>
-            {(props.authenticated) ? DashLayoutHelper(props) : HomeLayoutHelper(props)}
+            <Container fluid>
+                {(props.authenticated) ? DashLayoutHelper(props) : HomeLayoutHelper(props)}
+            </Container>
         </React.Fragment>
     )
 }
 
 const HomeLayoutHelper = (props: ILayout) => {
-    return (        
+    return (
         <Row>
-            <Col md={{ span: 8, offset: 2 }}>
+            <Col lg={{ span: 8, offset: 2 }}>
                 <NavigationBar />
                 {props.children}
-            </Col>
-        </Row>
+             </Col>
+         </Row>
     )
 }
 
@@ -35,7 +39,7 @@ const DashLayoutHelper = (props: ILayout) => {
         <Row>
             <Col>
                 <DashNav />
-            
+                    {props.children}
                 <Footer />
             </Col>
         </Row>

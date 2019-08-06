@@ -5,27 +5,29 @@ import { Layout } from '../../components/ui/global/Layout';
 import { Home } from '../../components/routes/home/Home';
 import { About } from '../../components/routes/home/About';
 import { Contact } from '../../components/routes/home/Contact';
+import { Login } from './Login';
 import { Signup } from '../../components/routes/home/Signup';
 import { None } from '../../components/routes/home/None';
+import { Dashboard } from '../../components/routes/dashboard/Dashboard';
 
-const Auth = {
-  isAuthenticated: false,
+const isAuthenticated = {
+  hasAuthenticated: false,
   authenticate(cb: () => void) {
-    this.isAuthenticated = true
+    this.hasAuthenticated = true
     setTimeout(cb, 1000)
   },
   signout(cb: () => void) {
-    this.isAuthenticated = false
+    this.hasAuthenticated = false
     setTimeout(cb, 1000)
   }
 }
 
-class Login extends React.Component<{location: any}> {
+class Auth extends React.Component<{location: any}> {
   state = {
     redirectToReferrer: false,
   }
   login = () => {
-    Auth.authenticate(() => {
+    isAuthenticated.authenticate(() => {
       this.setState(() => ({
         redirectToReferrer: true
       }))
@@ -40,17 +42,14 @@ class Login extends React.Component<{location: any}> {
     }
 
     return (
-      <div>
-        <p>You must log in to view the page</p>
-        <button onClick={this.login}>Log in</button>
-      </div>
+      <Login clicked={this.login}/>
     )
   }
 }
 
 const PrivateRoute = ({ component: Component, ...rest }: {component: any, path: string}) => (
   <Route {...rest} render={(props) => (
-    Auth.isAuthenticated === true
+    isAuthenticated.hasAuthenticated === true
       ? <Component {...props} />
       : <Redirect to={{
           pathname: '/',
@@ -59,29 +58,29 @@ const PrivateRoute = ({ component: Component, ...rest }: {component: any, path: 
   )} />
 )
 
-const AuthButton = withRouter(({ history }) => (
-  Auth.isAuthenticated ? (
+ const AuthButton = withRouter(({ history }) => (
+  isAuthenticated.hasAuthenticated ? (
     <p>
-      Welcome! <button onClick={() => {
-        Auth.signout(() => history.push('/'))
-      }}>Sign out</button>
+      <button onClick={() => {
+        isAuthenticated.signout(() => history.push('/'))
+        }}>Sign out</button>
     </p>
   ) : (
-    <p>You are not logged in.</p>
+    null
   )
 ))
 
 export const AuthRoutes = () => {
   return (
       <Route render={() => (
-        <Layout authenticated={Auth.isAuthenticated}>
+        <Layout authenticated={isAuthenticated.hasAuthenticated}>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={Auth} />
             <Route path="/signup" component={Signup} />
-            <PrivateRoute path='/dashboard' component={AuthButton} />
+            <PrivateRoute path='/dashboard' component={Dashboard} />
             <Route component={None} />
           </Switch>
       </Layout>
