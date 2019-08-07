@@ -4,8 +4,7 @@ import { Route, Redirect, withRouter} from 'react-router-dom'
 import { Login } from '../../routes/home/Login';
 
 export const isAuthenticated = {
-  // hasAuthenticated: false,
-  hasAuthenticated: true,
+  hasAuthenticated: false,
   authenticate(cb: () => void) {
     this.hasAuthenticated = true
     setTimeout(cb, 1000)
@@ -16,10 +15,11 @@ export const isAuthenticated = {
   }
 }
 
-class Auth extends React.Component<{location: any}> {
+class AuthLogin extends React.Component<{location: any}> {
   state = {
-    redirectToReferrer: false,
+    redirectToReferrer: false
   }
+
   login = () => {
     isAuthenticated.authenticate(() => {
       this.setState(() => ({
@@ -27,7 +27,17 @@ class Auth extends React.Component<{location: any}> {
       }))
     })
   }
-    static hasAuthenticated: boolean;
+
+  logout = () => {
+    isAuthenticated.signout(() => {
+      this.setState(() => ({
+        redirectToReferrer: false
+      }))
+    })
+  }
+  
+  static hasAuthenticated: boolean;
+    
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/dashboard' } }
     const { redirectToReferrer } = this.state
@@ -35,7 +45,7 @@ class Auth extends React.Component<{location: any}> {
     if (redirectToReferrer === true) {
       return <Redirect to={from} />
     }
-
+    
     return (
       <Login clicked={this.login}/>
     )
@@ -47,22 +57,10 @@ export const PrivateRoute = ({ component: Component, ...rest }: {component: any,
     isAuthenticated.hasAuthenticated === true
       ? <Component {...props} />
       : <Redirect to={{
-          pathname: '/',
+          pathname: '/login',
           state: { from: props.location }
         }} />
   )} />
 )
 
-const Logout = withRouter(({ history }) => (
-  isAuthenticated.hasAuthenticated ? (
-    <p>
-      Welcome! <button onClick={() => {
-        isAuthenticated.signout(() => history.push('/'))
-        }}>Sign out</button>
-    </p>
-  ) : (
-    null
-  )
-))
-
-export default Auth;
+export default AuthLogin;

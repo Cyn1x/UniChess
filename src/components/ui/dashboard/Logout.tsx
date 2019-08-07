@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { withRouter} from 'react-router-dom'
-import Auth, { isAuthenticated } from '../../utilities/auth/Auth'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
@@ -9,7 +7,7 @@ const Styles = styled.div`
 
 `;
 
-export function LogoutPrompt() {
+export function Logout(props: any) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
