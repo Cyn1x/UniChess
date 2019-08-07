@@ -7,6 +7,7 @@ import { DashNav } from '../dashboard/DashNav'
 import { Footer } from '../home/HomeFooter';
 
 import Container from 'react-bootstrap/Container';
+import { Dashboard } from '../../routes/dashboard/Dashboard';
 
 interface ILayout {
     children: React.ReactNode
@@ -39,7 +40,7 @@ const DashLayoutHelper = (props: ILayout) => {
         <Row>
             <Col>
                 <DashNav />
-                    {props.children}
+                <Dashboard />
                 <Footer />
             </Col>
         </Row>
