@@ -4,7 +4,8 @@ import { Route, Redirect, withRouter} from 'react-router-dom'
 import { Login } from '../../routes/home/Login';
 
 export const isAuthenticated = {
-  hasAuthenticated: false,
+  // hasAuthenticated: false,
+  hasAuthenticated: true,
   authenticate(cb: () => void) {
     this.hasAuthenticated = true
     setTimeout(cb, 1000)
@@ -52,10 +53,10 @@ export const PrivateRoute = ({ component: Component, ...rest }: {component: any,
   )} />
 )
 
- const AuthButton = withRouter(({ history }) => (
+const Logout = withRouter(({ history }) => (
   isAuthenticated.hasAuthenticated ? (
     <p>
-      <button onClick={() => {
+      Welcome! <button onClick={() => {
         isAuthenticated.signout(() => history.push('/'))
         }}>Sign out</button>
     </p>

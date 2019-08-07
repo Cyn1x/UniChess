@@ -7,7 +7,7 @@ import { Home } from '../home/Home';
 import { About } from '../home/About';
 import { Contact } from '../home/Contact';
 import { Signup } from '../home/Signup';
-import { None } from '../home/None';
+import { None } from '../global/None';
 import { Dashboard } from '../dashboard/Dashboard';
 
 export const HomeRoutes = () => {

@@ -41,11 +41,9 @@ export const Login = (props: any) => (
                 <Form.Group controlId="formGroupLoginChecbox">
                     <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>
-                <Button variant="primary" onClick={
-                    () => {
+                <Button variant="primary" onClick={() => {
                         props.clicked(props)
-                     }}>
-                    Submit
+                     }}>Submit
                 </Button>
             </Form>
         </form>
