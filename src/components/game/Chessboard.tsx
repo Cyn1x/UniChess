@@ -1,9 +1,10 @@
 import React from 'react';
+import Canvas from './Canvas';
 
-class Chessboard {
+class Chessboard extends React.Component {
 
-    constructor() {
-
+    constructor(props: {}) {
+        super(props);
         
     }
 }

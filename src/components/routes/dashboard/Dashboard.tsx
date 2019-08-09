@@ -1,7 +1,8 @@
 import React from 'react';
+import { Renderer } from '../../game/Renderer';
 
 export const Dashboard = () => (
-    <div>
-        <h3>Dashboard</h3>
-    </div>
+    <React.Fragment>
+        <Renderer />
+    </React.Fragment>
 )

@@ -12,7 +12,7 @@ const Styles = styled.div`
     }
 `;
 
-export const Footer = () => (
+export const HomeFooter = () => (
     <Styles>
         <Navbar fixed="bottom">
             <Navbar.Toggle aria-controls="basic-navbar-bar" />

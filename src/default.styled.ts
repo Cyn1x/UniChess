@@ -20,4 +20,8 @@ export const GlobalStyle = createGlobalStyle`
         background-size: cover;
         background-repeat: no-repeat;
     }
+
+    layer {
+        background-color: #222;
+    }
 `;

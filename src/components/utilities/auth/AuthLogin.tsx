@@ -1,10 +1,11 @@
 import React from 'react'
-import { Route, Redirect, withRouter} from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 import { Login } from '../../routes/home/Login';
 
 export const isAuthenticated = {
-  hasAuthenticated: false,
+  // hasAuthenticated: false,
+  hasAuthenticated: true,
   authenticate(cb: () => void) {
     this.hasAuthenticated = true
     setTimeout(cb, 1000)
@@ -24,14 +25,6 @@ class AuthLogin extends React.Component<{location: any}> {
     isAuthenticated.authenticate(() => {
       this.setState(() => ({
         redirectToReferrer: true
-      }))
-    })
-  }
-
-  logout = () => {
-    isAuthenticated.signout(() => {
-      this.setState(() => ({
-        redirectToReferrer: false
       }))
     })
   }

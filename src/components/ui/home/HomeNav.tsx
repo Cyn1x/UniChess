@@ -19,17 +19,19 @@ const Styles = styled.div`
     }
 `;
 
-export const NavigationBar = () => (
+export const HomeNav = () => (
     <Styles>
         <Navbar expand="sm">
-            <Navbar.Brand href="/">
-                <img
-                    src={Logo}
-                    width={128}
-                    className="d-inline-block align-top"
-                    alt="Unichess logo"
-                />
-            </Navbar.Brand>
+            <LinkContainer to="/">
+                <Navbar.Brand>
+                    <img
+                        src={Logo}
+                        width={128}
+                        className="d-inline-block align-top"
+                        alt="Unichess logo"
+                    />
+                </Navbar.Brand>
+            </LinkContainer>
             <Navbar.Toggle aria-controls="responsive-navbar-bar" />
             <Navbar.Collapse id ="basic-navbar-nav">
                     <Nav className="ml-auto">

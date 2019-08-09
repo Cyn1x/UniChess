@@ -23,7 +23,7 @@ const Styles = styled.div`
 
 export const DashNav = () => (
     <Styles>
-        <Navbar expand="sm">
+        <Navbar expand="sm" fixed="top">
             <Navbar.Brand>
                 <img
                     src={Logo}

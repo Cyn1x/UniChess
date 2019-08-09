@@ -1,13 +1,29 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import styled from 'styled-components';
+import { GlobalStyle } from '../../../default.styled';
 
-import { NavigationBar } from '../home/HomeNav';
-import { DashNav } from '../dashboard/DashNav'
-import { Footer } from '../home/HomeFooter';
-
-import Container from 'react-bootstrap/Container';
+import { HomeNav } from '../home/HomeNav';
+// import { HomeFooter } from '../home/HomeFooter';
+import { Renderer } from '../../game/Renderer';
 import { DashRoutesManager } from '../../routes/managers/DashRoutesManager';
+import { DashNav } from '../dashboard/DashNav'
+import { SideAccordion } from '../dashboard/SideAccordion';
+import { DashFooter } from '../dashboard/DashFooter';
+
+const Styles = styled.div`
+    .container-fluid {
+        padding-top: 56px;
+        padding-bottom: 48px;
+    }
+
+    body {
+        background-color: #FFF;
+        opacity: 0.9;
+    }
+`;
 
 interface ILayout {
     children: React.ReactNode
@@ -17,32 +33,41 @@ interface ILayout {
 export const Layout = (props: ILayout) => {
     return (
         <React.Fragment>
-            <Container fluid>
                 {(props.authenticated) ? DashLayoutHelper(props) : HomeLayoutHelper(props)}
-            </Container>
         </React.Fragment>
     )
 }
 
 const HomeLayoutHelper = (props: ILayout) => {
     return (
-        <Row>
+        <Container fluid>
             <Col lg={{ span: 8, offset: 2 }}>
-                <NavigationBar />
+                <HomeNav />
                 {props.children}
-             </Col>
-         </Row>
+            </Col>
+        </Container>
     )
 }
 
 const DashLayoutHelper = (props: ILayout) => {
     return (
-        <Row>
-            <Col>
-                <DashNav />
-                <DashRoutesManager />
-                <Footer />
-            </Col>
-        </Row>
+        <Styles>
+            <Container fluid>
+                <Row>
+                    <Col>
+                        <SideAccordion />
+                    </Col>
+                    <Col>
+                        <DashNav />
+                        <DashRoutesManager />
+                        {/* <Renderer /> */}
+                        <DashFooter />
+                    </Col>
+                    <Col>
+                        <SideAccordion />
+                    </Col>
+                </Row>
+            </Container>
+        </Styles>
     )
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import GitHubLogo from '../../assets/img/GitHubLogo.png';
+import GitHubLogo from '../../../assets/img/GitHubLogo.png';
 import styled from 'styled-components';
 import NavItem from 'react-bootstrap/NavItem';
 
@@ -12,7 +12,7 @@ const Styles = styled.div`
     }
 `;
 
-export const Footer = () => (
+export const DashFooter = () => (
     <Styles>
         <Navbar fixed="bottom">
             <Navbar.Toggle aria-controls="basic-navbar-bar" />
