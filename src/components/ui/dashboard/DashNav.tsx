@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap'
 import { Logout } from './Logout';
 
-import Logo from '../../../assets/img/logo.png';
+import Logo from '../../../assets/img/site/logo.png';
 import styled from 'styled-components';
 
 const Styles = styled.div`

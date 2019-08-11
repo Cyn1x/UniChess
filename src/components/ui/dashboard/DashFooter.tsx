@@ -1,7 +1,7 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import GitHubLogo from '../../../assets/img/GitHubLogo.png';
+import GitHubLogo from '../../../assets/img/site/GitHubLogo.png';
 import styled from 'styled-components';
 import NavItem from 'react-bootstrap/NavItem';
 

@@ -9,7 +9,6 @@ import { HomeNav } from '../home/HomeNav';
 import { DashRoutesManager } from '../../routes/managers/DashRoutesManager';
 import { DashNav } from '../dashboard/DashNav'
 import { SideAccordion } from '../dashboard/SideAccordion';
-import { Chat } from '../dashboard/Chat';
 import { DashFooter } from '../dashboard/DashFooter';
 
 const Styles = styled.div`
