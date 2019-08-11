@@ -2,6 +2,8 @@ import { createGlobalStyle } from 'styled-components';
 import backgroundImage from './assets/img/chessPieces.jpg'
 
 export const GlobalStyle = createGlobalStyle`
+    $test: 000;
+
     * {
         box-sizing: border-box;
         margin: 0;
@@ -14,14 +16,11 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background-image: url(${backgroundImage});
+        
+        background-image: linear-gradient(0deg,rgba(255, 255, 255, 0.1),rgba(0, 0, 0, 0.1)),url(${backgroundImage});
         background-position: center;
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
-    }
-
-    layer {
-        background-color: #222;
     }
 `;

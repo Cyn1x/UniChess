@@ -7,7 +7,6 @@ import { GlobalStyle } from '../../../default.styled';
 
 import { HomeNav } from '../home/HomeNav';
 // import { HomeFooter } from '../home/HomeFooter';
-import { Renderer } from '../../game/Renderer';
 import { DashRoutesManager } from '../../routes/managers/DashRoutesManager';
 import { DashNav } from '../dashboard/DashNav'
 import { SideAccordion } from '../dashboard/SideAccordion';
@@ -60,7 +59,6 @@ const DashLayoutHelper = (props: ILayout) => {
                     <Col>
                         <DashNav />
                         <DashRoutesManager />
-                        {/* <Renderer /> */}
                         <DashFooter />
                     </Col>
                     <Col>

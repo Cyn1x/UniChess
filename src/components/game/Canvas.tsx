@@ -24,53 +24,65 @@ interface IState {
     screen: any
 }
 
+const boardSize = () => { return ( (window.innerWidth > window.innerHeight) ); }
+
 class Canvas extends React.Component<ICanvas, IState> {
     private canvas = React.createRef<HTMLCanvasElement>();
-    private width = 512;
-    private height = 512;
+    private width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
+    private height = this.width;
     private ratio = window.devicePixelRatio || 1;
     
     constructor(props: ICanvas) {
         super(props);
+        this.onChange = this.onChange.bind(this)
         this.state = {
             canvas: this.canvas,
             screen: {
-                width: this.width,
+                width: this.height * (this.width / this.height),
                 height: this.height,
                 ratio: this.ratio
             }
         };
-        console.log("Constructor")
     }
 
-    componentWillMount() {
-        console.log("Component will mount")
+    componentWillMount() {  }
+
+    componentDidMount(cb = () => setTimeout(this.onChange, 500)) { 
+        window.addEventListener('resize', cb);
+        this.draw();
     }
 
-    componentDidMount() {
-        console.log("Component did mount")
-        const ctx = this.state.canvas.current.getContext('2d');
-    }
+    componentWillReceiveProps(nextProps: any) {  }
 
-    componentWillReceiveProps(nextProps: any) {
-        console.log("Component will receive props", nextProps)
-    }
+    shouldComponentUpdate(nextProps: any, nextState: any) { return true; }
 
-    shouldComponentUpdate(nextProps: any, nextState: any) {
-        console.log("Should component update", nextProps, nextState)
-        return true;
-    }
-
-    componentWillUpdate(nextProps: any, nextState:any) {
-        console.log("Component will update", nextProps, nextState)
-    }
+    componentWillUpdate(nextProps: any, nextState:any) {  }
     
-    componentDidUpdate(prevProps: any, prevState: any) {
-        console.log("Component will update", prevProps, prevState)
+    componentDidUpdate(prevProps: any, prevState: any) {  }
+
+    componentWillUnmount() {  }
+
+    onChange() {
+        this.width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
+        this.height = this.width;
+        this.setState({
+            screen: {
+                width: this.height * (this.width / this.height),
+                height: this.height,
+                ratio: this.ratio
+            }
+        })
     }
 
-    componentWillUnmount() {
-        console.log("Component will unmount")
+    draw() {
+        const ctx = this.state.canvas.current.getContext('2d');
+        let grid = [64]
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                
+            }
+        }
+        ctx.fillRect(10,10,30,30)
     }
 
     render() {
