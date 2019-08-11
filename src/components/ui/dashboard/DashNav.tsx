@@ -40,6 +40,11 @@ export const DashNav = () => (
                                 <Button>Dashboard</Button>
                             </LinkContainer>
                         </Nav.Item>
+                        <Nav.Item>
+                            <LinkContainer to="/play">
+                                <Button>Play</Button>
+                            </LinkContainer>
+                        </Nav.Item>
                     </Nav>
                     <Nav className="ml-auto">
                         <Nav.Item>

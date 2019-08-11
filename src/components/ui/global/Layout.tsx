@@ -9,6 +9,7 @@ import { HomeNav } from '../home/HomeNav';
 import { DashRoutesManager } from '../../routes/managers/DashRoutesManager';
 import { DashNav } from '../dashboard/DashNav'
 import { SideAccordion } from '../dashboard/SideAccordion';
+import { Chat } from '../dashboard/Chat';
 import { DashFooter } from '../dashboard/DashFooter';
 
 const Styles = styled.div`
@@ -52,16 +53,15 @@ const DashLayoutHelper = (props: ILayout) => {
         <Styles>
             <Container fluid>
                 <Row>
-                    <Col>
+                    <Col xl={2} md={4}>
                         <SideAccordion />
                     </Col>
-                    <Col>
+                    <Col lg={8} md={6}>
                         <DashNav />
                         <DashRoutesManager />
                         <DashFooter />
                     </Col>
                     <Col>
-                        <SideAccordion />
                     </Col>
                 </Row>
             </Container>
