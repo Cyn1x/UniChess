@@ -1,4 +1,5 @@
 import React from 'react';
+import { Square } from './Square';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -32,9 +33,11 @@ class Canvas extends React.Component<ICanvas, IState> {
     private height = this.width;
     private ratio = window.devicePixelRatio || 1;
     
+    private squaresArray: Array<Square>;
+    
     constructor(props: ICanvas) {
         super(props);
-        this.onChange = this.onChange.bind(this)
+        this.update = this.update.bind(this)
         this.state = {
             canvas: this.canvas,
             screen: {
@@ -43,13 +46,15 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         };
+        this.squaresArray = new Array(64);
     }
 
     componentWillMount() {  }
 
-    componentDidMount(cb = () => setTimeout(this.onChange, 500)) { 
+    componentDidMount(cb = () => setTimeout(this.update, 500)) { 
         window.addEventListener('resize', cb);
-        this.draw();
+        this.update();
+        this.state.canvas.current.addEventListener("click", (event: Event) => { console.log(event.target); });
     }
 
     componentWillReceiveProps(nextProps: any) {  }
@@ -62,7 +67,7 @@ class Canvas extends React.Component<ICanvas, IState> {
 
     componentWillUnmount() {  }
 
-    onChange() {
+    update() {
         this.width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
         this.height = this.width;
         this.setState({
@@ -72,17 +77,60 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         })
+        this.init();
+        this.draw();
+    }
+
+    init() {
+        const cellWidth = this.state.screen.width / 8;
+        const cellHeight = this.state.screen.width / 8;
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                this.squaresArray[i + j * 8] = new Square(cellWidth, cellHeight)
+            }
+        }
     }
 
     draw() {
         const ctx = this.state.canvas.current.getContext('2d');
-        let grid = [64]
+        let x, y, w, h: number;
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                
+                x = i * this.squaresArray[i].width;
+                y = j * this.squaresArray[i].width;
+                w = this.squaresArray[j].width;
+                h = this.squaresArray[j].height;
+
+                let evenCol = (i % 2 === 0 ? true : false)
+                this.setSequareColours(evenCol, i, j, ctx)
+
+                ctx.strokeRect(x, y, w, h)
+                ctx.fillRect(x, y, w, h)
             }
         }
-        ctx.fillRect(10,10,30,30)
+    }
+
+    setSequareColours(evenCol: boolean, i: number, j: number, ctx: any) {
+        if (evenCol === true) {
+            if (j % 2 === 0 && i % 2 === 0) {
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.fillStyle = '#f2f2f2';
+            }
+            else {
+                ctx.strokeStyle = '#f2f2f2';
+                ctx.fillStyle = '#1a1a1a';
+            }
+        }
+        else {
+            if (j % 2 === 0 && i % 2 !== 0) {
+                ctx.strokeStyle = '#f2f2f2';
+                ctx.fillStyle = '#1a1a1a';
+            }
+            else {
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.fillStyle = '#f2f2f2';
+            }
+        }
     }
 
     render() {

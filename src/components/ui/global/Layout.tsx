@@ -3,7 +3,6 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import styled from 'styled-components';
-import { GlobalStyle } from '../../../default.styled';
 
 import { HomeNav } from '../home/HomeNav';
 // import { HomeFooter } from '../home/HomeFooter';
