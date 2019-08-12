@@ -1,14 +1,11 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import styled from 'styled-components';
 
 import { HomeNav } from '../home/HomeNav';
 // import { HomeFooter } from '../home/HomeFooter';
-import { DashRoutesManager } from '../../routes/managers/DashRoutesManager';
 import { DashNav } from '../dashboard/DashNav'
-import { SideAccordion } from '../dashboard/SideAccordion';
 import { DashFooter } from '../dashboard/DashFooter';
 
 const Styles = styled.div`
@@ -25,13 +22,14 @@ const Styles = styled.div`
 
 interface ILayout {
     children: React.ReactNode
-    authenticated: boolean
+    auth: boolean
+    playing?: boolean
 }
 
 export const Layout = (props: ILayout) => {
     return (
         <React.Fragment>
-                {(props.authenticated) ? DashLayoutHelper(props) : HomeLayoutHelper(props)}
+                {(props.auth) ? DashLayoutHelper(props) : HomeLayoutHelper(props)}
         </React.Fragment>
     )
 }
@@ -50,20 +48,9 @@ const HomeLayoutHelper = (props: ILayout) => {
 const DashLayoutHelper = (props: ILayout) => {
     return (
         <Styles>
-            <Container fluid>
-                <Row>
-                    <Col xl={2} md={4}>
-                        <SideAccordion />
-                    </Col>
-                    <Col lg={8} md={6}>
-                        <DashNav />
-                        <DashRoutesManager />
-                        <DashFooter />
-                    </Col>
-                    <Col>
-                    </Col>
-                </Row>
-            </Container>
+                <DashNav />
+                {props.children}
+                <DashFooter />
         </Styles>
     )
 }

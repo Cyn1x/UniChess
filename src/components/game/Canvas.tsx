@@ -51,10 +51,10 @@ class Canvas extends React.Component<ICanvas, IState> {
 
     componentWillMount() {  }
 
-    componentDidMount(cb = () => setTimeout(this.update, 500)) { 
-        window.addEventListener('resize', cb);
+    componentDidMount() { 
+        window.addEventListener('resize', this.resizeCallback);
         this.update();
-        this.state.canvas.current.addEventListener("click", (event: Event) => { console.log(event.target); });
+        this.state.canvas.current.addEventListener("click", (event: Event) => {  });
     }
 
     componentWillReceiveProps(nextProps: any) {  }
@@ -65,7 +65,9 @@ class Canvas extends React.Component<ICanvas, IState> {
     
     componentDidUpdate(prevProps: any, prevState: any) {  }
 
-    componentWillUnmount() {  }
+    componentWillUnmount() { window.removeEventListener('resize', this.resizeCallback); }
+
+    resizeCallback = () => setTimeout(this.update, 500)
 
     update() {
         this.width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5

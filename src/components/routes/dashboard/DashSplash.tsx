@@ -3,24 +3,20 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import { Renderer } from '../game/Renderer';
+import { SideAccordion } from '../../ui/dashboard/SideAccordion';
 
-interface IPlayArea {
-    isPlaying: boolean
+interface IDashSplash {
+    match: any
 }
 
 interface IState {
-    isPlaying: boolean;
+    match: any
 }
 
-export class PlayArea extends React.Component<IPlayArea, IState> {
-    private isPlaying = false;
+export class DashSplash extends React.Component<IDashSplash, IState> {
 
-    constructor(props: IPlayArea) {
+    constructor(props: IDashSplash) {
         super(props);
-        this.state = {
-            isPlaying: this.isPlaying
-        }
     }
 
     componentWillMount() {  }
@@ -42,15 +38,10 @@ export class PlayArea extends React.Component<IPlayArea, IState> {
             <Container fluid>
                 <Row>
                     <Col>
-                    &nbsp;
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        
+                        <SideAccordion />
                     </Col>
                     <Col>
-                        <Renderer />
+
                     </Col>
                     <Col>
                         
@@ -61,4 +52,4 @@ export class PlayArea extends React.Component<IPlayArea, IState> {
     }
 }
 
-export default PlayArea;
+export default DashSplash;

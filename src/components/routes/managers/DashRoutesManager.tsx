@@ -1,22 +1,21 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 
-import { Dashboard } from '../dashboard/Dashboard';
 import { PlayArea } from '../../game/PlayArea';
 import { Account } from '../dashboard/Account';
 import { None } from '../global/None';
+import { DashSplash } from '../dashboard/DashSplash';
 
-export const DashRoutesManager = () => {
+export const DashRoutesManager = ({ match }: {match: any}) => {
     return (
-        <Route render={() => (
-                <Switch>
-                    <Route exact path="/" component={Dashboard} />
-                    <Route path='/dashboard' component={Dashboard} />
-                    <Route path="/account" component={Account} />
-                    <Route path='/play' component={PlayArea} />
-                    <Route component={None} />
-                </Switch>
-        )} />
+        <Switch>
+            <Route path="/dashboard/account" component={Account} />
+            <Route path="/dashboard/play" component={PlayArea} />
+            <Route exact path={match.url} render={() => (
+                    <DashSplash match={match}/>
+            )}/>
+            <Route component={None} />
+        </Switch>
     )
 }
 

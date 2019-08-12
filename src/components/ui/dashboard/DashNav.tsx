@@ -37,18 +37,18 @@ export const DashNav = () => (
                     <Nav className="mr-auto">
                         <Nav.Item>
                             <LinkContainer to="/dashboard">
-                                <Button>Dashboard</Button>
+                                <Button variant="secondary">Dashboard</Button>
                             </LinkContainer>
                         </Nav.Item>
                         <Nav.Item>
-                            <LinkContainer to="/play">
+                            <LinkContainer to="/dashboard/play">
                                 <Button>Play</Button>
                             </LinkContainer>
                         </Nav.Item>
                     </Nav>
                     <Nav className="ml-auto">
                         <Nav.Item>
-                            <LinkContainer to="/account">
+                            <LinkContainer to="/dashboard/account">
                                 <Button>Account</Button>
                             </LinkContainer>
                         </Nav.Item>

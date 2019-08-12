@@ -8,19 +8,19 @@ import { About } from '../home/About';
 import { Contact } from '../home/Contact';
 import { Signup } from '../home/Signup';
 import { None } from '../global/None';
-import { Dashboard } from '../dashboard/Dashboard';
+import DashRoutesManager from './DashRoutesManager';
 
 export const HomeRoutesManager = () => {
     return (
         <Route render={() => (
-          <Layout authenticated={isAuthenticated.hasAuthenticated}>
+          <Layout auth={isAuthenticated.hasAuthenticated}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/about" component={About} />
               <Route path="/contact" component={Contact} />
               <Route path="/login" component={AuthLogin} />
               <Route path="/signup" component={Signup} />
-              <PrivateRoute path='/dashboard' component={Dashboard} />
+              <PrivateRoute path='/dashboard' component={DashRoutesManager} />
               <Route component={None} />
             </Switch>
         </Layout>
