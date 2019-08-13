@@ -1,12 +1,19 @@
 
 export class Square {
-    public width: number;
-    public height: number;
-    public piece: any;
+    private number: string;
+    private width: number;
+    private height: number;
 
-    constructor(width: number, height: number, piece?: any) {
+    constructor(number: string, width: number, height: number) {
+        this.number = number;
         this.width = width;
         this.height = height;
-        this.piece = piece;
     }
+
+    getId() { return this.number; }
+
+    getWidth() { return this.width; }
+    
+    getHeight() { return this.height }
+
 }

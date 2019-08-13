@@ -1,6 +1,11 @@
-import React from 'react';
-import { Square } from './Square';
+import React, { EventHandler } from 'react';
 import styled from 'styled-components';
+
+import { 
+    wPawn, wKnight, wBishop, wRook, wQueen, wKing, 
+    bPawn, bKnight, bBishop, bRook, bQueen, bKing
+} from './Pieces';
+import { Square } from './Square';
 
 const Styles = styled.div`
     canvas {
@@ -34,6 +39,7 @@ class Canvas extends React.Component<ICanvas, IState> {
     private ratio = window.devicePixelRatio || 1;
     
     private squaresArray: Array<Square>;
+    private referenceArray: Array<number>;
     
     constructor(props: ICanvas) {
         super(props);
@@ -47,14 +53,15 @@ class Canvas extends React.Component<ICanvas, IState> {
             }
         };
         this.squaresArray = new Array(64);
+        this.referenceArray = new Array(120);
     }
 
     componentWillMount() {  }
 
     componentDidMount() { 
-        window.addEventListener('resize', this.resizeCallback);
+        window.addEventListener('resize', this.resizeCallback, false);
         this.update();
-        this.state.canvas.current.addEventListener("click", (event: Event) => {  });
+        this.state.canvas.current.addEventListener("click", (event: any) => { this.handleClick(event) }, false);
     }
 
     componentWillReceiveProps(nextProps: any) {  }
@@ -65,7 +72,10 @@ class Canvas extends React.Component<ICanvas, IState> {
     
     componentDidUpdate(prevProps: any, prevState: any) {  }
 
-    componentWillUnmount() { window.removeEventListener('resize', this.resizeCallback); }
+    componentWillUnmount() { 
+        window.removeEventListener('resize', this.resizeCallback, false);
+        this.state.canvas.current.removeEventListener("click", (event: any) => { this.handleClick(event) }, false);
+    }
 
     resizeCallback = () => setTimeout(this.update, 500)
 
@@ -80,58 +90,78 @@ class Canvas extends React.Component<ICanvas, IState> {
             }
         })
         this.init();
-        this.draw();
+        this.drawBoard();
     }
 
     init() {
         const cellWidth = this.state.screen.width / 8;
         const cellHeight = this.state.screen.width / 8;
+        const files = "ABCDEFGH";
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                this.squaresArray[i + j * 8] = new Square(cellWidth, cellHeight)
+                this.squaresArray[i + j * 8] = new Square(files[i] + (j + 1), cellWidth, cellHeight)
             }
         }
+        console.debug(this.squaresArray);
     }
 
-    draw() {
+    drawBoard() {
         const ctx = this.state.canvas.current.getContext('2d');
-        let x, y, w, h: number;
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                x = i * this.squaresArray[i].width;
-                y = j * this.squaresArray[i].width;
-                w = this.squaresArray[j].width;
-                h = this.squaresArray[j].height;
+                const x = i * this.squaresArray[j].getWidth();
+                const y = j * this.squaresArray[j].getWidth();
+                const w = this.squaresArray[j].getWidth();
+                const h = this.squaresArray[j].getHeight();
 
-                let evenCol = (i % 2 === 0 ? true : false)
-                this.setSequareColours(evenCol, i, j, ctx)
-
+                this.setSequareColours(i, j, ctx)
                 ctx.strokeRect(x, y, w, h)
                 ctx.fillRect(x, y, w, h)
             }
         }
+        // this.drawPieces(ctx);
     }
 
-    setSequareColours(evenCol: boolean, i: number, j: number, ctx: any) {
-        if (evenCol === true) {
-            if (j % 2 === 0 && i % 2 === 0) {
-                ctx.strokeStyle = '#1a1a1a';
-                ctx.fillStyle = '#f2f2f2';
-            }
-            else {
-                ctx.strokeStyle = '#f2f2f2';
-                ctx.fillStyle = '#1a1a1a';
+    setSequareColours(i: number, j: number, ctx: any) {
+        if ((i + j + 1) % 2 != 0) {
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.fillStyle = '#f2f2f2';
+        } else {
+            ctx.strokeStyle = '#f2f2f2';
+            ctx.fillStyle = '#1a1a1a';
+        }
+    }
+
+    drawPieces(ctx: any) {
+        // currently being built
+        const img = new Image();
+        img.src = wPawn;
+        img.id = 'wPawn';
+        function drawImg(ctx: any, img: any) {
+            if (!img.complete) {
+                console.debug("Image " + img.id + " has failed to load")
+                setTimeout(function(){
+                    drawImg(ctx, img)
+                }, 50)
+                return;
+            } else {
+                console.debug("Image " + img.id + " has loaded successfully")
+                ctx.drawImage(img, 0, 0)
             }
         }
-        else {
-            if (j % 2 === 0 && i % 2 !== 0) {
-                ctx.strokeStyle = '#f2f2f2';
-                ctx.fillStyle = '#1a1a1a';
-            }
-            else {
-                ctx.strokeStyle = '#1a1a1a';
-                ctx.fillStyle = '#f2f2f2';
-            }
+        drawImg(ctx, img)
+    }
+
+    handleClick(event: any) {
+        const cx = event.offsetX;
+        const cy = event.offsetY;
+        // calculations may change depending on how the component is structured in the DOM
+        console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY)
+        console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY)
+        console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop)
+
+        for (let i = 0; i < this.squaresArray.length; i++) {
+            
         }
     }
 

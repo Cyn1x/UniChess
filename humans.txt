@@ -1,9 +1,14 @@
 Placing original work authors here for the time being until I find a better way to provide credit. I will most probably include a link on the footer of the page next to a disclaimer, e.g. Disclaimer | Credits | FAQ that will appear as a react-bootstrap modal, where Credits option shows what I've used that isn't mine, and the original author rather than having it buried somewhere, like this text file.
 
 Background Image:
-path: \src\assets\chessPieces.jpg
+path: \src\assets\img\site\chessPieces.jpg
 author: Sebastian Voortman
 website: https://www.pexels.com/@sebastian
+
+Chess Pieces:
+\src\assets\game\pieces\*.svg
+author: John Pablok
+website: https://opengameart.org/content/chess-pieces-and-board-squares
 
 UniChess Logo:
 path \src\assets\logo.png
