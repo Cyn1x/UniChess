@@ -1,9 +1,9 @@
 
-export class Square {
+export class Board {
 
     constructor(props: {}) {
 
     }
 
-
+    init() {  }
 }

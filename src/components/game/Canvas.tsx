@@ -36,7 +36,8 @@ class Canvas extends React.Component<ICanvas, IState> {
     private canvas = React.createRef<HTMLCanvasElement>();
     private width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
     private height = this.width;
-    private ratio = window.devicePixelRatio || 1;
+    // private ratio = window.devicePixelRatio || 1;
+    private ratio = this.width / this.height
     
     private squaresArray: Array<Square>;
     private referenceArray: Array<number>;
@@ -48,7 +49,7 @@ class Canvas extends React.Component<ICanvas, IState> {
             canvas: this.canvas,
             screen: {
                 width: this.height * (this.width / this.height),
-                height: this.height,
+                height: this.width,
                 ratio: this.ratio
             }
         };
@@ -81,25 +82,30 @@ class Canvas extends React.Component<ICanvas, IState> {
 
     update() {
         this.width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
-        this.height = this.width;
+        this.height = this.width
         this.setState({
+            canvas: this.canvas,
             screen: {
                 width: this.height * (this.width / this.height),
                 height: this.height,
                 ratio: this.ratio
             }
         })
+        console.debug("state.screen.width: ", this.state.screen.width)
+        console.debug("state.screen.height: ", this.state.screen.height)
+        console.debug("state.canvas: ", this.state.canvas)
         this.init();
         this.drawBoard();
     }
 
     init() {
-        const cellWidth = this.state.screen.width / 8;
-        const cellHeight = this.state.screen.width / 8;
+        const {cw, ch} = this.getCellDimensions()
+        console.debug("cellWidth: ", cw)
+        console.debug("cellHeight: ", ch)
         const files = "ABCDEFGH";
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                this.squaresArray[i + j * 8] = new Square(files[i] + (j + 1), cellWidth, cellHeight)
+                this.squaresArray[i + j * 8] = new Square(files[i] + (j + 1), cw, ch)
             }
         }
         console.debug(this.squaresArray);
@@ -119,7 +125,7 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ctx.fillRect(x, y, w, h)
             }
         }
-        // this.drawPieces(ctx);
+        this.drawPieces(ctx);
     }
 
     setSequareColours(i: number, j: number, ctx: any) {
@@ -133,7 +139,6 @@ class Canvas extends React.Component<ICanvas, IState> {
     }
 
     drawPieces(ctx: any) {
-        // currently being built
         const img = new Image();
         img.src = wPawn;
         img.id = 'wPawn';
@@ -163,6 +168,12 @@ class Canvas extends React.Component<ICanvas, IState> {
         for (let i = 0; i < this.squaresArray.length; i++) {
             
         }
+    }
+
+    getCellDimensions() {
+        const cw = (this.state.screen.width * this.state.screen.ratio) / 8;
+        const ch = (this.state.screen.height * this.state.screen.ratio) / 8;
+        return {cw, ch}
     }
 
     render() {
