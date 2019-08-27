@@ -1,19 +1,25 @@
 
 export class Square {
-    private number: string;
+    private position: string;
     private width: number;
     private height: number;
+    private piece: any;
 
-    constructor(number: string, width: number, height: number) {
-        this.number = number;
+    constructor(position: string, width: number, height: number, piece?: any) {
+        this.position = position;
         this.width = width;
         this.height = height;
+        this.piece = piece;
     }
 
-    getId() { return this.number; }
+    getPosition() { return this.position; }
 
     getWidth() { return this.width; }
     
     getHeight() { return this.height }
+
+    getPiece() { return this.piece }
+
+    setPiece(piece: any) { this.piece = piece }
 
 }

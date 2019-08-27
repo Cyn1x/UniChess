@@ -1,11 +1,10 @@
 import React, { EventHandler } from 'react';
 import styled from 'styled-components';
 
-import { 
-    wPawn, wKnight, wBishop, wRook, wQueen, wKing, 
-    bPawn, bKnight, bBishop, bRook, bQueen, bKing
-} from './Pieces';
+import { Game } from './Game';
+import { Board } from './Board';
 import { Square } from './Square';
+import { Pieces } from './Pieces';
 
 const Styles = styled.div`
     canvas {
@@ -36,11 +35,10 @@ class Canvas extends React.Component<ICanvas, IState> {
     private canvas = React.createRef<HTMLCanvasElement>();
     private width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
     private height = this.width;
-    // private ratio = window.devicePixelRatio || 1;
     private ratio = this.width / this.height
     
-    private squaresArray: Array<Square>;
-    private referenceArray: Array<number>;
+    private game: Game;
+    private chessBoard: Board;
     
     constructor(props: ICanvas) {
         super(props);
@@ -53,8 +51,8 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         };
-        this.squaresArray = new Array(64);
-        this.referenceArray = new Array(120);
+        this.game = new Game()
+        this.chessBoard = new Board(this.game.getSquaresArray(), this.game.getPiecesArray());
     }
 
     componentWillMount() {  }
@@ -91,34 +89,33 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         })
-        console.debug("state.screen.width: ", this.state.screen.width)
-        console.debug("state.screen.height: ", this.state.screen.height)
-        console.debug("state.canvas: ", this.state.canvas)
         this.init();
         this.drawBoard();
     }
 
     init() {
         const {cw, ch} = this.getCellDimensions()
-        console.debug("cellWidth: ", cw)
-        console.debug("cellHeight: ", ch)
-        const files = "ABCDEFGH";
+        const files = this.chessBoard.getFiles();
+        let squaresArray = this.game.getSquaresArray()
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                this.squaresArray[i + j * 8] = new Square(files[i] + (j + 1), cw, ch)
+                squaresArray[i + j * 8] = new Square(files[i] + (j + 1), cw, ch)
             }
         }
-        console.debug(this.squaresArray);
+        this.chessBoard.setSquares(squaresArray)
+        console.debug(this.game.getSquaresArray);
     }
 
     drawBoard() {
         const ctx = this.state.canvas.current.getContext('2d');
+        ctx.fillStyle = '#FFF';
+        ctx.fillRect(0, 0, this.state.screen.width, this.state.screen.height);
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                const x = i * this.squaresArray[j].getWidth();
-                const y = j * this.squaresArray[j].getWidth();
-                const w = this.squaresArray[j].getWidth();
-                const h = this.squaresArray[j].getHeight();
+                const x = i * this.chessBoard.getSquares()[j].getWidth();
+                const y = j * this.chessBoard.getSquares()[j].getWidth();
+                const w = this.chessBoard.getSquares()[j].getWidth();
+                const h = this.chessBoard.getSquares()[j].getHeight();
 
                 this.setSequareColours(i, j, ctx)
                 ctx.strokeRect(x, y, w, h)
@@ -139,22 +136,41 @@ class Canvas extends React.Component<ICanvas, IState> {
     }
 
     drawPieces(ctx: any) {
-        const img = new Image();
-        img.src = wPawn;
-        img.id = 'wPawn';
-        function drawImg(ctx: any, img: any) {
+        const startingFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+        const piecesArray = this.chessBoard.fenParser(startingFen);
+        const {cw, ch} = this.getCellDimensions();
+        const pieces = new Pieces();
+        let rank = 0;
+        let file = 0;
+
+        for (let i = 0; i < piecesArray.length; i++) {
+            if (i % 8 === 0 && i !== 0) {
+                rank++;
+                file = 0;
+            }
+            if (i % 8 !== 0 && i !== 0) {
+                file++;
+            }
+            if (pieces.getChessPieces().has(piecesArray[i])) {
+                let img = new Image();
+                img.src = pieces.getChessPieces().get(piecesArray[i]);
+                img.id = piecesArray[i];
+                drawImg(ctx, img, rank, file)
+            }
+
+        }
+
+        function drawImg(ctx: any, img: any, file: number, rank: number) {
             if (!img.complete) {
-                console.debug("Image " + img.id + " has failed to load")
+                console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has failed to load")
                 setTimeout(function(){
-                    drawImg(ctx, img)
+                    drawImg(ctx, img, file, rank)
                 }, 50)
                 return;
-            } else {
-                console.debug("Image " + img.id + " has loaded successfully")
-                ctx.drawImage(img, 0, 0)
             }
+            console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has loaded successfully")
+            ctx.drawImage(img, (cw * rank) + cw * 0.1, (ch * file) + ch * 0.1, cw * 0.8, ch * 0.8)
         }
-        drawImg(ctx, img)
     }
 
     handleClick(event: any) {
@@ -164,10 +180,6 @@ class Canvas extends React.Component<ICanvas, IState> {
         console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY)
         console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY)
         console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop)
-
-        for (let i = 0; i < this.squaresArray.length; i++) {
-            
-        }
     }
 
     getCellDimensions() {
