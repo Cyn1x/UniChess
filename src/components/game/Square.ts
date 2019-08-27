@@ -1,25 +1,38 @@
 
 export class Square {
-    private position: string;
-    private width: number;
-    private height: number;
-    private piece: any;
+    private pos: string;
+    private x: number;
+    private y: number
+    private w: number;
+    private h: number;
+    private piece: string;
+    private colour: any;
 
-    constructor(position: string, width: number, height: number, piece?: any) {
-        this.position = position;
-        this.width = width;
-        this.height = height;
+    constructor(pos: string, x: number, y: number, w: number, h: number, piece?: any) {
+        this.pos = pos;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
         this.piece = piece;
     }
 
-    getPosition() { return this.position; }
+    setPiece(piece: string) { this.piece = piece; }
 
-    getWidth() { return this.width; }
+    setColour(colour: string) { this.colour = colour; }
+
+    getPiece() { return this.piece; }
+
+    getPosition() { return this.pos; }
+
+    getX() { return this.x; }
+
+    getY() { return this.y; }
+
+    getWidth() { return this.w; }
     
-    getHeight() { return this.height }
+    getHeight() { return this.h }
 
-    getPiece() { return this.piece }
-
-    setPiece(piece: any) { this.piece = piece }
+    getColour() { return this.colour; }
 
 }

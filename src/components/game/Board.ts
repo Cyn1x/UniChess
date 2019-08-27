@@ -1,11 +1,13 @@
 import { Square } from "./Square";
 
 const files = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-const ranks = [1, 2, 3, 4, 5, 6, 7, 8]
+const ranks = [8, 7, 6, 5, 4, 3, 2, 1]
 
 export class Board {
     private squares: Array<Square>
     private pieces: Array<any>
+    private activeSquare: any;
+    private activeSquareColour: any;
 
     constructor(squares: Array<Square>, pieces: Array<any>) {
         this.squares = squares
@@ -39,5 +41,13 @@ export class Board {
 
     getSquares() { return this.squares }
 
+    getActiveSquare() { return this.activeSquare; }
+
+    getActiveSquareColour() { return this.activeSquareColour; }
+
     setSquares(squares: Array<Square>) { this.squares = squares }
+
+    setActiveSquare(squarePos: string) { this.activeSquare = squarePos; }
+
+    setActiveSquareColour(colour: string) { this.activeSquareColour = colour; }
 }
