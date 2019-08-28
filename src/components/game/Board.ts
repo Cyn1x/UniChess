@@ -6,41 +6,22 @@ const ranks = [8, 7, 6, 5, 4, 3, 2, 1]
 export class Board {
     private squares: Array<Square>
     private pieces: Array<any>
-    private activeSquare: any;
-    private activeSquareIndex: any;
-    private activePiece: any;
+    private activeSquare!: Square;
+    private activeSquareIndex!: number;
+    private activePiece!: HTMLImageElement;
 
-    constructor(squares: Array<Square>, pieces: Array<any>) {
+    constructor(squares: Array<Square>, pieces: Array<number>) {
         this.squares = squares
         this.pieces = pieces
-    }
-
-    fenParser(fen: string) {
-        const fenString = fen.split(" ");
-        const positions = fenString[0].split("/");
-
-        let currentSquare = 0;
-        positions.forEach( rank => {
-            rank.split("").forEach( char => {
-                if (!Number(char)) {
-                    this.pieces[currentSquare] = char;
-                    currentSquare++;
-                }
-                else {
-                    currentSquare += Number(char);
-                }
-            })
-        })
-        console.log(this.pieces)
-
-        return this.pieces
     }
 
     getFiles() { return files; }
 
     getRanks() { return ranks; }
 
-    getSquares() { return this.squares }
+    getSquares() { return this.squares; }
+
+    getPieces() { return this.pieces; }
 
     getActiveSquare() { return this.activeSquare; }
 
@@ -50,9 +31,11 @@ export class Board {
 
     setSquares(squares: Array<Square>) { this.squares = squares }
 
+    setPieces(pieces: Array<number>) { this.pieces = pieces; }
+
     setActiveSquare(squarePos: Square) { this.activeSquare = squarePos; }
 
     setActiveSquareIndex(index: number) { this.activeSquareIndex = this.activeSquareIndex = index; }
 
-    setActivePiece(piece: any) { this.activePiece = piece; }
+    setActivePiece(piece: HTMLImageElement) { this.activePiece = piece; }
 }

@@ -6,7 +6,7 @@ export class Square {
     private w: number;
     private h: number;
     private piece: string;
-    private colour: any;
+    private colour!: string;
 
     constructor(pos: string, x: number, y: number, w: number, h: number, piece?: any) {
         this.pos = pos;
