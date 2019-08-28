@@ -19,9 +19,9 @@ export class Board {
 
     getRanks() { return ranks; }
 
-    getSquares() { return this.squares; }
+    getSquaresArray() { return this.squares; }
 
-    getPieces() { return this.pieces; }
+    getPiecesArray() { return this.pieces; }
 
     getActiveSquare() { return this.activeSquare; }
 
@@ -29,9 +29,9 @@ export class Board {
 
     getActivePiece() { return this.activePiece; }
 
-    setSquares(squares: Array<Square>) { this.squares = squares }
+    setSquaresArray(squares: Array<Square>) { this.squares = squares }
 
-    setPieces(pieces: Array<number>) { this.pieces = pieces; }
+    setPiecesArray(pieces: Array<number>) { this.pieces = pieces; }
 
     setActiveSquare(squarePos: Square) { this.activeSquare = squarePos; }
 

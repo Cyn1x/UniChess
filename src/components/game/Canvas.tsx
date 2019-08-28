@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Game } from './Game';
-import { Board } from './Board';
 import { Square } from './Square';
 import { Pieces } from './Pieces';
 
@@ -32,12 +31,11 @@ interface IState {
 const boardSize = () => { return ( (window.innerWidth > window.innerHeight) ); }
 
 class Canvas extends React.Component<ICanvas, IState> {
+    private game: Game;
     private canvas = React.createRef<HTMLCanvasElement>();
     private width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
     private height = this.width;
     private ratio = this.width / this.height
-    
-    private game: Game;
     
     constructor(props: ICanvas) {
         super(props);
@@ -102,7 +100,7 @@ class Canvas extends React.Component<ICanvas, IState> {
                 squaresArray[i + j * 8] = new Square(files[i] + ranks[j], i * cw, j * cw, cw, ch, '0')
             }
         }
-        this.game.getChessboard().setSquares(squaresArray)
+        this.game.getChessboard().setSquaresArray(squaresArray)
     }
 
     drawBoard() {
@@ -112,10 +110,10 @@ class Canvas extends React.Component<ICanvas, IState> {
         let rank = 0;
 
             for (let i = 0; i < this.game.getSquaresArray().length; i++) {
-                const x = this.game.getChessboard().getSquares()[i].getX();
-                const y = this.game.getChessboard().getSquares()[i].getY();
-                const w = this.game.getChessboard().getSquares()[i].getWidth();
-                const h = this.game.getChessboard().getSquares()[i].getHeight();
+                const x = this.game.getChessboard().getSquaresArray()[i].getX();
+                const y = this.game.getChessboard().getSquaresArray()[i].getY();
+                const w = this.game.getChessboard().getSquaresArray()[i].getWidth();
+                const h = this.game.getChessboard().getSquaresArray()[i].getHeight();
 
                 if (i % 8 === 0) { rank++; }
 
@@ -129,17 +127,17 @@ class Canvas extends React.Component<ICanvas, IState> {
         if ((i + rank) % 2 === 0) {
             ctx.strokeStyle = '#1a1a1a';
             ctx.fillStyle = '#f2f2f2';
-            this.game.getChessboard().getSquares()[i].setColour('#f2f2f2');
+            this.game.getChessboard().getSquaresArray()[i].setColour('#f2f2f2');
         } else {
             ctx.strokeStyle = '#f2f2f2';
             ctx.fillStyle = '#1a1a1a';
-            this.game.getChessboard().getSquares()[i].setColour('#1a1a1a');
+            this.game.getChessboard().getSquaresArray()[i].setColour('#1a1a1a');
         }
     }
 
     drawPieces() {
         const startingFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-        const squaresArray = this.game.getChessboard().getSquares();
+        const squaresArray = this.game.getChessboard().getSquaresArray();
         const piecesArray = this.game.fenParser(startingFen);
         const pieces = new Pieces();
         const chessPieces = pieces.getChessPieces()
@@ -184,7 +182,7 @@ class Canvas extends React.Component<ICanvas, IState> {
     handleClick(event: any) {
         const cx = event.offsetX;
         const cy = event.offsetY;
-        const squares = this.game.getChessboard().getSquares();
+        const squares = this.game.getChessboard().getSquaresArray();
         const emptySquare = new Square('0', 0, 0, 0, 0);
         const pieces = new Pieces();
         const chessPieces = pieces.getChessPieces();

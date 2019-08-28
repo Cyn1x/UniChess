@@ -29,7 +29,7 @@ export class Game {
     fenParser(fen: string) {
         const fenString = fen.split(" ");
         const positions = fenString[0].split("/");
-        const pieces = this.chessBoard.getPieces();
+        const pieces = this.chessBoard.getPiecesArray();
 
         let currentSquare = 0;
         positions.forEach( rank => {
@@ -43,8 +43,6 @@ export class Game {
                 }
             })
         })
-        console.log(pieces)
-
         return pieces
     }
 
