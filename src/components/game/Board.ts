@@ -7,7 +7,8 @@ export class Board {
     private squares: Array<Square>
     private pieces: Array<any>
     private activeSquare: any;
-    private activeSquareColour: any;
+    private activeSquareIndex: any;
+    private activePiece: any;
 
     constructor(squares: Array<Square>, pieces: Array<any>) {
         this.squares = squares
@@ -43,11 +44,15 @@ export class Board {
 
     getActiveSquare() { return this.activeSquare; }
 
-    getActiveSquareColour() { return this.activeSquareColour; }
+    getActiveSquareIndex() { return this.activeSquareIndex; }
+
+    getActivePiece() { return this.activePiece; }
 
     setSquares(squares: Array<Square>) { this.squares = squares }
 
-    setActiveSquare(squarePos: string) { this.activeSquare = squarePos; }
+    setActiveSquare(squarePos: Square) { this.activeSquare = squarePos; }
 
-    setActiveSquareColour(colour: string) { this.activeSquareColour = colour; }
+    setActiveSquareIndex(index: number) { this.activeSquareIndex = this.activeSquareIndex = index; }
+
+    setActivePiece(piece: any) { this.activePiece = piece; }
 }

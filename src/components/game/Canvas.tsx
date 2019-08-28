@@ -176,13 +176,18 @@ class Canvas extends React.Component<ICanvas, IState> {
             setTimeout(() => { this.drawImg(img, file, rank) }, 50);
         }
         console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has loaded successfully")
-        ctx.drawImage(img, (cw * rank) + cw * 0.1, (ch * file) + ch * 0.1, cw * 0.8, ch * 0.8)
+        if (img.id === 'P' || img.id == 'p') {
+            ctx.drawImage(img, (cw * rank) + cw * 0.2, (ch * file) + ch * 0.1, cw * 0.6, ch * 0.8)
+        } else {
+            ctx.drawImage(img, (cw * rank) + cw * 0.1, (ch * file) + ch * 0.1, cw * 0.8, ch * 0.8)
+        }
     }
 
     handleClick(event: any) {
         const cx = event.offsetX;
         const cy = event.offsetY;
         const squares = this.chessBoard.getSquares();
+        const emptySquare = new Square('0', 0, 0, 0, 0);
         const pieces = new Pieces();
         const chessPieces = pieces.getChessPieces();
         const files = this.chessBoard.getFiles();
@@ -195,53 +200,73 @@ class Canvas extends React.Component<ICanvas, IState> {
             const sh = squares[i].getHeight();
 
             if (cx >= sx && cx <= sx + sw && cy >= sy && cy <= sy + sh) {
-                const pos = squares[i].getPosition();
                 const pieceId = squares[i].getPiece();
                 const piece = chessPieces.get(pieceId);
                 const img = new Image();
                 img.src = piece;
                 img.id = pieceId;
 
-                if (squares[i].getPiece() !== '0') {
-                    if (this.game.getSquareActive() === true) {
-                        if (this.chessBoard.getActiveSquare() === pos) {
-                            this.selectCell(sx, sy, sw, sh, true);
-                            this.drawImg(img, ranks.indexOf(Number(pos[1])), files.indexOf(pos[0]));
-                        }
-                    } else {
-                        this.selectCell(sx, sy, sw, sh, false);
-                        this.game.setSquareActive(true);
-                        this.chessBoard.setActiveSquare(pos);
-                        this.chessBoard.setActiveSquareColour(squares[i].getColour());
-                        this.drawImg(img, ranks.indexOf(Number(pos[1])), files.indexOf(pos[0]));
-                    }
+                if (this.game.getSquareActive()) {
+                    if (this.chessBoard.getActiveSquare() === squares[i]) {
+                        const activeImgPos = squares[i].getPosition();
+                        const activeImg = this.chessBoard.getActivePiece();
+                        
+                        this.chessBoard.setActiveSquare(emptySquare);
+                        this.game.setSquareActive(false);
 
+                        this.selectCell(sx, sy, sw, sh, squares[i]);
+                        this.drawImg(activeImg, ranks.indexOf(Number(activeImgPos[1])), files.indexOf(activeImgPos[0]));
+                    }
+                    
+                    else if (this.chessBoard.getActiveSquare() !== squares[i]) {
+                        const activeImgPos = squares[i].getPosition();
+                        const activeImg = this.chessBoard.getActivePiece();
+                        const activeSquare = this.chessBoard.getActiveSquare();
+                        const activeSquareIndex = this.chessBoard.getActiveSquareIndex();
+
+                        this.game.setSquareActive(false);
+                        this.selectCell(activeSquare.x, activeSquare.y, activeSquare.w, activeSquare.h, activeSquare);
+                        this.selectCell(sx, sy, sw, sh, squares[i]);
+                        this.drawImg(activeImg, ranks.indexOf(Number(activeImgPos[1])), files.indexOf(activeImgPos[0]));
+
+                        squares[activeSquareIndex].setPiece('0');
+                        squares[i].setPiece(activeImg.id);
+                    }
+                }
+
+                else {
+                    if (squares[i].getPiece() !== '0') {
+                        const activeImagePos = squares[i].getPosition();
+
+                        this.game.setSquareActive(true);
+                        this.chessBoard.setActiveSquare(squares[i]);
+                        this.chessBoard.setActiveSquareIndex(i);
+                        this.chessBoard.setActivePiece(img);
+    
+                        this.selectCell(sx, sy, sw, sh, squares[i]);
+                        this.drawImg(img, ranks.indexOf(Number(activeImagePos[1])), files.indexOf(activeImagePos[0]));
+                    }
                 }
             }
         }
         // calculations may change depending on how the component is structured in the DOM
-        console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY)
-        console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY)
-        console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop)
+        console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY);
+        console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY);
+        console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop);
     }
 
-    selectCell(sx: number, sy: number, sw: number, sh: number, selfClicked: boolean) {
+    selectCell(sx: number, sy: number, sw: number, sh: number, sq: Square) {
         const ctx = this.state.canvas.current.getContext('2d');
-        if (selfClicked === false) {
+        if (this.game.getSquareActive()) {
             ctx.strokeStyle = '#1a1a1a';
-            ctx.fillStyle = '#236AFF';
+            ctx.fillStyle = '#6F9EFF';
         } else {
             ctx.strokeStyle = '#1a1a1a';
-            ctx.fillStyle = this.chessBoard.getActiveSquareColour();
-            this.game.setSquareActive(false);
+            ctx.fillStyle = sq.getColour();
         }
-        
+
         ctx.strokeRect(sx, sy, sw, sh);
         ctx.fillRect(sx, sy, sw, sh);
-    }
-
-    drawPiece() {
-        
     }
 
     getCellDimensions() {
