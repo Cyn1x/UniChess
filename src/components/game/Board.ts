@@ -38,4 +38,5 @@ export class Board {
     setActiveSquareIndex(index: number) { this.activeSquareIndex = this.activeSquareIndex = index; }
 
     setActivePiece(piece: HTMLImageElement) { this.activePiece = piece; }
+
 }

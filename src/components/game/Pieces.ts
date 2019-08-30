@@ -14,13 +14,6 @@ import blackRook from '../../assets/img/game/pieces/b_rook_png_128px.png'
 import blackQueen from '../../assets/img/game/pieces/b_queen_png_128px.png'
 import blackKing from '../../assets/img/game/pieces/b_king_png_128px.png'
 
-export const bP = blackPawn;
-export const bN = blackKnight;
-export const bB = blackBishop;
-export const bR = blackRook;
-export const bQ = blackQueen;
-export const bK = blackKing;
-
 export const wP = whitePawn;
 export const wN = whiteKnight;
 export const wB = whiteBishop;
@@ -28,30 +21,96 @@ export const wR = whiteRook;
 export const wQ = whiteQueen;
 export const wK = whiteKing;
 
+export const bP = blackPawn;
+export const bN = blackKnight;
+export const bB = blackBishop;
+export const bR = blackRook;
+export const bQ = blackQueen;
+export const bK = blackKing;
+
 export class Pieces {
-    private piecesMap: Map<string, any>;
+    private pieceImgMap: Map<string, any>;
+    private moveDirMap: Map<string, Map<string, number>>;
 
     constructor() {
-        this.piecesMap = new Map();
+        this.pieceImgMap = new Map();
+        this.moveDirMap = new Map();
         this.setChessPieces();
+        this.setPieceMoves();
     }
 
     setChessPieces() {
-        this.piecesMap.set('p', bP);
-        this.piecesMap.set('n', bN);
-        this.piecesMap.set('b', bB);
-        this.piecesMap.set('r', bR);
-        this.piecesMap.set('q', bQ);
-        this.piecesMap.set('k', bK);
-        this.piecesMap.set('P', wP);
-        this.piecesMap.set('N', wN);
-        this.piecesMap.set('B', wB);
-        this.piecesMap.set('R', wR);
-        this.piecesMap.set('Q', wQ);
-        this.piecesMap.set('K', wK);
+        this.pieceImgMap
+        .set('p', bP).set('n', bN).set('b', bB).set('r', bR).set('q', bQ).set('k', bK)
+        .set('P', wP).set('N', wN).set('B', wB).set('R', wR).set('Q', wQ).set('K', wK);
+    }
+    
+    setPieceMoves() {
+        const wPawn = this.pawnMoves();
+        const wKnight = this.knightMoves();
+        const wBishop = this.bishopMoves();
+        const wRook = this.rookMoves();
+        const wQueen = this.queenMoves();
+        const wKing = this.kingMoves();
+
+        const bPawn = this.pawnMoves();
+        const bKnight = this.knightMoves();
+        const bBishop = this.bishopMoves();
+        const bRook = this.rookMoves();
+        const bQueen = this.queenMoves();
+        const bKing = this.kingMoves();
+
+        this.moveDirMap
+        .set('P', wPawn).set('K', wKnight).set('B', wBishop).set('R', wRook).set('Q', wQueen).set('K', wKing)
+        .set('p', bPawn).set('k', bKnight).set('b', bBishop).set('r', bRook).set('q', bQueen).set('k', bKing);
     }
 
-    getChessPieces() { return this.piecesMap; }
+    pawnMoves() {
+        const validDirections = new Map();
+        validDirections.set('N', 2).set('NE', 1).set('NW', 1);
+        
+        return validDirections;
+    }
+
+    knightMoves() {
+        const validDirections = new Map();
+        validDirections.set('N', 2).set('NE', 1).set('E', 2).set('SE', 1).set('S', 2).set('SW', 1).set('W', 2).set('NW', 1);
+
+        return validDirections;
+    }
+
+    bishopMoves() {
+        const validDirections = new Map();
+        validDirections.set('NE', 8).set('SE', 8).set('SW', 8).set('NW', 8);
+
+        return validDirections;
+    }
+
+    rookMoves() {
+        const validDirections = new Map();
+        validDirections.set('N', 8).set('E', 8).set('S', 8).set('W', 8);
+
+        return validDirections;
+    }
+
+    queenMoves() {
+        const validDirections = new Map();
+        validDirections.set('N', 8).set('NE', 8).set('E', 8).set('SE', 8).set('S', 8).set('SW', 8).set('W', 8).set('NW', 8);
+
+        return validDirections;
+    }
+
+    kingMoves() {
+        const validDirections = new Map();
+        validDirections.set('N', 1).set('NE', 1).set('E', 1).set('SE', 1).set('S', 1).set('SW', 1).set('W', 1).set('NW', 1);
+
+        return validDirections;
+    }
+
+    getChessPieces() { return this.pieceImgMap; }
+
+    getPieceMoves() { return this.moveDirMap; }
+
 }
 
 export default Pieces;

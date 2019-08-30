@@ -33,7 +33,7 @@ const boardSize = () => { return ( (window.innerWidth > window.innerHeight) ); }
 class Canvas extends React.Component<ICanvas, IState> {
     private game: Game;
     private canvas = React.createRef<HTMLCanvasElement>();
-    private width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
+    private width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5;
     private height = this.width;
     private ratio = this.width / this.height
     
@@ -91,13 +91,13 @@ class Canvas extends React.Component<ICanvas, IState> {
     }
 
     init() {
-        const {cw, ch} = this.getCellDimensions()
+        const {cw, ch} = this.getCellDimensions();
         const files = this.game.getChessboard().getFiles();
         const ranks = this.game.getChessboard().getRanks();
-        let squaresArray = this.game.getSquaresArray()
+        let squaresArray = this.game.getSquaresArray();
         for (let i = 0; i < files.length; i++) {
             for (let j = 0; j < ranks.length; j++) {
-                squaresArray[i + j * 8] = new Square(files[i] + ranks[j], i * cw, j * cw, cw, ch, '0')
+                squaresArray[i + j * 8] = new Square(files[i] + ranks[j], i * cw, j * cw, cw, ch, '0');
             }
         }
         this.game.getChessboard().setSquaresArray(squaresArray)
@@ -136,7 +136,7 @@ class Canvas extends React.Component<ICanvas, IState> {
     }
 
     drawPieces() {
-        const startingFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+        const startingFen = this.game.getFenString();
         const squaresArray = this.game.getChessboard().getSquaresArray();
         const piecesArray = this.game.fenParser(startingFen);
         const pieces = new Pieces();
@@ -155,9 +155,7 @@ class Canvas extends React.Component<ICanvas, IState> {
             if (chessPieces.has(piecesArray[i])) {
                 squaresArray[i].setPiece(piecesArray[i]);
 
-                const img = new Image();
-                img.src = chessPieces.get(piecesArray[i]);
-                img.id = piecesArray[i];
+                const img = new Image(); img.src = chessPieces.get(piecesArray[i]); img.id = piecesArray[i];
 
                 this.drawImg(img, rank, file)
             }
@@ -172,7 +170,7 @@ class Canvas extends React.Component<ICanvas, IState> {
             setTimeout(() => { this.drawImg(img, file, rank) }, 50);
         }
         console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has loaded successfully")
-        if (img.id === 'P' || img.id == 'p') {
+        if (img.id === 'P' || img.id === 'p') {
             ctx.drawImage(img, (cw * rank) + cw * 0.2, (ch * file) + ch * 0.1, cw * 0.6, ch * 0.8)
         } else {
             ctx.drawImage(img, (cw * rank) + cw * 0.1, (ch * file) + ch * 0.1, cw * 0.8, ch * 0.8)
@@ -182,64 +180,68 @@ class Canvas extends React.Component<ICanvas, IState> {
     handleClick(event: any) {
         const cx = event.offsetX;
         const cy = event.offsetY;
-        const squares = this.game.getChessboard().getSquaresArray();
+        const squaresArray = this.game.getChessboard().getSquaresArray();
         const emptySquare = new Square('0', 0, 0, 0, 0);
         const pieces = new Pieces();
         const chessPieces = pieces.getChessPieces();
         const files = this.game.getChessboard().getFiles();
         const ranks = this.game.getChessboard().getRanks();
 
-        for (let i = 0; i < squares.length; i++) {
-            const sx = squares[i].getX();
-            const sy = squares[i].getY();
-            const sw = squares[i].getWidth();
-            const sh = squares[i].getHeight();
+        for (let i = 0; i < squaresArray.length; i++) {
+            const sx = squaresArray[i].getX();
+            const sy = squaresArray[i].getY();
+            const sw = squaresArray[i].getWidth();
+            const sh = squaresArray[i].getHeight();
 
             if (cx >= sx && cx <= sx + sw && cy >= sy && cy <= sy + sh) {
-                const pieceId = squares[i].getPiece();
+                const pieceId = squaresArray[i].getPiece();
                 const piece = chessPieces.get(pieceId);
-                const img = new Image();
-                img.src = piece;
-                img.id = pieceId;
-
+                const img = new Image(); img.src = piece; img.id = pieceId;
+                
                 if (this.game.getSquareActive()) {
-                    if (this.game.getChessboard().getActiveSquare() === squares[i]) {
-                        const activeImgPos = squares[i].getPosition();
+                    if (this.game.getChessboard().getActiveSquare() === squaresArray[i]) {
+                        const activeImgPos = squaresArray[i].getPosition();
                         const activeImg = this.game.getChessboard().getActivePiece();
                         
                         this.game.getChessboard().setActiveSquare(emptySquare);
                         this.game.setSquareActive(false);
 
-                        this.selectCell(sx, sy, sw, sh, squares[i]);
+                        this.manageValidSquares();
+                        this.selectCell(sx, sy, sw, sh, squaresArray[i]);
                         this.drawImg(activeImg, ranks.indexOf(Number(activeImgPos[1])), files.indexOf(activeImgPos[0]));
                     }
                     
-                    else if (this.game.getChessboard().getActiveSquare() !== squares[i]) {
-                        const activeImgPos = squares[i].getPosition();
+                    else if (this.game.getChessboard().getActiveSquare() !== squaresArray[i]) {
+                        if (!this.game.checkRequestedMove(squaresArray[i])) { return; }
+
+                        const activeImgPos = squaresArray[i].getPosition();
                         const activeImg = this.game.getChessboard().getActivePiece();
                         const activeSquare = this.game.getChessboard().getActiveSquare();
                         const activeSquareIndex = this.game.getChessboard().getActiveSquareIndex();
 
                         this.game.setSquareActive(false);
+                        this.manageValidSquares();
+
                         this.selectCell(activeSquare.getX(), activeSquare.getY(), activeSquare.getWidth(), activeSquare.getHeight(), activeSquare);
-                        this.selectCell(sx, sy, sw, sh, squares[i]);
+                        this.selectCell(sx, sy, sw, sh, squaresArray[i]);
                         this.drawImg(activeImg, ranks.indexOf(Number(activeImgPos[1])), files.indexOf(activeImgPos[0]));
 
-                        squares[activeSquareIndex].setPiece('0');
-                        squares[i].setPiece(activeImg.id);
+                        squaresArray[activeSquareIndex].setPiece('0');
+                        squaresArray[i].setPiece(activeImg.id);
                     }
                 }
 
                 else {
-                    if (squares[i].getPiece() !== '0') {
-                        const activeImagePos = squares[i].getPosition();
+                    if (squaresArray[i].getPiece() !== '0') {
+                        const activeImagePos = squaresArray[i].getPosition();
 
                         this.game.setSquareActive(true);
-                        this.game.getChessboard().setActiveSquare(squares[i]);
+                        this.game.getChessboard().setActiveSquare(squaresArray[i]);
                         this.game.getChessboard().setActiveSquareIndex(i);
                         this.game.getChessboard().setActivePiece(img);
     
-                        this.selectCell(sx, sy, sw, sh, squares[i]);
+                        this.manageValidSquares();
+                        this.selectCell(sx, sy, sw, sh, squaresArray[i]);
                         this.drawImg(img, ranks.indexOf(Number(activeImagePos[1])), files.indexOf(activeImagePos[0]));
                     }
                 }
@@ -251,13 +253,64 @@ class Canvas extends React.Component<ICanvas, IState> {
         console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop);
     }
 
+    manageValidSquares() {
+
+        if (this.game.getSquareActive()) {
+            const activeSquare = this.game.getChessboard().getActiveSquare().getPosition();
+            const activePiece = this.game.getChessboard().getActiveSquare().getPiece();
+            this.game.checkValidMoves(activeSquare, activePiece)
+
+            if (this.game.getValidMoves().length > 0) {
+                const validMoves = this.game.getValidMoves()
+                for (let i = 0; i < validMoves.length; i++) {
+                    const sx = validMoves[i].getX();
+                    const sy = validMoves[i].getY();
+                    const sw = validMoves[i].getWidth();
+                    const sh = validMoves[i].getHeight();
+
+                    this.selectCell(sx, sy, sw, sh, validMoves[i]);
+                    this.drawPiece(validMoves, i)
+                }
+            }
+        }
+        else {
+            if (this.game.getValidMoves().length > 0) {
+                const validMoves = this.game.getValidMoves()
+                for (let i = 0; i < validMoves.length; i++) {
+                    const sx = validMoves[i].getX();
+                    const sy = validMoves[i].getY();
+                    const sw = validMoves[i].getWidth();
+                    const sh = validMoves[i].getHeight();
+
+                    this.selectCell(sx, sy, sw, sh, validMoves[i]);
+                    this.drawPiece(validMoves, i)
+                }
+            }
+            this.game.setValidMoves([]);
+        }
+    }
+
+    drawPiece(validMoves: Array<Square>, index: number) {
+        const files = this.game.getChessboard().getFiles();
+        const ranks = this.game.getChessboard().getRanks();
+
+        if (validMoves[index].getPiece() !== '0') {
+            const validImgPos = validMoves[index].getPosition();
+            const pieces = new Pieces();
+            const chessPieces = pieces.getChessPieces();
+            const validPieceId = validMoves[index].getPiece();
+            const validPiece = chessPieces.get(validPieceId);
+            const img = new Image(); img.src = validPiece; img.id = validPieceId;
+
+            this.drawImg(img, ranks.indexOf(Number(validImgPos[1])), files.indexOf(validImgPos[0]));
+        }
+    }
+
     selectCell(sx: number, sy: number, sw: number, sh: number, sq: Square) {
         const ctx = this.state.canvas.current.getContext('2d');
         if (this.game.getSquareActive()) {
-            ctx.strokeStyle = '#1a1a1a';
             ctx.fillStyle = '#6F9EFF';
         } else {
-            ctx.strokeStyle = '#1a1a1a';
             ctx.fillStyle = sq.getColour();
         }
 
@@ -274,7 +327,7 @@ class Canvas extends React.Component<ICanvas, IState> {
     render() {
         return (
             <Styles>
-                <canvas ref={this.state.canvas}
+                <canvas ref={ this.state.canvas }
                     width={ this.state.screen.width * this.state.screen.ratio }
                     height={ this.state.screen.height * this.state.screen.ratio }
                 />

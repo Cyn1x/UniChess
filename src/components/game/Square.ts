@@ -7,6 +7,7 @@ export class Square {
     private h: number;
     private piece: string;
     private colour!: string;
+    private enPassant!: string;
 
     constructor(pos: string, x: number, y: number, w: number, h: number, piece?: any) {
         this.pos = pos;
@@ -21,6 +22,8 @@ export class Square {
 
     setColour(colour: string) { this.colour = colour; }
 
+    setEnPassant(enPassant: string) { this.enPassant = enPassant }
+
     getPiece() { return this.piece; }
 
     getPosition() { return this.pos; }
@@ -34,5 +37,7 @@ export class Square {
     getHeight() { return this.h }
 
     getColour() { return this.colour; }
+
+    getEnPassant() { return this.enPassant; }
 
 }
