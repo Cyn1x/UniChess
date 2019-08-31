@@ -1,42 +1,52 @@
 import { Square } from "./Square";
+import { IPieces } from "./PiecesFactory";
 
 const files = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-const ranks = [8, 7, 6, 5, 4, 3, 2, 1]
+const ranks = [8, 7, 6, 5, 4, 3, 2, 1];
+const pieces = "PPPPPPppppppNNnnBBbbRRrrQqKk";
 
 export class Board {
-    private squares: Array<Square>
-    private pieces: Array<any>
+    private squares!: Array<Square>
+    private piecePositionsArray!: Array<string>
+    private piecesArray!: Map<string, IPieces>;
     private activeSquare!: Square;
     private activeSquareIndex!: number;
-    private activePiece!: HTMLImageElement;
+    private activePiece!: IPieces;
 
-    constructor(squares: Array<Square>, pieces: Array<number>) {
-        this.squares = squares
-        this.pieces = pieces
+    constructor() {
+        this.initialise();
+    }
+
+    initialise() {
+        this.squares = [];
+        this.piecePositionsArray = [];
+        this.piecesArray = new Map();
     }
 
     getFiles() { return files; }
 
     getRanks() { return ranks; }
 
+    getStartingPieces() { return pieces; }
+
     getSquaresArray() { return this.squares; }
 
-    getPiecesArray() { return this.pieces; }
+    getPiecePositionsArray() { return this.piecePositionsArray; }
+
+    getPieceObjMap() { return this.piecesArray; }
 
     getActiveSquare() { return this.activeSquare; }
-
-    getActiveSquareIndex() { return this.activeSquareIndex; }
 
     getActivePiece() { return this.activePiece; }
 
     setSquaresArray(squares: Array<Square>) { this.squares = squares }
 
-    setPiecesArray(pieces: Array<number>) { this.pieces = pieces; }
+    setPiecePositionsArray(pieces: Array<string>) { this.piecePositionsArray = pieces; }
+
+    setPieceObjMap(type: string, piece: IPieces) { this.piecesArray.set(type, piece); }
 
     setActiveSquare(squarePos: Square) { this.activeSquare = squarePos; }
 
-    setActiveSquareIndex(index: number) { this.activeSquareIndex = this.activeSquareIndex = index; }
-
-    setActivePiece(piece: HTMLImageElement) { this.activePiece = piece; }
+    setActivePiece(piece: IPieces) { this.activePiece = piece; }
 
 }

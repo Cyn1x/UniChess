@@ -23,17 +23,7 @@ export class PlayArea extends React.Component<IPlayArea, IState> {
         }
     }
 
-    componentWillMount() {  }
-
     componentDidMount() {  }
-
-    componentWillReceiveProps(nextProps: any) {  }
-
-    shouldComponentUpdate(nextProps: any, nextState: any) { return true; }
-
-    componentWillUpdate(nextProps: any, nextState:any) {  }
-    
-    componentDidUpdate(prevProps: any, prevState: any) {  }
 
     componentWillUnmount() {  }
 

@@ -1,3 +1,4 @@
+import { IPieces } from "./PiecesFactory";
 
 export class Square {
     private pos: string;
@@ -5,7 +6,8 @@ export class Square {
     private y: number
     private w: number;
     private h: number;
-    private piece: string;
+    private piece: IPieces;
+    private hasPiece!: boolean;
     private colour!: string;
     private enPassant!: string;
 
@@ -16,13 +18,15 @@ export class Square {
         this.w = w;
         this.h = h;
         this.piece = piece;
+        this.hasPiece = false;
     }
 
-    setPiece(piece: string) { this.piece = piece; }
+    removePiece() { 
+        delete this.piece;
+        this.hasPiece = false;
+    }
 
-    setColour(colour: string) { this.colour = colour; }
-
-    setEnPassant(enPassant: string) { this.enPassant = enPassant }
+    squareContainsPiece() { return this.hasPiece; }
 
     getPiece() { return this.piece; }
 
@@ -39,5 +43,14 @@ export class Square {
     getColour() { return this.colour; }
 
     getEnPassant() { return this.enPassant; }
+
+    setPiece(piece: IPieces) { 
+        this.piece = piece;
+        this.hasPiece = true;
+    }
+
+    setColour(colour: string) { this.colour = colour; }
+
+    setEnPassant(enPassant: string) { this.enPassant = enPassant }
 
 }

@@ -29,40 +29,22 @@ export const bQ = blackQueen;
 export const bK = blackKing;
 
 export class Pieces {
-    private pieceImgMap: Map<string, any>;
-    private moveDirMap: Map<string, Map<string, number>>;
+    private pieceImages: Map<string, string>;
 
     constructor() {
-        this.pieceImgMap = new Map();
-        this.moveDirMap = new Map();
-        this.setChessPieces();
-        this.setPieceMoves();
+        this.pieceImages = new Map();
+
+        this.initialise();
     }
 
-    setChessPieces() {
-        this.pieceImgMap
+    initialise() {
+        this.setChessPieceImgs();
+    }
+
+    setChessPieceImgs() {
+        this.pieceImages
         .set('p', bP).set('n', bN).set('b', bB).set('r', bR).set('q', bQ).set('k', bK)
         .set('P', wP).set('N', wN).set('B', wB).set('R', wR).set('Q', wQ).set('K', wK);
-    }
-    
-    setPieceMoves() {
-        const wPawn = this.pawnMoves();
-        const wKnight = this.knightMoves();
-        const wBishop = this.bishopMoves();
-        const wRook = this.rookMoves();
-        const wQueen = this.queenMoves();
-        const wKing = this.kingMoves();
-
-        const bPawn = this.pawnMoves();
-        const bKnight = this.knightMoves();
-        const bBishop = this.bishopMoves();
-        const bRook = this.rookMoves();
-        const bQueen = this.queenMoves();
-        const bKing = this.kingMoves();
-
-        this.moveDirMap
-        .set('P', wPawn).set('K', wKnight).set('B', wBishop).set('R', wRook).set('Q', wQueen).set('K', wKing)
-        .set('p', bPawn).set('k', bKnight).set('b', bBishop).set('r', bRook).set('q', bQueen).set('k', bKing);
     }
 
     pawnMoves() {
@@ -107,9 +89,7 @@ export class Pieces {
         return validDirections;
     }
 
-    getChessPieces() { return this.pieceImgMap; }
-
-    getPieceMoves() { return this.moveDirMap; }
+    getChessPieceImgs() { return this.pieceImages; }
 
 }
 

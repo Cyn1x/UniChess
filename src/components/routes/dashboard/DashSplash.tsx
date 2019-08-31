@@ -15,21 +15,11 @@ interface IState {
 
 export class DashSplash extends React.Component<IDashSplash, IState> {
 
-    constructor(props: IDashSplash) {
-        super(props);
-    }
-
-    componentWillMount() {  }
+    // constructor(props: IDashSplash) {
+        // super(props);
+    // }
 
     componentDidMount() {  }
-
-    componentWillReceiveProps(nextProps: any) {  }
-
-    shouldComponentUpdate(nextProps: any, nextState: any) { return true; }
-
-    componentWillUpdate(nextProps: any, nextState:any) {  }
-    
-    componentDidUpdate(prevProps: any, prevState: any) {  }
 
     componentWillUnmount() {  }
 
