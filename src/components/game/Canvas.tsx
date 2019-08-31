@@ -48,7 +48,8 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         };
-        this.game = new Game()
+        this.game = new Game();
+        this.initialise();
     }
 
     componentDidMount() { 
@@ -75,22 +76,14 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         })
-        this.init();
+        this.initialise();
         this.drawBoard();
         this.drawPieces();
     }
 
-    init() {
+    initialise() {
         const {cw, ch} = this.getCellDimensions();
-        const files = this.game.getChessboard().getFiles();
-        const ranks = this.game.getChessboard().getRanks();
-        let squaresArray = this.game.getChessboard().getSquaresArray();
-        for (let i = 0; i < files.length; i++) {
-            for (let j = 0; j < ranks.length; j++) {
-                squaresArray[i + j * 8] = new Square(files[i] + ranks[j], i * cw, j * cw, cw, ch, '0');
-            }
-        }
-        this.game.getChessboard().setSquaresArray(squaresArray)
+        this.game.initialise(cw, ch);
     }
 
     drawBoard() {
@@ -99,18 +92,19 @@ class Canvas extends React.Component<ICanvas, IState> {
         ctx.fillRect(0, 0, this.state.screen.width, this.state.screen.height);
         let rank = 0;
 
-            for (let i = 0; i < this.game.getChessboard().getSquaresArray().length; i++) {
-                const x = this.game.getChessboard().getSquaresArray()[i].getX();
-                const y = this.game.getChessboard().getSquaresArray()[i].getY();
-                const w = this.game.getChessboard().getSquaresArray()[i].getWidth();
-                const h = this.game.getChessboard().getSquaresArray()[i].getHeight();
+        for (let i = 0; i < this.game.getChessboard().getSquaresArray().length; i++) {
 
-                if (i % 8 === 0) { rank++; }
+            const x = this.game.getChessboard().getSquaresArray()[i].getX();
+            const y = this.game.getChessboard().getSquaresArray()[i].getY();
+            const w = this.game.getChessboard().getSquaresArray()[i].getWidth();
+            const h = this.game.getChessboard().getSquaresArray()[i].getHeight();
 
-                this.setSequareColours(i, rank, ctx)
-                ctx.strokeRect(x, y, w, h)
-                ctx.fillRect(x, y, w, h)
-            }
+            if (i % 8 === 0) { rank++; }
+
+            this.setSequareColours(i, rank, ctx)
+            ctx.strokeRect(x, y, w, h)
+            ctx.fillRect(x, y, w, h)
+        }
     }
 
     setSequareColours(i: number, rank: number, ctx: any) {
@@ -126,48 +120,32 @@ class Canvas extends React.Component<ICanvas, IState> {
     }
 
     drawPieces() {
-        const startingFen = this.game.getFenString();
+        this.game.setPiecePositions();
         const squaresArray = this.game.getChessboard().getSquaresArray();
-        const piecesArray = this.game.fenParser(startingFen);
-        const chessPieces = this.game.getChessboard().getPieceObjMap();
-        let rank = 0;
-        let file = 0;
+        const files = this.game.getChessboard().getFiles();
+        const ranks = this.game.getChessboard().getRanks();
 
-        for (let i = 0; i < piecesArray.length; i++) {
-            if (i % 8 === 0 && i !== 0) {
-                rank++;
-                file = 0;
-            }
-            if (i % 8 !== 0) {
-                file++;
-            }
-            if (chessPieces.has(piecesArray[i])) {
-                const piece = chessPieces.get(piecesArray[i]);
+        squaresArray.forEach( (square: Square, index: number) => {
+            if (square.getPiece()) {
+                const piece = square.getPiece()
+                const position = piece.getPosition().split("")
+                const img = new Image();
+                img.src = piece.getImage();
+                img.id = piece.getColour();
 
-                if (piece) {
-                    squaresArray[i].setPiece(piece);
-
-                    const img = new Image(); 
-                    img.src = piece.getImage(); 
-                    img.id = piecesArray[i];
-    
-                    this.drawImg(img, rank, file)
-                }
-                else {
-                    throw new Error('Piece is undefined')
-                }
+                this.drawImg(img, ranks.indexOf(Number(position[1])), files.indexOf(position[0]))
             }
-        }
+        })
     }
 
     drawImg(img: HTMLImageElement, file: number, rank: number) {
         const ctx = this.state.canvas.current.getContext('2d');
         const {cw, ch} = this.getCellDimensions();
         if (!img.complete) {
-            // console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has failed to load")
+            console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has failed to load")
             setTimeout(() => { this.drawImg(img, file, rank) }, 50);
         }
-        // console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has loaded successfully")
+        console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has loaded successfully")
         if (img.id === 'P' || img.id === 'p') {
             ctx.drawImage(img, (cw * rank) + cw * 0.2, (ch * file) + ch * 0.1, cw * 0.6, ch * 0.8)
         } else {
@@ -202,8 +180,6 @@ class Canvas extends React.Component<ICanvas, IState> {
                         this.manageValidSquares();
                         this.selectCell(sx, sy, sw, sh, squaresArray[i]);
                         this.drawImg(img, ranks.indexOf(Number(activeSquare.getPosition()[1])), files.indexOf(activeSquare.getPosition()[0]));
-
-                        this.game.incrementMoveCount(activePiece);
                     }
                     
                     else if (this.game.getChessboard().getActiveSquare() !== squaresArray[i]) {
@@ -247,9 +223,9 @@ class Canvas extends React.Component<ICanvas, IState> {
             }
         }
         // calculations may change depending on how the component is structured in the DOM
-        // console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY);
-        // console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY);
-        // console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop);
+        console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY);
+        console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY);
+        console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop);
     }
 
     constructImage(activeSquare: IPieces) {

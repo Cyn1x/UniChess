@@ -47,9 +47,10 @@ export class Pieces {
         .set('P', wP).set('N', wN).set('B', wB).set('R', wR).set('Q', wQ).set('K', wK);
     }
 
-    pawnMoves() {
+    pawnMoves(colour: string) {
         const validDirections = new Map();
-        validDirections.set('N', 2).set('NE', 1).set('NW', 1);
+        if (colour === 'P') { validDirections.set('N', 2).set('NE', 1).set('NW', 1); }
+        else { validDirections.set('S', 2).set('SE', 1).set('SW', 1); };
         
         return validDirections;
     }

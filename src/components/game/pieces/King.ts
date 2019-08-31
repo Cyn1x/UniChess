@@ -15,6 +15,7 @@ export class King implements IKing {
     position!: string;
     moves!: number;
     moveDirections!: Map<string, number>;
+    private inCheck!: boolean;
 
     constructor(colour: string, image: string) {
         this.colour = colour;
@@ -25,6 +26,7 @@ export class King implements IKing {
 
     initialise() {
         this.moves = 0;
+        this.inCheck = false;
         const pieces = new Pieces();
 
         this.setMoveDirections(pieces.kingMoves());
@@ -38,14 +40,16 @@ export class King implements IKing {
 
     getMoveDirections() { return this.moveDirections; }
 
+    getPosition() { return this.position; }
+
     getMoveNumber() { return this.moves; }
 
     setImage(image: string) { this.image = image; }
 
     setMoveDirections(directions: Map<string, number>) { this.moveDirections = directions; }
 
-    setCheck() {  }
+    setPosition(pos: string) { this.position = pos; }
 
-    setCheckmate() {  }
+    setCheck(check: boolean) { this.inCheck = check; }
 
 }

@@ -40,8 +40,12 @@ export class Rook implements IRook {
 
     getMoveNumber() { return this.moves; }
 
+    getPosition() { return this.position; }
+
     setImage(image: string) { this.image = image; }
 
     setMoveDirections(directions: Map<string, number>) { this.moveDirections = directions; }
+
+    setPosition(pos: string) { this.position = pos; }
 
 }

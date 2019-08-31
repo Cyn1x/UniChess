@@ -6,19 +6,17 @@ export class Square {
     private y: number
     private w: number;
     private h: number;
-    private piece: IPieces;
+    private piece!: IPieces;
     private hasPiece!: boolean;
     private colour!: string;
     private enPassant!: string;
 
-    constructor(pos: string, x: number, y: number, w: number, h: number, piece?: any) {
+    constructor(pos: string, x: number, y: number, w: number, h: number) {
         this.pos = pos;
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
-        this.piece = piece;
-        this.hasPiece = false;
     }
 
     removePiece() { 
@@ -44,9 +42,18 @@ export class Square {
 
     getEnPassant() { return this.enPassant; }
 
+    setX(x: number) { this.x = x; }
+
+    setY(y: number) { this.y = y; }
+
+    setWidth(width: number) { this.w = width; }
+
+    setHeight(height: number) { this.h = height; }
+
     setPiece(piece: IPieces) { 
         this.piece = piece;
         this.hasPiece = true;
+        piece.setPosition(this.pos);
     }
 
     setColour(colour: string) { this.colour = colour; }

@@ -38,10 +38,14 @@ export class Bishop implements IBishop {
 
     getMoveDirections() { return this.moveDirections; }
 
+    getPosition() { return this.position; }
+
     getMoveNumber() { return this.moves; }
 
     setImage(image: string) { this.image = image; }
 
     setMoveDirections(directions: Map<string, number>) { this.moveDirections = directions; }
+
+    setPosition(pos: string) { this.position = pos; }
 
 }

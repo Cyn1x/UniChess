@@ -8,7 +8,7 @@ const pieces = "PPPPPPppppppNNnnBBbbRRrrQqKk";
 export class Board {
     private squares!: Array<Square>
     private piecePositionsArray!: Array<string>
-    private piecesArray!: Map<string, IPieces>;
+    private piecesArray!: Array<IPieces>;
     private activeSquare!: Square;
     private activeSquareIndex!: number;
     private activePiece!: IPieces;
@@ -20,7 +20,7 @@ export class Board {
     initialise() {
         this.squares = [];
         this.piecePositionsArray = [];
-        this.piecesArray = new Map();
+        this.piecesArray = [];
     }
 
     getFiles() { return files; }
@@ -33,7 +33,7 @@ export class Board {
 
     getPiecePositionsArray() { return this.piecePositionsArray; }
 
-    getPieceObjMap() { return this.piecesArray; }
+    getPieceObjectArray() { return this.piecesArray; }
 
     getActiveSquare() { return this.activeSquare; }
 
@@ -43,7 +43,7 @@ export class Board {
 
     setPiecePositionsArray(pieces: Array<string>) { this.piecePositionsArray = pieces; }
 
-    setPieceObjMap(type: string, piece: IPieces) { this.piecesArray.set(type, piece); }
+    setPieceObjectArray(piece: IPieces) { this.piecesArray.push(piece); }
 
     setActiveSquare(squarePos: Square) { this.activeSquare = squarePos; }
 

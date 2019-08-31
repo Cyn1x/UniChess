@@ -11,9 +11,11 @@ export interface IPieces {
     getColour(): string;
     getImage(): string;
     getMoveDirections(): Map<string, number>;
+    getPosition(): string;
     getMoveNumber(): number;
     setImage(arg0: string): void;
     setMoveDirections(arg0: Map<string, number>): void;
+    setPosition(arg0: string): void;
     incrementMoveNumber(arg0: number): void;
 
     colour: string;
@@ -29,7 +31,7 @@ export class PiecesFactory extends Pieces {
         switch(piece) {
             case 'P':
                 const whitePawn = this.getChessPieceImgs().get(piece)
-                if (whitePawn) { return new Pawn(piece, whitePawn) } 
+                if (whitePawn) { return new Pawn(piece, whitePawn) }
                 else { throw new Error ('Image not defined'); }
             case 'N':
                 const whiteKnight = this.getChessPieceImgs().get(piece)

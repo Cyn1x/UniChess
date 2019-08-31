@@ -1,4 +1,5 @@
-import { PiecesFactory, IPieces } from "./PiecesFactory";import { Board } from "./Board";
+import { PiecesFactory, IPieces } from "./PiecesFactory";
+import { Board } from "./Board";
 import { Square } from "./Square";
 import { Player } from "./Player";
 
@@ -17,22 +18,43 @@ export class Game {
         this.validMoves = [];
         this.player1 = new Player('White');
         this.player2 = new Player('Black');
-
-        this.initialise();
     }
 
-    initialise() {
-        const pieces = this.chessBoard.getStartingPieces();
+    initialise(cw: number, ch: number) {
+        const files = this.chessBoard.getFiles();
+        const ranks = this.chessBoard.getRanks();
+        let squaresArray = this.chessBoard.getSquaresArray();
+        for (let i = 0; i < files.length; i++) {
+            for (let j = 0; j < ranks.length; j++) {
+                squaresArray[i + j * 8] = new Square(files[i] + ranks[j], i * cw, j * cw, cw, ch);
+            }
+        }
+        this.chessBoard.setSquaresArray(squaresArray)
+    }
+
+    setPiecePositions() {
         const piecesFactory = new PiecesFactory();
+        const startingFen = this.getFenString();
+        const squaresArray = this.chessBoard.getSquaresArray();
+        const piecesArray = this.fenParser(startingFen);
+        let currentRank = 0;
+        let currentFile = 0;
 
-        pieces.split("").forEach(p => {
-            this.chessBoard.setPieceObjMap(p, piecesFactory.typeOfPiece(p))
+        piecesArray.forEach( (pieceRequired: string, index: number) => {
+            if (index % 8 === 0 && index !== 0) {
+                currentRank++;
+                currentFile = 0;
+            }
+            if (index % 8 !== 0) {
+                currentFile++;
+            }
+            startingFen.split("").forEach( (pieceToPlace: string) => {
+                if (pieceRequired === pieceToPlace) {
+                    const newPiece = (piecesFactory.typeOfPiece(pieceToPlace))
+                    squaresArray[index].setPiece(newPiece)
+                }
+            })
         })
-    }
-
-    resetBoard() {
-        this.chessBoard.setSquaresArray([])
-        this.chessBoard.setPiecePositionsArray([]); 
     }
 
     fenParser(fen: string) {
@@ -104,15 +126,29 @@ export class Game {
     checkBounds(file: number, rank: number, piece: IPieces) {
         const squaresArray = this.chessBoard.getSquaresArray();
         const files = this.chessBoard.getFiles();
-
+        
         for (let i = 0; i < squaresArray.length; i++) {
             if (squaresArray[i].getPosition() === (files[file] + rank)) {
                 if (!squaresArray[i].squareContainsPiece()) {
-                    // console.debug(files[file] + rank + " " + squaresArray[i].getPiece() + " is empty ")
+                    console.debug(files[file] + rank + " " + squaresArray[i].getPiece() + " is empty ")
+                    if (piece.getColour() === 'P' || piece.getColour() === 'p') {
+                        if (squaresArray[i].getPosition()[0] === piece.getPosition()[0]) {
+                            this.validMoves.push(squaresArray[i]);
+                        }
+                        return;
+                    }
                     this.validMoves.push(squaresArray[i])
                     return false
                 } else {
-                    // console.debug('piece exists at ' + files[file] + rank)
+                    console.debug('piece exists at ' + files[file] + rank)
+                    if (piece.getColour() === 'P' || piece.getColour() === 'p') {
+                        if (squaresArray[i].getPosition()[0] === piece.getPosition()[0]) {
+                            return;
+                        }
+                    }
+                    if (squaresArray[i].getColour() === 'K' || squaresArray[i].getColour() === 'k') {
+                        
+                    }
                     this.validMoves.push(squaresArray[i])
                     return true
                 }
@@ -122,7 +158,7 @@ export class Game {
 
     checkRequestedMove(squares: Square) {
         for (let i = 0; i < this.validMoves.length; i++) {
-            // console.log("valid: ", this.validMoves[i].getPosition() + ", clicked: " + squares.getPosition())
+            console.log("valid: ", this.validMoves[i].getPosition() + ", clicked: " + squares.getPosition())
             if (this.validMoves[i].getPosition() === squares.getPosition()) {
                 return true;
             }
@@ -131,7 +167,8 @@ export class Game {
     }
 
     incrementMoveCount(piece: IPieces) {
-        piece.incrementMoveNumber(1)
+        const move = 1;
+        piece.incrementMoveNumber(move);
     }
 
     getChessboard() { return this.chessBoard; }
