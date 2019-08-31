@@ -2,6 +2,7 @@ import { IPieces } from "../PiecesFactory";
 import Pieces from "../Pieces";
 
 interface IPawn extends IPieces {
+    type: string;
     colour: string;
     image: string;
     position: string;
@@ -10,6 +11,7 @@ interface IPawn extends IPieces {
 }
 
 export class Pawn implements IPawn {
+    type: string;
     colour: string;
     image: string;
     position!: string;
@@ -18,7 +20,8 @@ export class Pawn implements IPawn {
     private firstMove!: boolean;
     private hasUpgraded!: boolean;
 
-    constructor(colour: string, image: string) {
+    constructor(type: string, colour: string, image: string) {
+        this.type = type;
         this.colour = colour;
         this.image = image;
 
@@ -30,13 +33,13 @@ export class Pawn implements IPawn {
         this.moves = 0;
         const pieces = new Pieces();
 
-        this.setMoveDirections(pieces.pawnMoves(this.colour));
+        this.setMoveDirections(pieces.pawnMoves(this.type));
     }
 
     update() {
         if (!this.firstMove) { 
             this.firstMove = true;
-            if (this.colour === 'P') {
+            if (this.type === 'P') {
                 this.moveDirections.set('N', 1)
             }
             else {
@@ -50,7 +53,9 @@ export class Pawn implements IPawn {
         this.update();
     }
 
-    getColour() { return this.colour; }
+    getType() { return this.type; }
+
+    getColour() { return this.type; }
 
     getImage() { return this.image; }
 

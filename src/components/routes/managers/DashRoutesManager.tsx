@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 
-import { PlayArea } from '../../game/PlayArea';
+import { PlayArea } from '../dashboard/PlayArea';
 import { Account } from '../dashboard/Account';
 import { None } from '../global/None';
 import { DashSplash } from '../dashboard/DashSplash';

@@ -57,7 +57,8 @@ export class Pieces {
 
     knightMoves() {
         const validDirections = new Map();
-        validDirections.set('N', 2).set('NE', 1).set('E', 2).set('SE', 1).set('S', 2).set('SW', 1).set('W', 2).set('NW', 1);
+
+        validDirections.set('NNE', 1).set('ENE', 1).set('ESE', 1).set('SSE', 1).set('SSW', 1).set('WSW', 1).set('WNW', 1).set('NWN', 1);
 
         return validDirections;
     }

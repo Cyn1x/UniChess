@@ -87,8 +87,13 @@ export class Game {
         let currentMove = 0;
         if (pieceMoves) {
             pieceMoves.forEach( (step: number, cardinal: string) => {
-                if (piece.getColour() === 'n' || piece.getColour() === 'N') { currentMove = 2; }
-                else { currentMove = 1; }
+                const isKnight = (piece.getType() === 'n' || piece.getType() === 'N')
+                currentMove = 1;
+
+                if (isKnight) { 
+                    this.knightSpecialCases(pos, piece);
+                    return;
+                }
 
                 while (currentMove <= step) {
                     switch(cardinal) {
@@ -123,6 +128,46 @@ export class Game {
         }
     }
 
+    knightSpecialCases(pos: string, piece: IPieces) {
+        const files = this.chessBoard.getFiles();
+        const pieceMoves = piece.getMoveDirections();
+
+        const file = files.indexOf(pos[0])
+        const rank = Number(pos[1])
+
+        if (pieceMoves) {
+            pieceMoves.forEach( (step: number, cardinal: string) => {
+
+            switch(cardinal) {
+                case 'NNE':
+                    if (this.checkBounds(file + 1, rank + 2, piece)) { return; }
+                    break;
+                case 'ENE':
+                    if (this.checkBounds(file + 2, rank + 1, piece)) { return; }
+                    break;
+                case 'ESE':
+                    if (this.checkBounds(file + 2, rank - 1, piece)) { return; }
+                    break;
+                case 'SSE':
+                    if (this.checkBounds(file + 1, rank - 2, piece)) { return; }
+                    break;
+                case 'SSW':
+                    if (this.checkBounds(file - 1, rank - 2, piece)) { return; }
+                    break;
+                case 'WSW':
+                    if (this.checkBounds(file - 2, rank - 1, piece)) { return; }
+                    break;
+                case 'WNW':
+                    if (this.checkBounds(file - 2, rank + 1, piece)) { return; }
+                    break;
+                case 'NWN':
+                    if (this.checkBounds(file - 1, rank + 2, piece)) { return; }
+                    break;
+                }
+            }
+        )}
+    }
+
     checkBounds(file: number, rank: number, piece: IPieces) {
         const squaresArray = this.chessBoard.getSquaresArray();
         const files = this.chessBoard.getFiles();
@@ -131,7 +176,7 @@ export class Game {
             if (squaresArray[i].getPosition() === (files[file] + rank)) {
                 if (!squaresArray[i].squareContainsPiece()) {
                     console.debug(files[file] + rank + " " + squaresArray[i].getPiece() + " is empty ")
-                    if (piece.getColour() === 'P' || piece.getColour() === 'p') {
+                    if (piece.getType() === 'P' || piece.getType() === 'p') {
                         if (squaresArray[i].getPosition()[0] === piece.getPosition()[0]) {
                             this.validMoves.push(squaresArray[i]);
                         }
@@ -141,13 +186,16 @@ export class Game {
                     return false
                 } else {
                     console.debug('piece exists at ' + files[file] + rank)
-                    if (piece.getColour() === 'P' || piece.getColour() === 'p') {
-                        if (squaresArray[i].getPosition()[0] === piece.getPosition()[0]) {
-                            return;
-                        }
+                    if (piece.getColour() === squaresArray[i].getPiece().colour) {
+                        return true;
                     }
-                    if (squaresArray[i].getColour() === 'K' || squaresArray[i].getColour() === 'k') {
-                        
+                    if (piece.getType() === 'P' || piece.getType() === 'p') {
+                        if (piece.colour === squaresArray[i].getPiece().colour) {
+                            return true;
+                        }
+                        if (piece.getPosition()[0] === squaresArray[i].getPosition()[0]) {
+                            return true;
+                        }
                     }
                     this.validMoves.push(squaresArray[i])
                     return true
@@ -155,7 +203,7 @@ export class Game {
             }
         }
     }
-
+    
     checkRequestedMove(squares: Square) {
         for (let i = 0; i < this.validMoves.length; i++) {
             console.log("valid: ", this.validMoves[i].getPosition() + ", clicked: " + squares.getPosition())

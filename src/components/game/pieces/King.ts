@@ -2,6 +2,7 @@ import { IPieces } from "../PiecesFactory";
 import Pieces from "../Pieces";
 
 interface IKing extends IPieces {
+    type: string;
     colour: string;
     image: string;
     position: string;
@@ -10,6 +11,7 @@ interface IKing extends IPieces {
 }
 
 export class King implements IKing {
+    type: string;
     colour: string;
     image: string;
     position!: string;
@@ -17,7 +19,8 @@ export class King implements IKing {
     moveDirections!: Map<string, number>;
     private inCheck!: boolean;
 
-    constructor(colour: string, image: string) {
+    constructor(type: string, colour: string, image: string) {
+        this.type = type;
         this.colour = colour;
         this.image = image;
 
@@ -33,6 +36,8 @@ export class King implements IKing {
     }
 
     incrementMoveNumber(move: number) { this.moves += move; }
+
+    getType() { return this.type; }
 
     getColour() { return this.colour; }
 

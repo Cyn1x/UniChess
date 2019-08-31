@@ -2,6 +2,7 @@ import { IPieces } from "../PiecesFactory";
 import Pieces from "../Pieces";
 
 interface IRook extends IPieces {
+    type: string;
     colour: string;
     image: string;
     position: string;
@@ -10,13 +11,15 @@ interface IRook extends IPieces {
 }
 
 export class Rook implements IRook {
+    type: string;
     colour: string;
     image: string;
     position!: string;
     moves!: number;
     moveDirections!: Map<string, number>;
 
-    constructor(colour: string, image: string) {
+    constructor(type: string, colour: string, image: string) {
+        this.type = type;
         this.colour = colour;
         this.image = image;
 
@@ -31,6 +34,8 @@ export class Rook implements IRook {
     }
 
     incrementMoveNumber(move: number) { this.moves += move; }
+
+    getType() { return this.type; }
 
     getColour() { return this.colour; }
 

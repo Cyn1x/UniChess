@@ -142,10 +142,10 @@ class Canvas extends React.Component<ICanvas, IState> {
         const ctx = this.state.canvas.current.getContext('2d');
         const {cw, ch} = this.getCellDimensions();
         if (!img.complete) {
-            console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has failed to load")
+            // console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has failed to load")
             setTimeout(() => { this.drawImg(img, file, rank) }, 50);
         }
-        console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has loaded successfully")
+        // console.debug("Image " + img.id + " on rank " + rank + " and file " + file + " has loaded successfully")
         if (img.id === 'P' || img.id === 'p') {
             ctx.drawImage(img, (cw * rank) + cw * 0.2, (ch * file) + ch * 0.1, cw * 0.6, ch * 0.8)
         } else {
