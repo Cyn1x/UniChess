@@ -1,5 +1,3 @@
-
-
 import whitePawn from '../../assets/img/game/pieces/w_pawn_png_128px.png';
 import whiteKnight from '../../assets/img/game/pieces/w_knight_png_128px.png';
 import whiteBishop from '../../assets/img/game/pieces/w_bishop_png_128px.png';

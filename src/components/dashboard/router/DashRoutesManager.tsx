@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 
-import { PlayArea } from '../dashboard/PlayArea';
-import { Account } from '../dashboard/Account';
-import { None } from '../global/None';
-import { DashSplash } from '../dashboard/DashSplash';
+import { PlayArea } from '../dynamic/PlayArea';
+import { Account } from '../dynamic/Account';
+import { None } from '../../global/dynamic/None';
+import { DashSplash } from '../dynamic/DashSplash';
 
 export const DashRoutesManager = ({ match }: {match: any}) => {
     return (

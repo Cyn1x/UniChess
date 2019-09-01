@@ -3,10 +3,10 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
 
-import { HomeNav } from '../home/HomeNav';
+import { HomeNav } from '../../home/static/HomeNav';
 // import { HomeFooter } from '../home/HomeFooter';
-import { DashNav } from '../dashboard/DashNav'
-import { DashFooter } from '../dashboard/DashFooter';
+import { DashNav } from '../../dashboard/static/DashNav'
+import { DashFooter } from '../../dashboard/static/DashFooter';
 
 const Styles = styled.div`
     .container-fluid {

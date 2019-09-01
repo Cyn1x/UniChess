@@ -1,20 +1,20 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
-import AuthLogin, { isAuthenticated, PrivateRoute } from '../../utilities/auth/AuthLogin';
+import AuthLogin, { Authenticate, PrivateRoute } from '../../utilities/auth/AuthLogin';
 
-import { Layout } from '../../ui/global/Layout';
-import { Home } from '../home/Home';
-import { About } from '../home/About';
-import { Contact } from '../home/Contact';
-import { Signup } from '../home/Signup';
-import { None } from '../global/None';
-import DashRoutesManager from './DashRoutesManager';
+import { Layout } from '../../global/static/Layout';
+import { Home } from '../dynamic/Home';
+import { About } from '../dynamic/About';
+import { Contact } from '../dynamic/Contact';
+import { Signup } from '../dynamic/Signup';
+import { None } from '../../global/dynamic/None';
+import DashRoutesManager from '../../dashboard/router/DashRoutesManager';
 
 export const HomeRoutesManager = () => {
     return (
       <BrowserRouter>
         <Route render={() => (
-          <Layout auth={isAuthenticated.hasAuthenticated}>
+          <Layout auth={Authenticate.hasAuthenticated}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/about" component={About} />

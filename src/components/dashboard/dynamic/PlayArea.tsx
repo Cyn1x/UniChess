@@ -3,24 +3,16 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import { Renderer } from '../../game/Renderer';
+import { Renderer } from './Renderer';
 
 interface IPlayArea {
-    isPlaying: boolean
+    
 }
 
-interface IState {
-    isPlaying: boolean;
-}
-
-export class PlayArea extends React.Component<IPlayArea, IState> {
-    private isPlaying = false;
-
+export class PlayArea extends React.Component<IPlayArea> {
+    
     constructor(props: IPlayArea) {
         super(props);
-        this.state = {
-            isPlaying: this.isPlaying
-        }
     }
 
     componentDidMount() {  }

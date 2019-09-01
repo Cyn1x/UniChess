@@ -1,5 +1,7 @@
 import React from 'react';
-import HomeRoutesManager from './components/routes/managers/HomeRoutesManager';
+import { Provider } from "react-redux";
+import { store } from "./components/utilities/store";
+import { HomeRoutesManager } from './components/home/router/HomeRoutesManager';
 import { UniChessTheme } from './theme';
 
 // import static ui elements
@@ -8,8 +10,10 @@ import { GlobalStyle } from './default.styled';
 const App: React.FC = () => {
   return (
     <React.Fragment>
-        <GlobalStyle theme={UniChessTheme}/>
-      <HomeRoutesManager />
+      <Provider store={store}>
+          <GlobalStyle theme={UniChessTheme}/>
+        <HomeRoutesManager />
+      </Provider>
     </React.Fragment>
   );
 }

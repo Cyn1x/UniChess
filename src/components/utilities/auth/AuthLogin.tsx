@@ -1,9 +1,8 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { Login } from '../../home/dynamic/Login';
 
-import { Login } from '../../routes/home/Login';
-
-export const isAuthenticated = {
+export const Authenticate = {
   hasAuthenticated: false,
   // hasAuthenticated: true,
   authenticate(cb: () => void) {
@@ -16,21 +15,26 @@ export const isAuthenticated = {
   }
 }
 
-class AuthLogin extends React.Component<{location: any}> {
+interface IAuthenticate {
+  location: any;
+}
+
+class AuthLogin extends React.Component<IAuthenticate> {
   state = {
-    redirectToReferrer: false
+    redirectToReferrer: false,
+    message: ""
   }
 
   login = () => {
-    isAuthenticated.authenticate(() => {
+    Authenticate.authenticate(() => {
       this.setState(() => ({
         redirectToReferrer: true
       }))
     })
   }
-  
+
   static hasAuthenticated: boolean;
-    
+
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/dashboard' } }
     const { redirectToReferrer } = this.state
@@ -38,21 +42,21 @@ class AuthLogin extends React.Component<{location: any}> {
     if (redirectToReferrer === true) {
       return <Redirect to={from} />
     }
-    
+
     return (
-      <Login clicked={this.login}/>
+      <Login clicked={this.login} />
     )
   }
 }
 
-export const PrivateRoute = ({ component: Component, ...rest }: {component: any, path: string}) => (
+export const PrivateRoute = ({ component: Component, ...rest }: { component: any, path: string }) => (
   <Route {...rest} render={(props) => (
-    isAuthenticated.hasAuthenticated === true
+    Authenticate.hasAuthenticated === true
       ? <Component {...props} />
       : <Redirect to={{
-          pathname: '/login',
-          state: { from: props.location }
-        }} />
+        pathname: '/login',
+        state: { from: props.location }
+      }} />
   )} />
 )
 

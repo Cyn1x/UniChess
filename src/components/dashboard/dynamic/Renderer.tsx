@@ -1,5 +1,5 @@
 import React from 'react';
-import Canvas from './Canvas';
+import Canvas from '../../game/Canvas';
 
 export const Renderer = (props: any) => {
     return (

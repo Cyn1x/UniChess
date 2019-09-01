@@ -3,21 +3,17 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import { SideAccordion } from '../../ui/dashboard/SideAccordion';
+import { SideAccordion } from './SideAccordion';
 
 interface IDashSplash {
     match: any
 }
 
-interface IState {
-    match: any
-}
+export class DashSplash extends React.Component<IDashSplash> {
 
-export class DashSplash extends React.Component<IDashSplash, IState> {
-
-    // constructor(props: IDashSplash) {
-        // super(props);
-    // }
+    constructor(props: IDashSplash) {
+        super(props);
+    }
 
     componentDidMount() {  }
 
