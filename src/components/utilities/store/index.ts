@@ -1,5 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk, { ThunkMiddleware } from "redux-thunk";
+import { createStore, combineReducers } from "redux";
 import { systemReducer } from "./system/reducers";
 import { chatReducer } from "../../dashboard/chat/reducers";
 
@@ -10,4 +9,4 @@ export const rootReducer = combineReducers({
 
 export type AppState = ReturnType<typeof rootReducer>
 
-export const store = createStore(rootReducer, applyMiddleware(thunk))
+export const store = createStore(rootReducer);
