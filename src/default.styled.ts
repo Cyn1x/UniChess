@@ -2,8 +2,6 @@ import { createGlobalStyle } from 'styled-components';
 import backgroundImage from './assets/img/site/chessPieces.jpg'
 
 export const GlobalStyle = createGlobalStyle`
-    $test: 000;
-
     * {
         box-sizing: border-box;
         margin: 0;

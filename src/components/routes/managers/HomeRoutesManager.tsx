@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import AuthLogin, { isAuthenticated, PrivateRoute } from '../../utilities/auth/AuthLogin';
 
 import { Layout } from '../../ui/global/Layout';
@@ -12,6 +12,7 @@ import DashRoutesManager from './DashRoutesManager';
 
 export const HomeRoutesManager = () => {
     return (
+      <BrowserRouter>
         <Route render={() => (
           <Layout auth={isAuthenticated.hasAuthenticated}>
             <Switch>
@@ -25,6 +26,7 @@ export const HomeRoutesManager = () => {
             </Switch>
         </Layout>
         )} />
+      </BrowserRouter>
     )
 }
   

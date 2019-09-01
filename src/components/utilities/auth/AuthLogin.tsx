@@ -4,8 +4,8 @@ import { Route, Redirect } from 'react-router-dom'
 import { Login } from '../../routes/home/Login';
 
 export const isAuthenticated = {
-  // hasAuthenticated: false,
-  hasAuthenticated: true,
+  hasAuthenticated: false,
+  // hasAuthenticated: true,
   authenticate(cb: () => void) {
     this.hasAuthenticated = true
     setTimeout(cb, 1000)
