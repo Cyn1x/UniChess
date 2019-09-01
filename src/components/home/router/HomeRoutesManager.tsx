@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
-import AuthLogin, { Authenticate, PrivateRoute } from '../../utilities/auth/AuthLogin';
+import AuthLogin, { Authenticate, PrivateRoute } from '../../utilities/auth/Authentication';
 
 import { Layout } from '../../global/static/Layout';
 import { Home } from '../dynamic/Home';
