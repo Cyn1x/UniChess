@@ -4,31 +4,22 @@ import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 
 const Styles = styled.div`
-    div {
-        background-color: #FFF;
-        opacity: 0.9;
-    }
+
+    background-color: #FFF;
+    opacity: 0.9;
 
     form {
-        background-color: #FFF;
-        opacity: 0.9;
-
-        padding: 0% 10% 5% 10%;
+        padding: 0% 15% 10% 15%;
     }
 
     h3 {
-        background-color: #FFF;
-        opacity: 0.9;
-
         padding: 5% 0% 0% 5%;
     }
 `;
 
 export const Login = (props: any) => (
     <Styles>
-        <div>
         <h3>Login</h3>
-        <form>
             <Form>
                 <Form.Group controlId="formGroupLoginEmail">
                     <Form.Label>Email address</Form.Label>
@@ -43,10 +34,8 @@ export const Login = (props: any) => (
                 </Form.Group>
                 <Button variant="primary" onClick={() => {
                         props.clicked(props)
-                     }}>Submit
+                    }}>Submit
                 </Button>
             </Form>
-        </form>
-        </div>
     </Styles>
 )

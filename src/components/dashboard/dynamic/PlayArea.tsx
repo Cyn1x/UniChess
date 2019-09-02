@@ -4,6 +4,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import { Renderer } from './Renderer';
+import { ChatWidget } from '../chat/ChatWidget';
+import { GameInfo } from '../../game/GameInfo';
 
 interface IPlayArea {
     
@@ -24,23 +26,23 @@ export class PlayArea extends React.Component<IPlayArea> {
             <Container fluid>
                 <Row>
                     <Col>
-                    &nbsp;
+
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        
+                        <GameInfo />
                     </Col>
                     <Col>
                         <Renderer />
                     </Col>
                     <Col>
-                        
+                        <ChatWidget />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                    
+                        
                     </Col>
                 </Row>
             </Container>

@@ -4,31 +4,22 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const Styles = styled.div`
-    div {
-        background-color: #FFF;
-        opacity: 0.9;
-    }
+
+    background-color: #FFF;
+    opacity: 0.9;
 
     form {
-        background-color: #FFF;
-        opacity: 0.9;
-
-        padding: 0% 10% 5% 10%;
+        padding: 0% 15% 10% 15%;
     }
 
     h3 {
-        background-color: #FFF;
-        opacity: 0.9;
-
         padding: 5% 0% 0% 5%;
     }
 `;
 
 export const Signup = () => (
     <Styles>
-        <div>
         <h3>Signup</h3>
-        <form>
             <Form>
                 <Form.Group controlId="formGroupSignupUsername">
                         <Form.Label>Username</Form.Label>
@@ -61,7 +52,5 @@ export const Signup = () => (
                     Submit
                 </Button>
             </Form>
-        </form>
-        </div>
     </Styles>
 )

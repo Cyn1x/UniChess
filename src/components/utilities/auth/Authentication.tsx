@@ -1,8 +1,12 @@
 import React from 'react'
+import { connect } from "react-redux";
+import { AppState } from "../../utilities/store";
 import { Route, Redirect } from 'react-router-dom'
+import { SystemState } from "../../utilities/store/system/types";
+import { updateSession } from "../../utilities/store/system/actions";
 import { Login } from '../../home/dynamic/Login';
 
-export const Authenticate = {
+export const Auth = {
     hasAuthenticated: false,
     // hasAuthenticated: true,
     authenticate(cb: () => void) {
@@ -16,20 +20,28 @@ export const Authenticate = {
 }
 
 interface IAuthenticate {
+    updateSession: typeof updateSession;
+    system: SystemState;
     location: any;
 }
 
-class AuthLogin extends React.Component<IAuthenticate> {
+class Authenticate extends React.Component<IAuthenticate> {
     state = {
         redirectToReferrer: false,
-        message: ""
+        userName: ""
     }
-    
+
     login = () => {
-        Authenticate.authenticate(() => {
+        Auth.authenticate(() => {
             this.setState(() => ({
-                redirectToReferrer: true
+                redirectToReferrer: true,
+                userName: "myUser"
             }))
+            this.props.updateSession({
+                loggedIn: true,
+                session: "my_session",
+                userName: this.state.userName,
+            });
         })
     }
     
@@ -51,7 +63,7 @@ class AuthLogin extends React.Component<IAuthenticate> {
 
 export const PrivateRoute = ({ component: Component, ...rest }: { component: any, path: string }) => (
     <Route {...rest} render={(props) => (
-        Authenticate.hasAuthenticated === true
+        Auth.hasAuthenticated === true
         ? <Component {...props} />
         : <Redirect to={{
             pathname: '/login',
@@ -60,4 +72,12 @@ export const PrivateRoute = ({ component: Component, ...rest }: { component: any
     )} />
 )
 
-export default AuthLogin;
+const mapStateToProps = (state: AppState) => ({
+    system: state.system,
+    chat: state.chat
+});
+
+export default connect(
+    mapStateToProps,
+    { updateSession }
+)(Authenticate);

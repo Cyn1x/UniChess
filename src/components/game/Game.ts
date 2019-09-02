@@ -2,8 +2,10 @@ import { PiecesFactory, IPieces } from "./PiecesFactory";
 import { Board } from "./Board";
 import { Square } from "./Square";
 import { Player } from "./Player";
+import { GameState } from "./GameState";
 
 export class Game {
+    private gameState: GameState;
     private chessBoard: Board;
     private fenString!: string;
     private isSquareClicked: boolean;
@@ -12,6 +14,7 @@ export class Game {
     private player2!: Player;
 
     constructor() {
+        this.gameState = new GameState();
         this.chessBoard = new Board();
         this.fenString = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
         this.isSquareClicked = false;
