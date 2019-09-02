@@ -1,7 +1,7 @@
-import { Message, SEND_MESSAGE, DELETE_MESSAGE } from "./types";
+import { ChatMessage, SEND_MESSAGE, DELETE_MESSAGE } from "./types";
 
 
-export function sendMessage(newMessage: Message) {
+export function sendMessage(newMessage: ChatMessage) {
     return {
         type: SEND_MESSAGE,
         payload: newMessage

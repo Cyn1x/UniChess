@@ -73,8 +73,7 @@ export const PrivateRoute = ({ component: Component, ...rest }: { component: any
 )
 
 const mapStateToProps = (state: AppState) => ({
-    system: state.system,
-    chat: state.chat
+    system: state.system
 });
 
 export default connect(

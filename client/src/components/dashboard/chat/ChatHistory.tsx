@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Message } from "./types";
+import { ChatMessage } from "./types";
 
 import styled from "styled-components";
 
@@ -10,11 +10,10 @@ const MessageHistory = styled.div`
 `;
 
 const UserMessage = styled.div`
-
 `;
 
 interface ChatHistoryProps {
-    messages: Message[];
+    messages: ChatMessage[];
 }
 
 const ChatHistory: React.SFC<ChatHistoryProps> = ({ messages }) => {

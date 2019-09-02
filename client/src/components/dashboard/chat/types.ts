@@ -1,5 +1,5 @@
 // Describing the shape of the chat's slice of state
-export interface Message {
+export interface ChatMessage {
     user: string;
     message: string;
     timestamp: number;
@@ -10,12 +10,13 @@ export const SEND_MESSAGE = "SEND_MESSAGE";
 export const DELETE_MESSAGE = "DELETE_MESSAGE";
 
 export interface ChatState {
-    messages: Message[];
+    input: string; // doesn't need to be here
+    messages: ChatMessage[];
 }
 
 interface SendMessageAction {
     type: typeof SEND_MESSAGE;
-    payload: Message;
+    payload: ChatMessage;
 }
 
 interface DeleteMessageAction {
