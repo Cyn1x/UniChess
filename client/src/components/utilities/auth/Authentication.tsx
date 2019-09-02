@@ -7,8 +7,8 @@ import { updateSession } from "../../utilities/store/system/actions";
 import { Login } from '../../home/dynamic/Login';
 
 export const Auth = {
-    hasAuthenticated: false,
-    // hasAuthenticated: true,
+    // hasAuthenticated: false,
+    hasAuthenticated: true,
     authenticate(cb: () => void) {
         this.hasAuthenticated = true
         setTimeout(cb, 1000)
