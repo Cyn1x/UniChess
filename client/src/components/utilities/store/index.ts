@@ -1,12 +1,15 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
+import { SocketMiddleware } from "./middleware/socket-middleware";
 import { systemReducer } from "./system/reducers";
-import { chatReducer } from "./chat/reducers";
+import { socketReducer } from "./socket/reducers"
+import { messageReducer } from "./chat/reducers";
 
 export const rootReducer = combineReducers({
-    system: systemReducer,
-    chat: chatReducer
+    systemState: systemReducer,
+    socketState: socketReducer,
+    messageState: messageReducer
 })
 
 export type AppState = ReturnType<typeof rootReducer>
 
-export const store = createStore(rootReducer, applyMiddleware());
+export const store = createStore(rootReducer, applyMiddleware(SocketMiddleware));

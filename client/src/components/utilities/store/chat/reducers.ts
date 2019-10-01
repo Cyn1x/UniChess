@@ -1,33 +1,25 @@
-import { 
-    ChatState,
-    SEND_MESSAGE,
-    DELETE_MESSAGE,
-    ChatActionTypes 
-} from "./types";
+import { SEND_MESSAGE_RESPONSE, MESSAGE_SENT, USER_CHANGED } from './actions';
 
-const initialState: ChatState = {
-    input: "",
+const initialState = {
+    username: ('username') || 'guest0001',
     messages: []
-};
-  
-export function chatReducer(
-    state = initialState,
-    action: ChatActionTypes
-): ChatState {
+  };
+
+export function messageReducer(state = initialState, action: {username?: string, type: string, message: { from: string, content: string}}) {
     switch (action.type) {
-        case SEND_MESSAGE:
+        case USER_CHANGED:
+            return Object.assign({},
+                state, {username: action.username}
+            );
+        case SEND_MESSAGE_RESPONSE:
+            const isMessageTypeSent = (action.message.from === state.username);
+            action.message = Object.assign(action.message, {type: isMessageTypeSent ? 'sent'  : 'received'});
             return {
-                messages: [...state.messages, action.payload],
-                input: state.input
+                ...state,
+                messages: [...state.messages, action.message] as []
             };
-        case DELETE_MESSAGE:
-            return {
-                messages: state.messages.filter(
-                    message => message.timestamp !== action.meta.timestamp
-                ),
-                input: state.input
-            };
-    default:
-        return state;
+            case MESSAGE_SENT:
+        default:
+            return state;
     }
 }

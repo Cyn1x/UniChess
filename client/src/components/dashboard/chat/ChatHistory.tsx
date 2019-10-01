@@ -19,13 +19,13 @@ interface ChatHistoryProps {
 const ChatHistory: React.SFC<ChatHistoryProps> = ({ messages }) => {
     return (
         <MessageHistory>
-            {messages.map(message => (
+            {/* {messages.map(message => (
                 <div className="message-item" key={message.timestamp}>
                     <p>{message.user}</p>
                     <UserMessage>
                         <p>{message.message}</p>
                     </UserMessage>
-                </div>
+                </div> */}
             ))}
         </MessageHistory>
     );

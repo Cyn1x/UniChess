@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from "react-redux";
+import { Dispatch, Action } from 'redux';
 import { AppState } from "../../utilities/store";
 import { Route, Redirect } from 'react-router-dom'
+import { connectSocket } from "../store/socket/actions"
 import { SystemState } from "../../utilities/store/system/types";
 import { updateSession } from "../../utilities/store/system/actions";
 import { Login } from '../../home/dynamic/Login';
@@ -19,7 +21,12 @@ export const Auth = {
     }
 }
 
+interface IAuthenticateDispatchProps {
+    connectToSockets: () => void;
+  }
+
 interface IAuthenticate {
+    connectToSockets: () => void;
     updateSession: typeof updateSession;
     system: SystemState;
     location: any;
@@ -37,11 +44,12 @@ class Authenticate extends React.Component<IAuthenticate> {
                 redirectToReferrer: true,
                 userName: "TestUser"
             }))
-            this.props.updateSession({
-                loggedIn: true,
-                session: "my_session",
-                userName: this.state.userName,
-            });
+            // this.props.updateSession({
+            //     loggedIn: true,
+            //     session: "my_session",
+            //     userName: this.state.userName,
+            // });
+            this.props.connectToSockets();
         })
     }
 
@@ -77,10 +85,15 @@ export const PrivateRoute = ({ component: Component, ...rest }: { component: any
 )
 
 const mapStateToProps = (state: AppState) => ({
-    system: state.system
+    system: state.systemState,
+    socket: state.socketState
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): IAuthenticateDispatchProps => ({
+    connectToSockets: () => dispatch(connectSocket())
 });
 
 export default connect(
     mapStateToProps,
-    { updateSession }
+    mapDispatchToProps
 )(Authenticate);
