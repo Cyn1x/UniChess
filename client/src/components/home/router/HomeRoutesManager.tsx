@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 // Remove this and use store system state
-import AuthLogin, { Auth, PrivateRoute } from '../../utilities/auth/Authentication';
+import Authenticate, { Auth, PrivateRoute } from '../../utilities/auth/Authentication';
 
 import { Layout } from '../../global/static/Layout';
 import { Home } from '../dynamic/Home';
@@ -21,7 +21,7 @@ export const HomeRoutesManager = () => {
               <Route exact path="/" component={Home} />
               <Route path="/about" component={About} />
               <Route path="/contact" component={Contact} />
-              <Route path="/login" component={AuthLogin} />
+              <Route path="/login" component={Authenticate} />
               <Route path="/signup" component={Signup} />
               <PrivateRoute path='/dashboard' component={DashRoutesManager} />
               <Route component={None} />

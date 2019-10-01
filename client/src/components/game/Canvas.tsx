@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import styled from 'styled-components';
 
 import { Game } from './Game';
@@ -15,7 +15,7 @@ const Styles = styled.div`
 `;
 
 interface ICanvas {
-    canvas: HTMLCanvasElement,
+    canvas: RefObject<HTMLCanvasElement>,
     screen: {
         width: number,
         height: number,
@@ -24,8 +24,12 @@ interface ICanvas {
 }
 
 interface IState {
-    canvas: any,
-    screen: any
+    canvas: any // Breaks when I define HTMLCanvasElement as a type. I'm doing something wrong here
+    screen: {
+        width: number,
+        height: number,
+        ratio: number
+    },
 }
 
 const boardSize = () => { return ( (window.innerWidth > window.innerHeight) ); }

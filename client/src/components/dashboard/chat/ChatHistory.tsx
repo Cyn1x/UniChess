@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChatMessage } from "./types";
+import { ChatMessage } from "../../utilities/store/chat/types";
 
 import styled from "styled-components";
 

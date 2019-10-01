@@ -7,8 +7,8 @@ import { updateSession } from "../../utilities/store/system/actions";
 import { Login } from '../../home/dynamic/Login';
 
 export const Auth = {
-    // hasAuthenticated: false,
-    hasAuthenticated: true,
+    hasAuthenticated: false,
+    // hasAuthenticated: true,
     authenticate(cb: () => void) {
         this.hasAuthenticated = true
         setTimeout(cb, 1000)
@@ -25,7 +25,7 @@ interface IAuthenticate {
     location: any;
 }
 
-class Authenticate extends React.Component<IAuthenticate> {
+class Authenticate extends React.Component<IAuthenticate> {    
     state = {
         redirectToReferrer: false,
         userName: ""
@@ -35,7 +35,7 @@ class Authenticate extends React.Component<IAuthenticate> {
         Auth.authenticate(() => {
             this.setState(() => ({
                 redirectToReferrer: true,
-                userName: "myUser"
+                userName: "TestUser"
             }))
             this.props.updateSession({
                 loggedIn: true,
@@ -43,6 +43,10 @@ class Authenticate extends React.Component<IAuthenticate> {
                 userName: this.state.userName,
             });
         })
+    }
+
+    signout = () => {
+        
     }
     
     static hasAuthenticated: boolean;
