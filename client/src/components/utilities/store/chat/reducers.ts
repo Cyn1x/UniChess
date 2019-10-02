@@ -1,10 +1,11 @@
-import { SEND_MESSAGE_RESPONSE, MESSAGE_SENT, USER_CHANGED } from './actions';
+import { ChatState, ChatActionTypes, USER_CHANGED, SEND_MESSAGE_RESPONSE, MESSAGE_SENT } from "./types";
 
-const initialState = {
+const initialState: ChatState = {
     username: ('username') || 'guest0001',
     messages: []
-  };
+};
 
+// TODO: Implement type definitions
 export function messageReducer(state = initialState, action: {username?: string, type: string, message: { from: string, content: string}}) {
     switch (action.type) {
         case USER_CHANGED:

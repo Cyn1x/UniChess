@@ -1,14 +1,16 @@
 import Socket from "../../socket/client-socket-service";
+import { ChatMessage, SEND_MESSAGE_REQUEST } from "../chat/types";
 import { CONNECT_SOCKET, connectionChanged } from "../socket/actions";
-import { messageReceived, messageSent, SEND_MESSAGE_REQUEST } from "../chat/actions";
+import { messageReceived, messageSent } from "../chat/actions";
 
+// TODO: Implement type definitions
 export const SocketMiddleware = (store: any) => {
     
     const onConnectionChange = (isConnected: boolean) => {
         store.dispatch(connectionChanged(isConnected));
     };
 
-    const onIncomingMessage = (message: { from: string, content: string, time: string }) => store.dispatch(messageReceived(message));
+    const onIncomingMessage = (message: ChatMessage) => store.dispatch(messageReceived(message));
 
     const socket = new Socket(onConnectionChange, onIncomingMessage);
 

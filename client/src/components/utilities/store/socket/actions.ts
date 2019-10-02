@@ -1,6 +1,7 @@
 export const CONNECTION_CHANGED = 'CONNECTION_CHANGED';
 export const CONNECT_SOCKET = 'CONNECT_SOCKET';
 
+// TODO: Implement type definitions
 export const connectionChanged = (isConnected: boolean) => {
     return {
         type: CONNECTION_CHANGED,

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Dispatch, Action } from 'redux';
 import { AppState } from "../../utilities/store";
 import { SystemState } from "../../utilities/store/system/types";
-import { updateSession } from "../../utilities/store/system/actions";
+import { ChatMessage, ChatState } from "../../utilities/store/chat/types";
 import { sendMessage } from '../../utilities/store/chat/actions';
 
 import ChatHistory from "./ChatHistory";
@@ -20,12 +20,11 @@ const Styles = styled.section`
 export type UpdateMessageParam = React.SyntheticEvent<{ value: string }>;
 
 interface IMessageSenderDispatchProps {
-    sendMessage: (message: { from: string, content: string, time: string }) => void;
+    sendMessage: (message: ChatMessage) => void;
 }
 
 interface IChat {
-    // sendMessage: typeof sendMessage;
-    // chat: ChatState;
+    chat: ChatState;
     system: SystemState;
     sendMessage: any;
 }
@@ -35,33 +34,28 @@ class Chat extends React.Component<IChat> {
         message: ""
     };
 
-    componentDidMount() {
-        this.props.sendMessage({ from: "username", content: "chatMessage", time: "this.getTime()" });
-        // this.props.sendMessage({
-        //     user: "Chat Bot",
-        //     message: "This is a very basic chat application written in typescript using react and redux. Feel free to explore the source code.",
-        //     timestamp: new Date().getTime()
-        // });
-    }
-
     updateMessage = (event: UpdateMessageParam) => {
         this.setState({ message: event.currentTarget.value });
     };
 
     sendMessage = (message: string) => {
-
+        const currentTime = new Date();
+        this.props.sendMessage({ from: this.props.system.userName, content: message, time: currentTime });
+        this.setState({
+            message: ""
+        })
     };
 
     render() {
         return (
             <Styles>
-                {/* <ChatHistory messages={this.props.chat.messages} />
+                <ChatHistory messages={this.props.chat.messages} />
                 <ChatInterface
                     userName={this.props.system.userName}
                     message={this.state.message}
                     updateMessage={this.updateMessage}
                     sendMessage={this.sendMessage}
-                /> */}
+                />
             </Styles>
         );
     }
@@ -73,10 +67,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): IMessageSenderDispatchProps => ({
-    sendMessage: (message: { from: string, content: string, time: string }) => dispatch(sendMessage(message)),
+    sendMessage: (message: ChatMessage) => dispatch(sendMessage(message)),
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Chat);
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

@@ -25,9 +25,9 @@ export default class Socket {
         this.user = user;
         this.port = port;
         
-        const host = `http://localhost:${port}`; // Running from local network
+        const host = `http://localhost:${port}`;
         this.socket = io.connect(host);
-        // this.socket = io.connect(); // Running from Heroku
+        // this.socket = io.connect();
 
         this.socket.on(EVENTS.CONNECT, this.onConnected);
     };

@@ -4,8 +4,8 @@ import { Dispatch, Action } from 'redux';
 import { AppState } from "../../utilities/store";
 import { Route, Redirect } from 'react-router-dom'
 import { connectSocket } from "../store/socket/actions"
-import { SystemState } from "../../utilities/store/system/types";
 import { updateSession } from "../../utilities/store/system/actions";
+import { SystemState } from "../store/system/types";
 import { Login } from '../../home/dynamic/Login';
 
 export const Auth = {
@@ -23,33 +23,36 @@ export const Auth = {
 
 interface IAuthenticateDispatchProps {
     connectToSockets: () => void;
+    updateSession: (systemState: SystemState) => void;
   }
 
 interface IAuthenticate {
     connectToSockets: () => void;
-    updateSession: typeof updateSession;
+    updateSession: (systemState: SystemState) => void;
     system: SystemState;
     location: any;
 }
 
 class Authenticate extends React.Component<IAuthenticate> {    
     state = {
-        redirectToReferrer: false,
+        loggedIn: false,
+        redirectToDashboard: false,
         userName: ""
     }
 
-    login = () => {
+    login = (props: any) => {
+        console.log(props)
         Auth.authenticate(() => {
             this.setState(() => ({
-                redirectToReferrer: true,
-                userName: "TestUser"
+                redirectToDashboard: true,
+                userName: props
             }))
-            // this.props.updateSession({
-            //     loggedIn: true,
-            //     session: "my_session",
-            //     userName: this.state.userName,
-            // });
             this.props.connectToSockets();
+            this.props.updateSession({
+                loggedIn: this.state.loggedIn,
+                session: "sessionId",
+                userName: this.state.userName
+            });
         })
     }
 
@@ -61,9 +64,9 @@ class Authenticate extends React.Component<IAuthenticate> {
     
     render() {
         const { from } = this.props.location.state || { from: { pathname: '/dashboard' } }
-        const { redirectToReferrer } = this.state
+        const { redirectToDashboard } = this.state
         
-        if (redirectToReferrer === true) {
+        if (redirectToDashboard === true) {
             return <Redirect to={from} />
         }
         
@@ -90,10 +93,8 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): IAuthenticateDispatchProps => ({
-    connectToSockets: () => dispatch(connectSocket())
+    connectToSockets: () => dispatch(connectSocket()),
+    updateSession: (systemState: SystemState) => dispatch(updateSession(systemState))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Authenticate);
+export default connect(mapStateToProps, mapDispatchToProps)(Authenticate);

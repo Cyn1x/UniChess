@@ -1,4 +1,4 @@
-export interface ChangeConnection {
+export interface SocketState {
     connected: boolean,
     isError: false
 }
@@ -8,7 +8,7 @@ export const CONNECT = "CONNECT";
 
 interface ChangeConnectionAction {
     type: typeof CHANGE_CONNECTION;
-    payload: ChangeConnection;
+    payload: SocketState;
 }
 
 interface ConnectionAction {

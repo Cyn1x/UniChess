@@ -10,22 +10,23 @@ const MessageHistory = styled.div`
 `;
 
 const UserMessage = styled.div`
-`;
 
-interface ChatHistoryProps {
+`;
+  
+interface IChatAreaProps {
     messages: ChatMessage[];
 }
 
-const ChatHistory: React.SFC<ChatHistoryProps> = ({ messages }) => {
+const ChatHistory: React.SFC<IChatAreaProps> = ({ messages }) => {
     return (
         <MessageHistory>
-            {/* {messages.map(message => (
-                <div className="message-item" key={message.timestamp}>
-                    <p>{message.user}</p>
+            {messages.map(message => (
+                <div className="message-item" key={message.time}>
+                    <p>{message.from}</p>
                     <UserMessage>
-                        <p>{message.message}</p>
+                        <p>{message.content}</p>
                     </UserMessage>
-                </div> */}
+                </div>
             ))}
         </MessageHistory>
     );

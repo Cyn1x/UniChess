@@ -1,16 +1,13 @@
-export const SEND_MESSAGE_RESPONSE = 'SEND_MESSAGE_RESPONSE';
-export const MESSAGE_SENT = 'MESSAGE_SENT';
-export const SEND_MESSAGE_REQUEST = 'SEND_MESSAGE_REQUEST';
-export const USER_CHANGED = 'USER_CHANGED';
+import { ChatMessage, UsernameChange, SEND_MESSAGE_RESPONSE, SEND_MESSAGE_REQUEST, MESSAGE_SENT, USER_CHANGED } from "./types";
 
-export const messageReceived = (message: { from: string, content: string, time: string }) => {
+export const messageReceived = (message: ChatMessage) => {
     return {
         type: SEND_MESSAGE_RESPONSE,
         message
     };
 };
 
-export const sendMessage = (message: { from: string, content: string, time: string }) => {
+export const sendMessage = (message: ChatMessage) => {
     return {
         type: SEND_MESSAGE_REQUEST,
         message
@@ -23,7 +20,7 @@ export const messageSent = () => {
     };
 };
 
-export const changeUsername = (username: string) => {
+export const changeUsername = (username: UsernameChange) => {
     return {
         type: USER_CHANGED,
         username

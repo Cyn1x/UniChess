@@ -1,27 +1,39 @@
-// Describing the shape of the chat's slice of state
 export interface ChatMessage {
-    
+    from: string,
+    content: string,
+    time: string
 }
 
-// Describing the different ACTION NAMES available
-// export const SEND_MESSAGE = "SEND_MESSAGE";
-// export const DELETE_MESSAGE = "DELETE_MESSAGE";
+export interface ChatState {
+    username: string,
+    messages: []
+}
 
-// export interface ChatState {
-//     input: string;
-//     messages: ChatMessage[];
-// }
+export interface UsernameChange {
+    username: string;
+}
 
-// interface SendMessageAction {
-//     type: typeof SEND_MESSAGE;
-//     payload: ChatMessage;
-// }
+export const SEND_MESSAGE_RESPONSE = 'SEND_MESSAGE_RESPONSE';
+export const MESSAGE_SENT = 'MESSAGE_SENT';
+export const SEND_MESSAGE_REQUEST = 'SEND_MESSAGE_REQUEST';
+export const USER_CHANGED = 'USER_CHANGED';
 
-// interface DeleteMessageAction {
-//     type: typeof DELETE_MESSAGE;
-//     meta: {
-//       timestamp: number;
-//     };
-// }
+interface MessageReceivedAction {
+    type: typeof SEND_MESSAGE_RESPONSE;
+    payload: ChatMessage;
+}
 
-// export type ChatActionTypes = SendMessageAction | DeleteMessageAction;
+interface MessageSentAction {
+    type: typeof MESSAGE_SENT;
+}
+
+interface MessageSendAction { 
+    type: typeof SEND_MESSAGE_REQUEST;
+}
+
+interface DisplayNameAction {
+    type: typeof USER_CHANGED;
+    payload: UsernameChange;
+}
+
+export type ChatActionTypes = MessageReceivedAction | MessageSentAction | MessageSendAction | DisplayNameAction;
