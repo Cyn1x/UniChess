@@ -10,6 +10,10 @@ Chess Pieces:
 author: John Pablok
 website: https://opengameart.org/content/chess-pieces-and-board-squares
 
+Redux Socket.IO Middleware
+author: Mihail Gaberov
+website: http://mihail-gaberov.eu
+
 UniChess Logo:
 path \src\assets\logo.png
 author: Zac Vukovic (Yes, crediting myself for some reason)

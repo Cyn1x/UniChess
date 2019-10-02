@@ -11,10 +11,6 @@ interface IDashSplash {
 
 export class DashSplash extends React.Component<IDashSplash> {
 
-    constructor(props: IDashSplash) {
-        super(props);
-    }
-
     componentDidMount() {  }
 
     componentWillUnmount() {  }

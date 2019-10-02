@@ -12,10 +12,6 @@ interface IPlayArea {
 }
 
 export class PlayArea extends React.Component<IPlayArea> {
-    
-    constructor(props: IPlayArea) {
-        super(props);
-    }
 
     componentDidMount() {  }
 
