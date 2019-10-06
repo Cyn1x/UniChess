@@ -1,7 +1,9 @@
 import { RefObject } from 'react';
+import { ActivityState } from '../utilities/store/system/types';
 import { GameState } from '../utilities/store/game/types';
 
 export interface ICanvasDispatchProps {
+    updateActivityState: (room: ActivityState) => void;
     sendGame: (game: GameState) => void;
 }
 
@@ -15,7 +17,9 @@ export interface IState {
 }
 
 export interface ICanvas {
+    updateActivityState: (room: ActivityState) => void;
     sendGame: (game: GameState) => void;
+    activity: ActivityState;
     game: GameState;
     canvas?: RefObject<HTMLCanvasElement>,
     screen?: {

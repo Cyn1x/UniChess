@@ -1,9 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Dispatch, Action } from 'redux';
 import { AppState } from "../../utilities/store";
 import { LinkContainer } from 'react-router-bootstrap'
-import { SystemState } from "../../utilities/store/system/types";
-import { RoomInfo } from "../../utilities/store/game/types";
+import { ActivityState } from "../../utilities/store/system/types";
+import { RoomInfo } from "../../utilities/store/lobby/types";
+import { updateActivityState } from "../../utilities/store/system/actions";
 
 import Button from 'react-bootstrap/Button';
 import styled from "styled-components";
@@ -17,8 +19,12 @@ const Styles = styled.div`
     }
 `;
 
+interface ICurrentGamesDispatchProps {
+    updateActivityState: (room: ActivityState) => void;
+}
+
 interface ICurrentGames {
-    system: SystemState;
+    updateActivityState: (room: ActivityState) => void;
     gameRooms: RoomInfo[];
 }
 
@@ -30,7 +36,11 @@ function CurrentGames(props: ICurrentGames) {
                 {props.gameRooms.map(room => (
                     <LinkContainer to={`/dashboard/play?gameId=${room.link}`} key={room.time} >
                         <Button variant="primary" onClick={() => {
-                            props.system.joining = true;
+                            props.updateActivityState({
+                                isHosting: false,
+                                isJoining: true,
+                                isPlaying: true
+                            })
                         }}>{room.link}</Button>
                     </LinkContainer>
                 ))}
@@ -41,7 +51,12 @@ function CurrentGames(props: ICurrentGames) {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    system: state.systemState
+    activity: state.activityState,
+    lobby: state.lobbyState
 });
 
-export default connect(mapStateToProps)(CurrentGames);
+const mapDispatchToProps = (dispatch: Dispatch<Action>): ICurrentGamesDispatchProps => ({
+    updateActivityState: (action: ActivityState) => dispatch(updateActivityState(action)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrentGames);

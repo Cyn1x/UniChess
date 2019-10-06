@@ -4,7 +4,7 @@ import { Dispatch, Action } from 'redux';
 import { AppState } from '../../utilities/store';
 import { SideAccordion } from './SideAccordion';
 import { SystemState } from '../../utilities/store/system/types';
-import { LobbyState } from '../../utilities/store/game/types';
+import { LobbyState } from '../../utilities/store/lobby/types';
 
 import CurrentGames from './CurrentGames';
 import Container from 'react-bootstrap/Container';

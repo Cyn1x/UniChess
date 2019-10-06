@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Dispatch, Action } from 'redux';
 import { AppState } from "../../utilities/store";
-import { SystemState } from '../../utilities/store/system/types';
-import { LobbyState, RoomInfo } from '../../utilities/store/game/types';
-import { createRoom } from "../../utilities/store/socket/actions";
+import { SystemState, ActivityState } from '../../utilities/store/system/types';
+import { LobbyState, RoomInfo } from '../../utilities/store/lobby/types';
+import { updateActivityState } from '../../utilities/store/system/actions';
+import { sendRoom } from "../../utilities/store/lobby/actions";
 import { ChatWidget } from '../chat/ChatWidget';
 import { GameInfo } from '../../game/GameInfo';
 
@@ -14,13 +15,16 @@ import Row from 'react-bootstrap/Row';
 import Canvas from '../../game/Canvas';
 
 interface IPlayAreaDispatchProps {
+    updateActivityState: (room: ActivityState) => void;
     createRoom: (room: RoomInfo) => void;
     joinRoom: (room: RoomInfo) => void;
 }
 
 interface IPlayArea {
+    updateActivityState: (room: ActivityState) => void;
     createRoom: any; // TODO: types
     joinRoom: any; // TODO: types
+    activity: ActivityState;
     system: SystemState;
     lobby: LobbyState;
     location: Location;
@@ -32,8 +36,8 @@ class PlayArea extends React.Component<IPlayArea> {
     }
 
     componentDidMount() {
-        if (this.props.system.joining) {
-            if (this.props.system.hosting) {
+        if (this.props.activity.isJoining) {
+            if (this.props.activity.isHosting) {
                 this.setState({
                     player: "Player 1"
                 })
@@ -44,14 +48,18 @@ class PlayArea extends React.Component<IPlayArea> {
             }
         }
         else {
-            if (!this.props.system.hosting && !this.props.system.joining) {
+            if (!this.props.activity.isHosting && !this.props.activity.isJoining) {
                 const currentTime = new Date();
                 this.props.createRoom({
                     host: this.props.system.userName,
                     link: this.props.location.search.split("=")[1],
                     time: currentTime
                 })
-                this.props.system.hosting = true;
+                this.props.updateActivityState({
+                    isHosting: true,
+                    isJoining: false,
+                    isPlaying: true
+                })
                 this.setState({
                     player: "Player 1"
                 })
@@ -98,13 +106,15 @@ class PlayArea extends React.Component<IPlayArea> {
 
 const mapStateToProps = (state: AppState) => ({
     system: state.systemState,
+    activity: state.activityState,
     lobby: state.lobbyState,
     game: state.gameState
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): IPlayAreaDispatchProps => ({
-    createRoom: (room: RoomInfo) => dispatch(createRoom(room)),
-    joinRoom: (room: RoomInfo) => dispatch(createRoom(room))
+    updateActivityState: (action: ActivityState) => dispatch(updateActivityState(action)),
+    createRoom: (room: RoomInfo) => dispatch(sendRoom(room)),
+    joinRoom: (room: RoomInfo) => dispatch(sendRoom(room))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayArea);

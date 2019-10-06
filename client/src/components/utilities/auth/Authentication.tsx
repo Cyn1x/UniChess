@@ -4,7 +4,7 @@ import { Dispatch, Action } from 'redux';
 import { AppState } from "../../utilities/store";
 import { Route, Redirect } from 'react-router-dom'
 import { connectSocket } from "../store/socket/actions"
-import { updateSession } from "../../utilities/store/system/actions";
+import { updateSessionState } from "../../utilities/store/system/actions";
 import { SystemState } from "../store/system/types";
 import { Login } from '../../home/dynamic/Login';
 
@@ -23,12 +23,12 @@ export const Auth = {
 
 interface IAuthenticateDispatchProps {
     connectToSockets: () => void;
-    updateSession: (systemState: SystemState) => void;
+    updateSessionState: (systemState: SystemState) => void;
   }
 
 interface IAuthenticate {
     connectToSockets: () => void;
-    updateSession: (systemState: SystemState) => void;
+    updateSessionState: (systemState: SystemState) => void;
     system: SystemState;
     location: any;
 }
@@ -47,7 +47,7 @@ class Authenticate extends React.Component<IAuthenticate> {
                 userName: name
             }))
             this.props.connectToSockets();
-            this.props.updateSession({
+            this.props.updateSessionState({
                 loggedIn: this.state.loggedIn,
                 session: "sessionId",
                 userName: this.state.userName
@@ -93,7 +93,7 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): IAuthenticateDispatchProps => ({
     connectToSockets: () => dispatch(connectSocket()),
-    updateSession: (systemState: SystemState) => dispatch(updateSession(systemState))
+    updateSessionState: (systemState: SystemState) => dispatch(updateSessionState(systemState))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Authenticate);

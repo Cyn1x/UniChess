@@ -67,11 +67,11 @@ class Game {
 
         piecesArray.forEach( (pieceRequired: string, index: number) => {
             if (index % 8 === 0 && index !== 0) {
-                currentRank++;
+                currentRank = currentRank + 1;
                 currentFile = 0;
             }
             if (index % 8 !== 0) {
-                currentFile++;
+                currentFile = currentFile + 1;
             }
             startingFen.split("").forEach( (pieceToPlace: string) => {
                 if (pieceRequired === pieceToPlace) {
@@ -108,7 +108,7 @@ class Game {
         let emptySquares = 0;
         for (let i = 0; i < board.length; i++) {
             
-            if (i % 8 == 0 && i !== 0) {
+            if (i % 8 === 0 && i !== 0) {
                 newFenString += "/"
                 emptySquares = 0;
             }

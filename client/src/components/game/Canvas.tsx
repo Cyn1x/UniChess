@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Dispatch, Action } from 'redux';
 import { AppState } from '../utilities/store';
+import { ActivityState } from '../utilities/store/system/types';
 import { GameState } from '../utilities/store/game/types';
-import { sendGame } from '../utilities/store/socket/actions';
+import { updateActivityState } from '../utilities/store/system/actions';
+import { sendGame } from '../utilities/store/game/actions';
 
 import {
     ICanvasDispatchProps,
@@ -49,7 +51,7 @@ class Canvas extends React.Component<ICanvas, IState> {
         this.initialise();
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         window.addEventListener('resize', this.resizeCallback, false);
         this.update();
         this.state.canvas.current.addEventListener("click", (event: EventTarget) => { this.interceptClick(event) }, false);
@@ -400,11 +402,13 @@ class Canvas extends React.Component<ICanvas, IState> {
 
 const mapStateToProps = (state: AppState) => ({
     system: state.systemState,
+    activity: state.activityState,
     lobby: state.lobbyState,
     game: state.gameState
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): ICanvasDispatchProps => ({
+    updateActivityState: (action: ActivityState) => dispatch(updateActivityState(action)),
     sendGame: (game: GameState) => dispatch(sendGame(game))
 });
 

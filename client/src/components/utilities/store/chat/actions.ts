@@ -1,4 +1,4 @@
-import { ChatMessage, UsernameChange, SEND_MESSAGE_RESPONSE, SEND_MESSAGE_REQUEST, MESSAGE_SENT, USER_CHANGED } from "./types";
+import { ChatMessage, SEND_MESSAGE_RESPONSE, SEND_MESSAGE_REQUEST, MESSAGE_SENT } from "./types";
 
 export const messageReceived = (message: ChatMessage) => {
     return {
@@ -17,12 +17,5 @@ export const sendMessage = (message: ChatMessage) => {
 export const messageSent = () => {
     return {
         type: MESSAGE_SENT
-    };
-};
-
-export const changeUsername = (username: UsernameChange) => {
-    return {
-        type: USER_CHANGED,
-        username
     };
 };

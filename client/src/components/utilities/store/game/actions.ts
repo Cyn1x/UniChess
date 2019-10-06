@@ -1,15 +1,15 @@
-import { SEND_ROOM_RESPONSE, ROOM_RECIEVED, SEND_GAME_RESPONSE, GAME_RECEIVED, RoomInfo, GameState } from "./types";
+import { SEND_GAME_REQUEST, SEND_GAME_RESPONSE, GAME_RECEIVED, GameState } from "./types";
 
-export const roomReceived = (room: RoomInfo) => {
+export const sendGame = (game: GameState) => {
     return {
-        type: SEND_ROOM_RESPONSE,
-        room
-    };
-};
+        type: SEND_GAME_REQUEST,
+        game
+    }
+}
 
-export const roomSent = () => {
+export const gameSent = () => {
     return {
-        type: ROOM_RECIEVED
+        type: GAME_RECEIVED
     };
 };
 
@@ -17,11 +17,5 @@ export const gameReceived = (game: GameState) => {
     return {
         type: SEND_GAME_RESPONSE,
         game
-    };
-};
-
-export const gameSent = () => {
-    return {
-        type: GAME_RECEIVED
     };
 };

@@ -2,15 +2,25 @@ export interface SystemState {
     loggedIn: boolean;
     session: string;
     userName: string;
-    hosting?: boolean;
-    joining?: boolean;
 }
 
-export const UPDATE_SESSION = "UPDATE_SESSION";
+export interface ActivityState {
+    isHosting: boolean;
+    isJoining: boolean;
+    isPlaying: boolean;
+}
+
+export const UPDATE_SESSION_STATE = "UPDATE_SESSION_STATE";
+export const UPDATE_ACTIVITY_STATE = "UPDATE_ACTIVITY_STATE";
 
 interface UpdateSessionAction {
-    type: typeof UPDATE_SESSION;
+    type: typeof UPDATE_SESSION_STATE;
     payload: SystemState;
 }
 
-export type SystemActionTypes = UpdateSessionAction;
+interface UpdateActivityAction {
+    type: typeof UPDATE_ACTIVITY_STATE;
+    payload: ActivityState;
+}
+
+export type SystemActionTypes = UpdateSessionAction | UpdateActivityAction;

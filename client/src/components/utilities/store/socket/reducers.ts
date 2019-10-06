@@ -1,13 +1,15 @@
 import { CONNECTION_CHANGED } from './types';
 
 // TODO: Implement type definitions
-const initialState = {
+const initialSocketState = {
     connected: false,
     port: '8080'
 };
 
 // TODO: Implement type definitions
-export function socketReducer(state = initialState, action: { type: string, port: string, connected: boolean }) {
+export function socketReducer(
+    state = initialSocketState,
+    action: { type: string, port: string, connected: boolean }) {
     let reduced;
     switch (action.type) {
         case CONNECTION_CHANGED:

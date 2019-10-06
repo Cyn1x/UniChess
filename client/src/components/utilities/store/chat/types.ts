@@ -9,14 +9,9 @@ export interface ChatState {
     messages: []
 }
 
-export interface UsernameChange {
-    username: string;
-}
-
 export const SEND_MESSAGE_RESPONSE = 'SEND_MESSAGE_RESPONSE';
 export const MESSAGE_SENT = 'MESSAGE_SENT';
 export const SEND_MESSAGE_REQUEST = 'SEND_MESSAGE_REQUEST';
-export const USER_CHANGED = 'USER_CHANGED';
 
 interface MessageReceivedAction {
     type: typeof SEND_MESSAGE_RESPONSE;
@@ -31,9 +26,4 @@ interface MessageSendAction {
     type: typeof SEND_MESSAGE_REQUEST;
 }
 
-interface DisplayNameAction {
-    type: typeof USER_CHANGED;
-    payload: UsernameChange;
-}
-
-export type ChatActionTypes = MessageReceivedAction | MessageSentAction | MessageSendAction | DisplayNameAction;
+export type ChatActionTypes = MessageReceivedAction | MessageSentAction | MessageSendAction;

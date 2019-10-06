@@ -1,8 +1,15 @@
-import { SystemState, UPDATE_SESSION } from "./types";
+import { UPDATE_SESSION_STATE, UPDATE_ACTIVITY_STATE, SystemState, ActivityState } from "./types";
 
-export function updateSession(newSession: SystemState) {
+export function updateSessionState(newSession: SystemState) {
     return {
-        type: UPDATE_SESSION,
+        type: UPDATE_SESSION_STATE,
         payload: newSession
+    };
+}
+
+export function updateActivityState(newActivity: ActivityState) {
+    return {
+        type: UPDATE_ACTIVITY_STATE,
+        payload: newActivity
     };
 }
