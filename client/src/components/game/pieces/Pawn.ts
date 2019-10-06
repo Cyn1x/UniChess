@@ -1,16 +1,7 @@
-import { IPieces } from "../PiecesFactory";
+import { IPiece } from "./types";
 import Pieces from "../Pieces";
 
-interface IPawn extends IPieces {
-    type: string;
-    colour: string;
-    image: string;
-    position: string;
-    moves: number;
-    moveDirections: Map<string, number>;
-}
-
-export class Pawn implements IPawn {
+class Pawn implements IPiece {
     type: string;
     colour: string;
     image: string;
@@ -27,7 +18,7 @@ export class Pawn implements IPawn {
 
         this.initialise();
     }
-
+    
     initialise() {
         this.hasUpgraded = false;
         this.moves = 0;
@@ -55,7 +46,7 @@ export class Pawn implements IPawn {
 
     getType() { return this.type; }
 
-    getColour() { return this.type; }
+    getColour() { return this.colour; }
 
     getImage() { return this.image; }
 
@@ -76,3 +67,5 @@ export class Pawn implements IPawn {
     setHasUpgraded(upgraded: boolean) { this.hasUpgraded = upgraded; }
 
 }
+
+export default Pawn;

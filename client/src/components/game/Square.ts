@@ -1,12 +1,12 @@
-import { IPieces } from "./PiecesFactory";
+import { IPiece } from "./pieces/types";
 
-export class Square {
+class Square {
     private pos: string;
     private x: number;
     private y: number
     private w: number;
     private h: number;
-    private piece!: IPieces;
+    private piece!: IPiece;
     private hasPiece!: boolean;
     private colour!: string;
     private enPassant!: string;
@@ -50,7 +50,7 @@ export class Square {
 
     setHeight(height: number) { this.h = height; }
 
-    setPiece(piece: IPieces) { 
+    setPiece(piece: IPiece) { 
         this.piece = piece;
         this.hasPiece = true;
         piece.setPosition(this.pos);
@@ -61,3 +61,5 @@ export class Square {
     setEnPassant(enPassant: string) { this.enPassant = enPassant }
 
 }
+
+export default Square;

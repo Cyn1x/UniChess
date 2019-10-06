@@ -11,7 +11,7 @@ interface IGameInfo {
     
 }
 
-export class GameInfo extends React.Component {
+export class GameInfo extends React.Component<IGameInfo> {
     state = {
         userName: ""
     }
@@ -19,7 +19,6 @@ export class GameInfo extends React.Component {
     componentDidMount() {}
 
     render() {
-        // TODO: Don't render until state has been updated
         return (
             <Styles>
 

@@ -1,35 +1,15 @@
+import { IPiece } from "./pieces/types";
 import Pieces from "./Pieces";
+import Pawn from "./pieces/Pawn";
+import Knight from "./pieces/Knight";
+import Bishop from "./pieces/Bishop";
+import Rook from "./pieces/Rook";
+import Queen from "./pieces/Queen";
+import King from "./pieces/King";
 
-import { Pawn } from "./pieces/Pawn";
-import { Knight } from "./pieces/Knight";
-import { Bishop } from "./pieces/Bishop";
-import { Rook } from "./pieces/Rook";
-import { Queen } from "./pieces/Queen";
-import { King } from "./pieces/King";
+class PiecesFactory extends Pieces { 
 
-export interface IPieces {
-    getType(): string;
-    getColour(): string;
-    getImage(): string;
-    getMoveDirections(): Map<string, number>;
-    getPosition(): string;
-    getMoveNumber(): number;
-    setImage(arg0: string): void;
-    setMoveDirections(arg0: Map<string, number>): void;
-    setPosition(arg0: string): void;
-    incrementMoveNumber(arg0: number): void;
-
-    type: string;
-    colour: string;
-    image: string;
-    position: string;
-    moves: number;
-    moveDirections: Map<string, number>;
-}
-
-export class PiecesFactory extends Pieces { 
-
-    typeOfPiece(piece: string): IPieces {
+    typeOfPiece(piece: string): IPiece {
         const white = 'White';
         const black = 'Black';
         switch(piece) {
@@ -81,8 +61,13 @@ export class PiecesFactory extends Pieces {
                 const blackKing = this.getChessPieceImgs().get(piece)
                 if (blackKing) { return new King(piece, black, blackKing) } 
                 else { throw new Error ('Image not defined'); }
+            case '0':
+                    if (blackKing) { return new King(piece, black, blackKing) } 
+                    else { throw new Error ('Image not defined'); }
             default:
                 throw new Error('Piece does not exist');
         }
     }
 }
+
+export default PiecesFactory;

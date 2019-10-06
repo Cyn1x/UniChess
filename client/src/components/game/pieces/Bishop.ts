@@ -1,16 +1,7 @@
-import { IPieces } from "../PiecesFactory";
+import { IPiece } from "./types";
 import Pieces from "../Pieces";
 
-interface IBishop extends IPieces {
-    type: string;
-    colour: string;
-    image: string;
-    position: string;
-    moves: number;
-    moveDirections: Map<string, number>;
-}
-
-export class Bishop implements IBishop {
+class Bishop implements IPiece {
     type: string;
     colour: string;
     image: string;
@@ -54,3 +45,5 @@ export class Bishop implements IBishop {
     setPosition(pos: string) { this.position = pos; }
 
 }
+
+export default Bishop;

@@ -1,28 +1,46 @@
-const express = require('express');
-const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const path = require('path');
+import express, {
+    Application, Router, Request, Response, NextFunction
+} from 'express';
+import http from 'http';
+import cors from 'cors';
+import SocketIO from "socket.io";
 
-app.use(express.static(path.join(__dirname, '../build')));
+const port = process.env.PORT || 8080;
 
-app.get('/', (req: any, res: any) => res.sendFile(__dirname + '/index.html'));
+const app: Application = express();
+const router: Router = express.Router();
+const server: any = new http.Server(app);
+const io: any = SocketIO(server);
+
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+    res.send('Server is running')
+})
+
+app.use(cors);
+app.use(router);
+
+server.listen(port, () => {
+    console.log("[Server]: Listening on port %d", port); 
+});
 
 io.on('connect', (socket: any) => {
+    console.log("A user has connected.")
     io.emit('broadcast', '[Server]: A user has connected');
     
     socket.on('message', (msg: any) => {
         io.emit('message', msg);
     });
+
+    socket.on('room', (room: any) => {
+        io.emit('room', room);
+    })
+
+    socket.on('game', (game: any) => {
+        io.emit('game', game);
+    })
     
     socket.on('disconnect', function () {
+        console.log("A user has disconnected.")
         io.emit('broadcast', '[Server]: A user has disconnected');
     });
-});
-
-const port = process.env.PORT || 8080;
-app.set('port', port);
-
-http.listen(port, () => {
-    console.log("[Server]: Listening on port %d", port); 
 });

@@ -1,9 +1,20 @@
-import React, { RefObject } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import { connect } from "react-redux";
+import { Dispatch, Action } from 'redux';
+import { AppState } from '../utilities/store';
+import { GameState } from '../utilities/store/game/types';
+import { sendGame } from '../utilities/store/socket/actions';
 
-import { Game } from './Game';
-import { Square } from './Square';
-import { IPieces } from './PiecesFactory';
+import {
+    ICanvasDispatchProps,
+    ICanvas, IState,
+    ClickedSquare
+} from './types';
+
+import { IPiece } from './pieces/types';
+import Game from './Game';
+import Square from './Square';
+import styled from 'styled-components';
 
 const Styles = styled.div`
     canvas {
@@ -13,24 +24,6 @@ const Styles = styled.div`
         margin-right: auto;
     }
 `;
-
-interface ICanvas {
-    canvas: RefObject<HTMLCanvasElement>,
-    screen: {
-        width: number,
-        height: number,
-        ratio: number
-    },
-}
-
-interface IState {
-    canvas: any // Breaks when I define HTMLCanvasElement as a type. I'm doing something wrong here
-    screen: {
-        width: number,
-        height: number,
-        ratio: number
-    },
-}
 
 const boardSize = () => { return ( (window.innerWidth > window.innerHeight) ); }
 
@@ -52,22 +45,43 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         };
-        this.game = new Game();
+        this.game = new Game(this.props.player);
         this.initialise();
     }
 
     componentDidMount() { 
         window.addEventListener('resize', this.resizeCallback, false);
         this.update();
-        this.state.canvas.current.addEventListener("click", (event: EventTarget) => { this.handleClick(event) }, false);
+        this.state.canvas.current.addEventListener("click", (event: EventTarget) => { this.interceptClick(event) }, false);
     }
 
-    componentWillUnmount() { 
+    componentWillUnmount() {
         window.removeEventListener('resize', this.resizeCallback, false);
-        this.state.canvas.current.removeEventListener("click", (event: EventTarget) => { this.handleClick(event) }, false);
+        this.state.canvas.current.removeEventListener("click", (event: EventTarget) => { this.interceptClick(event) }, false);
     }
 
-    resizeCallback = () => setTimeout(this.update, 500)
+    componentDidUpdate() {
+        const squaresArray = this.game.getChessboard().getSquaresArray();
+
+        if (this.props.game.nextPlayerTurn !== this.game.getCurrentTurn()) {
+            for (let i = 0; i < squaresArray.length; i++) {
+                if (squaresArray[i].getPosition() === this.props.game.movePieceFrom) {
+                    this.game.getChessboard().setActiveSquare(squaresArray[i]);
+                    for (let j = 0; j < squaresArray.length; j++) {
+                        if (squaresArray[j].getPosition() === this.props.game.movePieceTo) {
+                            this.game.setCurrentTurn(this.props.game.nextPlayerTurn);
+                            this.overwriteSquare(squaresArray[j]);
+                            const newFenSequence = this.game.fenCreator();
+                            this.game.setFenString(newFenSequence);
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    resizeCallback = () => setTimeout(this.update, 500);
 
     update() {
         this.width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
@@ -80,7 +94,8 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         })
-        this.initialise();
+        const {cw, ch} = this.getCellDimensions();
+        this.game.updateSquareSizeProps(cw, ch);
         this.drawBoard();
         this.drawPieces();
     }
@@ -124,7 +139,6 @@ class Canvas extends React.Component<ICanvas, IState> {
     }
 
     drawPieces() {
-        this.game.setPiecePositions();
         const squaresArray = this.game.getChessboard().getSquaresArray();
         const files = this.game.getChessboard().getFiles();
         const ranks = this.game.getChessboard().getRanks();
@@ -157,82 +171,129 @@ class Canvas extends React.Component<ICanvas, IState> {
         }
     }
 
-    handleClick(event: any) {
+    interceptClick(event: any) {
+        if (this.game.getCurrentTurn() === this.game.getCurrentPlayer().getColour()) {
+            this.handleClick(event);
+        }
+    }
+
+    handleClick(event: MouseEvent) {
         const cx = event.offsetX;
         const cy = event.offsetY;
         const squaresArray = this.game.getChessboard().getSquaresArray();
-        const emptySquare = new Square('0', 0, 0, 0, 0);
-        const files = this.game.getChessboard().getFiles();
-        const ranks = this.game.getChessboard().getRanks();
 
         for (let i = 0; i < squaresArray.length; i++) {
             const sx = squaresArray[i].getX();
             const sy = squaresArray[i].getY();
             const sw = squaresArray[i].getWidth();
             const sh = squaresArray[i].getHeight();
+            const clickedSquare: ClickedSquare = {sx, sy, sw, sh};
 
             if (cx >= sx && cx <= sx + sw && cy >= sy && cy <= sy + sh) {
                 if (this.game.getSquareActive()) {
                     if (this.game.getChessboard().getActiveSquare() === squaresArray[i]) {
-                        const activeSquare = squaresArray[i];
-                        const activePiece = squaresArray[i].getPiece();
-                        const img = this.constructImage(activePiece);
-                        
-                        this.game.getChessboard().setActiveSquare(emptySquare);
-                        this.game.setSquareActive(false);
-
-                        this.manageValidSquares();
-                        this.selectCell(sx, sy, sw, sh, squaresArray[i]);
-                        this.drawImg(img, ranks.indexOf(Number(activeSquare.getPosition()[1])), files.indexOf(activeSquare.getPosition()[0]));
+                        this.deactivateSquare(clickedSquare, squaresArray[i]);
                     }
-                    
                     else if (this.game.getChessboard().getActiveSquare() !== squaresArray[i]) {
-                        if (!this.game.checkRequestedMove(squaresArray[i])) { return; }
-
+                        if (!this.game.checkRequestedMove(squaresArray[i])) {
+                            return;
+                        }
                         this.game.setSquareActive(false);
-
-                        const prevActiveSquare = this.game.getChessboard().getActiveSquare();
-                        this.selectCell(prevActiveSquare.getX(), prevActiveSquare.getY(), prevActiveSquare.getWidth(), prevActiveSquare.getHeight(), prevActiveSquare);
-                        
-                        const activeSquare = squaresArray[i];
-                        const activePiece = prevActiveSquare.getPiece();
-                        const img = this.constructImage(activePiece);
-
-                        this.manageValidSquares();
-                        this.selectCell(sx, sy, sw, sh, squaresArray[i]);
-                        this.drawImg(img, ranks.indexOf(Number(activeSquare.getPosition()[1])), files.indexOf(activeSquare.getPosition()[0]));
-
-                        this.game.getChessboard().getActiveSquare().removePiece();
-                        this.game.getChessboard().setActiveSquare(squaresArray[i]);
-                        squaresArray[i].setPiece(activePiece);
-
-                        this.game.incrementMoveCount(activePiece);
+                        this.processValidMove(squaresArray[i]);
                     }
                 }
 
                 else {
                     if (squaresArray[i].squareContainsPiece()) {
-                        const activeSquare = squaresArray[i];
-                        const activePiece = squaresArray[i].getPiece();
-                        const img = this.constructImage(activePiece);
-                        
-                        this.game.setSquareActive(true);
-                        this.game.getChessboard().setActiveSquare(activeSquare);
-
-                        this.manageValidSquares();
-                        this.selectCell(sx, sy, sw, sh, squaresArray[i]);
-                        this.drawImg(img, ranks.indexOf(Number(activeSquare.getPosition()[1])), files.indexOf(activeSquare.getPosition()[0]));
+                        if (squaresArray[i].getPiece().getColour() === this.game.getCurrentPlayer().getColour()) {
+                            this.activateSquare(clickedSquare, squaresArray[i])
+                        }
                     }
                 }
             }
         }
         // calculations may change depending on how the component is structured in the DOM
-        console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY);
-        console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY);
-        console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop);
+        // console.debug("event.pageX, event.pageY: ", + event.pageX, + " " + event.pageY);
+        // console.debug("event.offsetX, event.offsetY: ", + event.offsetX, + " " + event.offsetY);
+        // console.debug("canvas.offsetLeft, canvas.offsetY: ", + this.state.canvas.current.offsetLeft, + " " + this.state.canvas.current.offsetTop);
     }
 
-    constructImage(activeSquare: IPieces) {
+    activateSquare(clickedSquare: ClickedSquare, activeSquare: Square) {
+        const files = this.game.getChessboard().getFiles();
+        const ranks = this.game.getChessboard().getRanks();
+        const activePiece = activeSquare.getPiece();
+        const img = this.constructImage(activePiece);
+        
+        this.game.setSquareActive(true);
+        this.game.getChessboard().setActiveSquare(activeSquare);
+
+        this.manageValidSquares();
+        this.selectCell(
+            clickedSquare.sx,
+            clickedSquare.sy,
+            clickedSquare.sw,
+            clickedSquare.sh,
+            activeSquare
+            );
+
+        this.drawImg(img, ranks.indexOf(Number(activeSquare.getPosition()[1])), files.indexOf(activeSquare.getPosition()[0]));
+    }
+
+    deactivateSquare(clickedSquare: ClickedSquare, activeSquare: Square) {
+        const files = this.game.getChessboard().getFiles();
+        const ranks = this.game.getChessboard().getRanks();
+        const emptySquare = new Square('0', 0, 0, 0, 0);
+        const activePiece = activeSquare.getPiece();
+        const img = this.constructImage(activePiece);
+        
+        this.game.getChessboard().setActiveSquare(emptySquare);
+        this.game.setSquareActive(false);
+
+        this.manageValidSquares();
+        this.selectCell(
+            clickedSquare.sx,
+            clickedSquare.sy,
+            clickedSquare.sw,
+            clickedSquare.sh,
+            activeSquare
+            );
+        this.drawImg(img, ranks.indexOf(Number(activeSquare.getPosition()[1])), files.indexOf(activeSquare.getPosition()[0]));
+    }
+
+    overwriteSquare(activeSquare: Square) {
+        const files = this.game.getChessboard().getFiles();
+        const ranks = this.game.getChessboard().getRanks();
+
+        const prevActiveSquare = this.game.getChessboard().getActiveSquare();
+        const activePiece = prevActiveSquare.getPiece();
+        const img = this.constructImage(activePiece);
+
+        this.selectCell(
+            prevActiveSquare.getX(),
+            prevActiveSquare.getY(),
+            prevActiveSquare.getWidth(),
+            prevActiveSquare.getHeight(), 
+            prevActiveSquare
+            );
+        this.manageValidSquares();
+        this.selectCell(
+            activeSquare.getX(),
+            activeSquare.getY(),
+            activeSquare.getWidth(),
+            activeSquare.getHeight(),
+            activeSquare
+            );
+        
+        this.drawImg(img, ranks.indexOf(Number(activeSquare.getPosition()[1])), files.indexOf(activeSquare.getPosition()[0]));
+
+        this.game.getChessboard().getActiveSquare().removePiece();
+        this.game.getChessboard().setActiveSquare(activeSquare);
+        this.game.incrementMoveCount(activePiece);
+
+        activeSquare.setPiece(activePiece);
+    }
+
+    constructImage(activeSquare: IPiece) {
         const img = new Image();
         img.src = activeSquare.getImage();
         img.id = activeSquare.getColour();
@@ -287,7 +348,7 @@ class Canvas extends React.Component<ICanvas, IState> {
         }
     }
 
-    drawPiece(validMoves: IPieces) {
+    drawPiece(validMoves: IPiece) {
         const img = new Image();
         img.id = validMoves.getColour();
         img.src = validMoves.getImage();
@@ -313,6 +374,18 @@ class Canvas extends React.Component<ICanvas, IState> {
         return {cw, ch}
     }
 
+    processValidMove(activeSquare: Square) {
+        const prevActiveSquarePos = this.game.getChessboard().getActiveSquare().getPosition();
+        const nextActiveSquarePos = activeSquare.getPosition();
+        const nextPlayerMove = this.game.getNextMove();
+
+        this.props.sendGame({
+            nextPlayerTurn: nextPlayerMove,
+            movePieceFrom: prevActiveSquarePos,
+            movePieceTo: nextActiveSquarePos
+        })
+    }
+    
     render() {
         return (
             <Styles>
@@ -325,4 +398,14 @@ class Canvas extends React.Component<ICanvas, IState> {
     }
 }
 
-export default Canvas;
+const mapStateToProps = (state: AppState) => ({
+    system: state.systemState,
+    lobby: state.lobbyState,
+    game: state.gameState
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>): ICanvasDispatchProps => ({
+    sendGame: (game: GameState) => dispatch(sendGame(game))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas);

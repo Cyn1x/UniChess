@@ -21,9 +21,8 @@ const Styles = styled.div`
 `;
 
 interface ILayout {
-    children: React.ReactNode
-    auth: boolean
-    playing?: boolean
+    children: React.ReactNode;
+    auth: boolean;
 }
 
 export const Layout = (props: ILayout) => {

@@ -1,16 +1,7 @@
-import { IPieces } from "../PiecesFactory";
+import { IPiece } from "./types";
 import Pieces from "../Pieces";
 
-interface IKing extends IPieces {
-    type: string;
-    colour: string;
-    image: string;
-    position: string;
-    moves: number;
-    moveDirections: Map<string, number>;
-}
-
-export class King implements IKing {
+class King implements IPiece {
     type: string;
     colour: string;
     image: string;
@@ -58,3 +49,5 @@ export class King implements IKing {
     setCheck(check: boolean) { this.inCheck = check; }
 
 }
+
+export default King;

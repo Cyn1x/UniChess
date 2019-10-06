@@ -1,4 +1,4 @@
-import { CONNECTION_CHANGED } from './actions';
+import { CONNECTION_CHANGED } from './types';
 
 // TODO: Implement type definitions
 const initialState = {

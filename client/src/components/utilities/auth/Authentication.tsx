@@ -40,12 +40,11 @@ class Authenticate extends React.Component<IAuthenticate> {
         userName: ""
     }
 
-    login = (props: any) => {
-        console.log(props)
+    login = (name: string) => {
         Auth.authenticate(() => {
             this.setState(() => ({
                 redirectToDashboard: true,
-                userName: props
+                userName: name
             }))
             this.props.connectToSockets();
             this.props.updateSession({
@@ -82,7 +81,7 @@ export const PrivateRoute = ({ component: Component, ...rest }: { component: any
         ? <Component {...props} />
         : <Redirect to={{
             pathname: '/login',
-            state: { from: props.location }
+            state: { from: '/dashboard' }
         }} />
     )} />
 )

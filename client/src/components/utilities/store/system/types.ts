@@ -2,6 +2,8 @@ export interface SystemState {
     loggedIn: boolean;
     session: string;
     userName: string;
+    hosting?: boolean;
+    joining?: boolean;
 }
 
 export const UPDATE_SESSION = "UPDATE_SESSION";

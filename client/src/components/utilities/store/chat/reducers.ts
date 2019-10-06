@@ -1,7 +1,7 @@
 import { ChatState, ChatActionTypes, USER_CHANGED, SEND_MESSAGE_RESPONSE, MESSAGE_SENT } from "./types";
 
 const initialState: ChatState = {
-    username: ('username') || 'guest0001',
+    username: "",
     messages: []
 };
 

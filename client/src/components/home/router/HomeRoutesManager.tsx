@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
-// Remove this and use store system state
+// TODO: Remove this and use store system state
 import Authenticate, { Auth, PrivateRoute } from '../../utilities/auth/Authentication';
 
 import { Layout } from '../../global/static/Layout';

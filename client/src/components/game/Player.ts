@@ -1,4 +1,4 @@
-export class Player {
+class Player {
     private colour: string;
 
     constructor(colour: string) {
@@ -8,3 +8,5 @@ export class Player {
     getColour() { return this.colour; }
 
 }
+
+export default Player;

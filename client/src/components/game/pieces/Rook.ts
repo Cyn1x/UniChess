@@ -1,16 +1,7 @@
-import { IPieces } from "../PiecesFactory";
+import { IPiece } from "./types";
 import Pieces from "../Pieces";
 
-interface IRook extends IPieces {
-    type: string;
-    colour: string;
-    image: string;
-    position: string;
-    moves: number;
-    moveDirections: Map<string, number>;
-}
-
-export class Rook implements IRook {
+class Rook implements IPiece {
     type: string;
     colour: string;
     image: string;
@@ -54,3 +45,5 @@ export class Rook implements IRook {
     setPosition(pos: string) { this.position = pos; }
 
 }
+
+export default Rook;

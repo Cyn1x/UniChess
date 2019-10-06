@@ -19,20 +19,22 @@ const Styles = styled.section`
 
 export type UpdateMessageParam = React.SyntheticEvent<{ value: string }>;
 
-interface IMessageSenderDispatchProps {
+interface IChatDispatchProps {
     sendMessage: (message: ChatMessage) => void;
 }
 
 interface IChat {
     chat: ChatState;
     system: SystemState;
-    sendMessage: any;
+    sendMessage: any; // TODO: type
 }
 
 class Chat extends React.Component<IChat> {
     state = {
         message: ""
     };
+
+    componentDidMount() {}
 
     updateMessage = (event: UpdateMessageParam) => {
         this.setState({ message: event.currentTarget.value });
@@ -66,7 +68,7 @@ const mapStateToProps = (state: AppState) => ({
     chat: state.messageState
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>): IMessageSenderDispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action>): IChatDispatchProps => ({
     sendMessage: (message: ChatMessage) => dispatch(sendMessage(message)),
 });
 
