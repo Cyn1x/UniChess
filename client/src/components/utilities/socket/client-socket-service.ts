@@ -52,10 +52,6 @@ export default class Socket {
         this.socket.on(EVENTS.GAME, this.onGame);
         this.onChange(true);
     };
-
-    public roomConnected = () => {
-        this.socket.on(EVENTS.ROOM + "test")
-    }
     
     public sendMessage = (message: ChatMessage) => {
         if (typeof this.socket.emit === 'function') {
