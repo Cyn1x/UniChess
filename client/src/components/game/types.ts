@@ -1,4 +1,5 @@
 import { RefObject } from 'react';
+
 import { ActivityState } from '../utilities/store/system/types';
 import { GameState } from '../utilities/store/game/types';
 

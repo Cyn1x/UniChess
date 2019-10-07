@@ -1,14 +1,14 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
-import { AppState } from "../../utilities/store";
-import { SystemState } from "../../utilities/store/system/types";
-import { ChatMessage, ChatState } from "../../utilities/store/chat/types";
+import { AppState } from '../../utilities/store';
+import { SystemState } from '../../utilities/store/system/types';
+import { ChatMessage, ChatState } from '../../utilities/store/chat/types';
 import { sendMessage } from '../../utilities/store/chat/actions';
 
-import ChatHistory from "./ChatHistory";
-import ChatInterface from "./ChatInterface";
-import styled from "styled-components";
+import ChatHistory from './ChatHistory';
+import ChatInterface from './ChatInterface';
+import styled from 'styled-components';
 
 const Styles = styled.section`
     width: 25%;
@@ -26,7 +26,7 @@ interface IChatDispatchProps {
 interface IChat {
     chat: ChatState;
     system: SystemState;
-    sendMessage: any; // TODO: type
+    sendMessage: any;
 }
 
 class Chat extends React.Component<IChat> {

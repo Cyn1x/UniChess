@@ -1,6 +1,5 @@
-import { CONNECTION_CHANGED, CONNECT_SOCKET } from "./types";
+import { CONNECTION_CHANGED, CONNECT_SOCKET } from './types';
 
-// TODO: Implement type definitions
 export const connectionChanged = (isConnected: boolean) => {
     return {
         type: CONNECTION_CHANGED,

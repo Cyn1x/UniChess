@@ -1,7 +1,7 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
-import styled from "styled-components";
-import Chat from "./Chat";
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import styled from 'styled-components';
+import Chat from './Chat';
 
 const Styles = styled.div`
     
@@ -17,7 +17,7 @@ interface IChatWidget {
     show?: boolean;
 }
 
-export class ChatWidget extends React.Component<IChatWidget> {
+class ChatWidget extends React.Component<IChatWidget> {
     state = {
         show: false,
     }
@@ -37,3 +37,5 @@ export class ChatWidget extends React.Component<IChatWidget> {
         );
     }
 }
+
+export default ChatWidget;

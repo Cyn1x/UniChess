@@ -1,9 +1,10 @@
 import React from 'react';
+
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import GitHubLogo from "../../../assets/img/site/GitHubLogo.png"
-import styled from 'styled-components';
 import NavItem from 'react-bootstrap/NavItem';
+import GitHubLogo from '../../../assets/img/site/GitHubLogo.png';
+import styled from 'styled-components';
 
 const Styles = styled.div`
     .navbar {
@@ -12,7 +13,7 @@ const Styles = styled.div`
     }
 `;
 
-export const DashFooter = () => (
+const DashFooter = () => (
     <Styles>
         <Navbar fixed="bottom">
             <Navbar.Toggle aria-controls="basic-navbar-bar" />
@@ -36,3 +37,5 @@ export const DashFooter = () => (
         </Navbar>
     </Styles>
 );
+
+export default DashFooter;

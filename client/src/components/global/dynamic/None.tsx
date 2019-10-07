@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -10,7 +11,7 @@ const Styles = styled.div`
     }
 `;
 
-export const None = () => (
+const None = () => (
     <Styles>
         <div>
             <h3>404</h3>
@@ -18,3 +19,5 @@ export const None = () => (
         </div>
     </Styles>
 )
+
+export default None;

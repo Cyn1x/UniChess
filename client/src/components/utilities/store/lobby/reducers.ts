@@ -5,7 +5,6 @@ const initialLobbyState: LobbyState = {
     gameRooms: []
 }
 
-// TODO: Implement type definitions
 export function lobbyStateReducer(
     state = initialLobbyState,
     action: {type: string, room: string}) {

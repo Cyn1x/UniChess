@@ -1,5 +1,5 @@
-import Square from "./Square";
-import { IPiece } from "./pieces/types";
+import Square from './Square';
+import { IPiece } from './pieces/types';
 
 const files = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const ranks = [8, 7, 6, 5, 4, 3, 2, 1];

@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Dispatch, Action } from 'redux';
 import { AppState } from '../../utilities/store';
-import { SideAccordion } from './SideAccordion';
+
 import { SystemState } from '../../utilities/store/system/types';
 import { LobbyState } from '../../utilities/store/lobby/types';
 
 import CurrentGames from './CurrentGames';
+import SideAccordion from './SideAccordion';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -18,7 +19,7 @@ interface ILobbyDispatchProps {
 interface ILobby {
     system: SystemState;
     lobbyState: LobbyState;
-    match: any; // TODO: type
+    match: any
 }
 
 class Lobby extends React.Component<ILobby> {

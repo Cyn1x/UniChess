@@ -1,16 +1,17 @@
 import React from 'react'
-import { connect } from "react-redux";
-import { Dispatch, Action } from 'redux';
-import { AppState } from "../../utilities/store";
 import { Route, Redirect } from 'react-router-dom'
-import { connectSocket } from "../store/socket/actions"
-import { updateSessionState } from "../../utilities/store/system/actions";
+import { connect } from 'react-redux';
+import { Dispatch, Action } from 'redux';
+import { AppState } from '../../utilities/store';
+
+import { connectSocket } from '../store/socket/actions';
+import { updateSessionState } from '../../utilities/store/system/actions';
 import { SystemState } from "../store/system/types";
-import { Login } from '../../home/dynamic/Login';
+
+import Login from '../../home/dynamic/Login';
 
 export const Auth = {
     hasAuthenticated: false,
-    // hasAuthenticated: true,
     authenticate(cb: () => void) {
         this.hasAuthenticated = true
         setTimeout(cb, 1000)

@@ -1,7 +1,7 @@
 import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap'
-import { Logout } from './Logout';
+import { LinkContainer } from 'react-router-bootstrap';
 
+import Logout from './Logout';
 import Logo from '../../../assets/img/site/logo.png';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -21,7 +21,7 @@ const Styles = styled.div`
     }
 `;
 
-export function DashNav() {
+function DashNav() {
     const urlStringLength = 5;
     const string = "abcdefghijklmnopqrstuvwxyz0123456789";
     const randomUrlString = () => {
@@ -75,3 +75,5 @@ export function DashNav() {
         </Styles>
     );
 }
+
+export default DashNav;

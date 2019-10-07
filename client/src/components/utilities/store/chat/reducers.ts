@@ -1,11 +1,10 @@
-import { ChatState, SEND_MESSAGE_RESPONSE, MESSAGE_SENT } from "./types";
+import { ChatState, SEND_MESSAGE_RESPONSE, MESSAGE_SENT } from './types';
 
 const initialChatState: ChatState = {
     username: "",
     messages: []
 };
 
-// TODO: Implement type definitions
 export function messageReducer(
     state = initialChatState,
     action: {username?: string, type: string, message: { from: string, content: string}}) {

@@ -1,12 +1,10 @@
 import { CONNECTION_CHANGED } from './types';
 
-// TODO: Implement type definitions
 const initialSocketState = {
     connected: false,
     port: '8080'
 };
 
-// TODO: Implement type definitions
 export function socketReducer(
     state = initialSocketState,
     action: { type: string, port: string, connected: boolean }) {

@@ -151,7 +151,7 @@ class Canvas extends React.Component<ICanvas, IState> {
                 const position = piece.getPosition().split("")
                 const img = new Image();
                 img.src = piece.getImage();
-                img.id = piece.getColour();
+                img.id = piece.getType();
 
                 this.drawImg(img, ranks.indexOf(Number(position[1])), files.indexOf(position[0]))
             }
@@ -298,7 +298,7 @@ class Canvas extends React.Component<ICanvas, IState> {
     constructImage(activeSquare: IPiece) {
         const img = new Image();
         img.src = activeSquare.getImage();
-        img.id = activeSquare.getColour();
+        img.id = activeSquare.getType();
 
         return img;
     }
@@ -352,7 +352,7 @@ class Canvas extends React.Component<ICanvas, IState> {
 
     drawPiece(validMoves: IPiece) {
         const img = new Image();
-        img.id = validMoves.getColour();
+        img.id = validMoves.getType();
         img.src = validMoves.getImage();
 
         return img;

@@ -1,4 +1,10 @@
-import { UPDATE_SESSION_STATE, UPDATE_ACTIVITY_STATE, SystemState, SystemActionTypes, ActivityState } from "./types";
+import {
+    UPDATE_SESSION_STATE,
+    UPDATE_ACTIVITY_STATE,
+    SystemState,
+    SystemActionTypes,
+    ActivityState
+} from './types';
 
 const initialSessionState: SystemState = {
     loggedIn: false,

@@ -1,7 +1,8 @@
 import React from 'react';
+
 import { Accordion, Card, Button } from 'react-bootstrap';
 
-export const SideAccordion = () => (
+const SideAccordion = () => (
     <Accordion>
         <Card>
             <Card.Header>
@@ -65,3 +66,5 @@ export const SideAccordion = () => (
         </Card>
     </Accordion>
 );
+
+export default SideAccordion;

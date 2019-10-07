@@ -1,5 +1,5 @@
-import { IPiece } from "./types";
-import Pieces from "../Pieces";
+import { IPiece } from './types';
+import Pieces from '../Pieces';
 
 class Bishop implements IPiece {
     type: string;

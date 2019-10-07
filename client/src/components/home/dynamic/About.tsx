@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -10,7 +11,7 @@ const Styles = styled.div`
     }
 `;
 
-export const About = () => (
+const About = () => (
     <Styles>
         <div>
             <h3>About</h3>
@@ -20,4 +21,6 @@ export const About = () => (
             <p>Features are still currently being added to this service, and the best place to check the current progress is the <a href="https://github.com/Cyn1x/unichess/wiki" target="_blank" rel="noreferrer noopener">wiki</a> on the official GitHub repository.</p>
         </div>
     </Styles>
-)
+);
+
+export default About;

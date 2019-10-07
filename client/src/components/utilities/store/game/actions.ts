@@ -1,4 +1,4 @@
-import { SEND_GAME_REQUEST, SEND_GAME_RESPONSE, GAME_RECEIVED, GameState } from "./types";
+import { SEND_GAME_REQUEST, SEND_GAME_RESPONSE, GAME_RECEIVED, GameState } from './types';
 
 export const sendGame = (game: GameState) => {
     return {

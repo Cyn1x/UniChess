@@ -1,7 +1,7 @@
-import * as React from "react";
-import { ChatMessage } from "../../utilities/store/chat/types";
+import React from 'react';
+import { ChatMessage } from '../../utilities/store/chat/types';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const MessageHistory = styled.div`
     height: 50vh;

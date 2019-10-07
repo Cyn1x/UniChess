@@ -1,14 +1,15 @@
 import React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
-import { AppState } from "../../utilities/store";
+import { AppState } from '../../utilities/store';
+
 import { SystemState, ActivityState } from '../../utilities/store/system/types';
 import { LobbyState, RoomInfo } from '../../utilities/store/lobby/types';
 import { updateActivityState } from '../../utilities/store/system/actions';
-import { sendRoom } from "../../utilities/store/lobby/actions";
-import { ChatWidget } from '../chat/ChatWidget';
-import { GameInfo } from '../../game/GameInfo';
+import { sendRoom } from '../../utilities/store/lobby/actions';
 
+import ChatWidget from '../chat/ChatWidget';
+import GameInfo from '../../game/GameInfo';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -22,8 +23,8 @@ interface IPlayAreaDispatchProps {
 
 interface IPlayArea {
     updateActivityState: (room: ActivityState) => void;
-    createRoom: any; // TODO: types
-    joinRoom: any; // TODO: types
+    createRoom: any;
+    joinRoom: any;
     activity: ActivityState;
     system: SystemState;
     lobby: LobbyState;

@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Styles = styled.section`
     height: 100%;
@@ -11,7 +11,7 @@ interface IGameInfo {
     
 }
 
-export class GameInfo extends React.Component<IGameInfo> {
+class GameInfo extends React.Component<IGameInfo> {
     state = {
         userName: ""
     }
@@ -26,3 +26,5 @@ export class GameInfo extends React.Component<IGameInfo> {
         );
     }
 }
+
+export default GameInfo;

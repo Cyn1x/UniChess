@@ -1,8 +1,8 @@
-import { IPiece } from "./pieces/types";
-import PiecesFactory from "./PiecesFactory";
-import Board from "./Board";
-import Square from "./Square";
-import Player from "./Player";
+import { IPiece } from './pieces/types';
+import PiecesFactory from './PiecesFactory';
+import Board from './Board';
+import Square from './Square';
+import Player from './Player';
 
 class Game {
     private chessBoard: Board;
@@ -75,8 +75,8 @@ class Game {
             }
             startingFen.split("").forEach( (pieceToPlace: string) => {
                 if (pieceRequired === pieceToPlace) {
-                    const newPiece = (piecesFactory.typeOfPiece(pieceToPlace))
-                    squaresArray[index].setPiece(newPiece)
+                    const newPiece = (piecesFactory.typeOfPiece(pieceToPlace));
+                    squaresArray[index].setPiece(newPiece);
                 }
             })
         })

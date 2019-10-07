@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-export function Logout(props: any) {
+function Logout(props: any) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -31,3 +32,5 @@ export function Logout(props: any) {
         </React.Fragment>
     );
 }
+
+export default Logout;

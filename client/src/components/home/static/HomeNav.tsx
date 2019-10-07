@@ -1,8 +1,9 @@
 import React from 'react';
+import { LinkContainer } from 'react-router-bootstrap'
+
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
-import { LinkContainer } from 'react-router-bootstrap'
 import Logo from '../../../assets/img/site/logo.png';
 import styled from 'styled-components';
 
@@ -19,7 +20,7 @@ const Styles = styled.div`
     }
 `;
 
-export const HomeNav = () => (
+const HomeNav = () => (
     <Styles>
         <Navbar expand="sm">
             <LinkContainer to="/">
@@ -60,3 +61,5 @@ export const HomeNav = () => (
         </Navbar>
     </Styles>
 );
+
+export default HomeNav;

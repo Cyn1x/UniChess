@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -17,7 +18,7 @@ const Styles = styled.div`
     }
 `;
 
-export const Signup = () => (
+const Signup = () => (
     <Styles>
         <h3>Signup</h3>
             <Form>
@@ -54,3 +55,5 @@ export const Signup = () => (
             </Form>
     </Styles>
 )
+
+export default Signup;

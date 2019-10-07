@@ -1,4 +1,3 @@
-// my-theme.ts
 import { DefaultTheme } from 'styled-components'
 
 const UniChessTheme: DefaultTheme = {

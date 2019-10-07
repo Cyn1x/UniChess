@@ -1,12 +1,13 @@
 import React from 'react';
+
+import HomeNav from '../../home/static/HomeNav';
+// import HomeFooter from '../home/HomeFooter';
+import DashNav from '../../dashboard/static/DashNav'
+import DashFooter from '../../dashboard/static/DashFooter';
+
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
-
-import { HomeNav } from '../../home/static/HomeNav';
-// import { HomeFooter } from '../home/HomeFooter';
-import { DashNav } from '../../dashboard/static/DashNav'
-import { DashFooter } from '../../dashboard/static/DashFooter';
 
 const Styles = styled.div`
     .container-fluid {
@@ -25,7 +26,7 @@ interface ILayout {
     auth: boolean;
 }
 
-export const Layout = (props: ILayout) => {
+const Layout = (props: ILayout) => {
     return (
         <React.Fragment>
                 {(props.auth) ? DashLayoutHelper(props) : HomeLayoutHelper(props)}
@@ -53,3 +54,5 @@ const DashLayoutHelper = (props: ILayout) => {
         </Styles>
     )
 }
+
+export default Layout;

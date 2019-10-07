@@ -1,4 +1,4 @@
-import { ChatMessage, SEND_MESSAGE_RESPONSE, SEND_MESSAGE_REQUEST, MESSAGE_SENT } from "./types";
+import { ChatMessage, SEND_MESSAGE_RESPONSE, SEND_MESSAGE_REQUEST, MESSAGE_SENT } from './types';
 
 export const messageReceived = (message: ChatMessage) => {
     return {

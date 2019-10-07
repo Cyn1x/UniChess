@@ -1,8 +1,8 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom';
 
-import { Account } from '../dynamic/Account';
-import { None } from '../../global/dynamic/None';
+import None from '../../global/dynamic/None';
+import Account from '../dynamic/Account';
 import Lobby from '../dynamic/Lobby';
 import PlayArea from '../dynamic/PlayArea';
 

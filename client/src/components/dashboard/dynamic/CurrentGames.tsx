@@ -1,14 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
-import { AppState } from "../../utilities/store";
-import { LinkContainer } from 'react-router-bootstrap'
-import { ActivityState } from "../../utilities/store/system/types";
-import { RoomInfo } from "../../utilities/store/lobby/types";
-import { updateActivityState } from "../../utilities/store/system/actions";
+import { AppState } from '../../utilities/store';
+import { LinkContainer } from 'react-router-bootstrap';
+
+import { ActivityState } from '../../utilities/store/system/types';
+import { RoomInfo } from '../../utilities/store/lobby/types';
+import { updateActivityState } from '../../utilities/store/system/actions';
 
 import Button from 'react-bootstrap/Button';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Styles = styled.div`
     div {

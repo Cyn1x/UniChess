@@ -1,4 +1,4 @@
-import { IPiece } from "./pieces/types";
+import { IPiece } from './pieces/types';
 
 class Square {
     private pos: string;

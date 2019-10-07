@@ -1,9 +1,9 @@
-import * as React from "react";
-import { UpdateMessageParam } from "./Chat";
+import React from 'react';
+import { UpdateMessageParam } from './Chat';
 
 import Form from 'react-bootstrap/Form';
-import Button from "react-bootstrap/Button";
-import styled from "styled-components";
+import Button from 'react-bootstrap/Button';
+import styled from 'styled-components';
 
 const MessageForm = styled(Form)`
     background-color: #FFF;

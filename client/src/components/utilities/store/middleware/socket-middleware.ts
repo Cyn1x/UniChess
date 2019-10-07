@@ -1,12 +1,13 @@
-import Socket from "../../socket/client-socket-service";
-import { CONNECT_SOCKET } from "../socket/types";
-import { ChatMessage, SEND_MESSAGE_REQUEST } from "../chat/types";
-import { SEND_ROOM_REQUEST, RoomInfo } from "../lobby/types";
-import { GameState, SEND_GAME_REQUEST } from "../game/types";
-import { connectionChanged } from "../socket/actions";
-import { messageReceived, messageSent } from "../chat/actions";
-import { roomReceived, roomSent } from "../lobby/actions";
-import { gameReceived, gameSent } from "../game/actions";
+import Socket from '../../socket/client-socket-service';
+
+import { CONNECT_SOCKET } from '../socket/types';
+import { ChatMessage, SEND_MESSAGE_REQUEST } from '../chat/types';
+import { SEND_ROOM_REQUEST, RoomInfo } from '../lobby/types';
+import { GameState, SEND_GAME_REQUEST } from '../game/types';
+import { connectionChanged } from '../socket/actions';
+import { messageReceived, messageSent } from '../chat/actions';
+import { roomReceived, roomSent } from '../lobby/actions';
+import { gameReceived, gameSent } from '../game/actions';
 
 export const SocketMiddleware = (store: any) => {
     

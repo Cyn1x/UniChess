@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -17,7 +18,7 @@ const Styles = styled.div`
     }
 `;
 
-export const Contact = () => (
+const Contact = () => (
     <Styles>
         <h3>Contact</h3>
             <Form>
@@ -42,3 +43,5 @@ export const Contact = () => (
             </Form>
     </Styles>
 )
+
+export default Contact;

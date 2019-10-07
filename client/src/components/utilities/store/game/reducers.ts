@@ -1,4 +1,4 @@
-import { GameState, SEND_GAME_RESPONSE } from "./types";
+import { GameState, SEND_GAME_RESPONSE } from './types';
 
 const initialGameState: GameState = {
     nextPlayerTurn: "White",

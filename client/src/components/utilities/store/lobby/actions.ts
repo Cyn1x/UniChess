@@ -1,4 +1,9 @@
-import { SEND_ROOM_RESPONSE, ROOM_RECIEVED, SEND_ROOM_REQUEST, RoomInfo } from "./types";
+import {
+    SEND_ROOM_RESPONSE,
+    ROOM_RECIEVED,
+    SEND_ROOM_REQUEST,
+    RoomInfo
+} from './types';
 
 export const sendRoom = (room: RoomInfo) => {
     return {
