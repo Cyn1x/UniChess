@@ -1,12 +1,14 @@
 export interface LobbyState {
     currentGames: number;
-    gameRooms: [];
+    gameRooms: RoomInfo[];
 }
 
 export interface RoomInfo {
-    host: string;
-    link: string;
-    time: string;
+    gameId: string;
+    fenString: string;
+    whitePlayer: string;
+    blackPlayer: string;
+    timeCreated: string;
 }
 
 export const UPDATE_LOBBY_STATE = "UPDATE_LOBBY_STATE";

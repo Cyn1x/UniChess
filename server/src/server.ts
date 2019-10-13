@@ -3,44 +3,36 @@ import express, {
 } from 'express';
 import http from 'http';
 import cors from 'cors';
-import SocketIO from "socket.io";
-
+import socketio, { Socket } from 'socket.io';
+import { Server } from 'net';
+import mongoose from 'mongoose';
+import socketEmitter from './socket';
+import bodyParser from 'body-parser';
+import path from 'path';
 const port = process.env.PORT || 8080;
 
 const app: Application = express();
 const router: Router = express.Router();
-const server: any = new http.Server(app);
-const io: any = SocketIO(server);
+const server: Server = new http.Server(app);
+const io: any = socketio(server);
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-    res.send('Server is running')
-})
+const corsOptions = { origin: '*' };
 
-app.use(cors);
+app.use(cors(corsOptions));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(router);
+
+router.use(express.static(path.join(__dirname, '../../client/build')));
+router.get('/', (req: Request, res: any) => res.sendFile(__dirname, '../../client/build'))
 
 server.listen(port, () => {
     console.log("[Server]: Listening on port %d", port); 
 });
 
-io.on('connect', (socket: any) => {
+io.on('connect', (socket: Socket) => {
     console.log("A user has connected.")
     io.emit('broadcast', '[Server]: A user has connected');
     
-    socket.on('message', (msg: any) => {
-        io.emit('message', msg);
-    });
-
-    socket.on('room', (room: any) => {
-        io.emit('room', room);
-    })
-
-    socket.on('game', (game: any) => {
-        io.emit('game', game);
-    })
-    
-    socket.on('disconnect', function () {
-        console.log("A user has disconnected.")
-        io.emit('broadcast', '[Server]: A user has disconnected');
-    });
+    socketEmitter(socket, io);
 });

@@ -1,8 +1,8 @@
 import {
+    SEND_ROOM_REQUEST,
     SEND_ROOM_RESPONSE,
     ROOM_RECIEVED,
-    SEND_ROOM_REQUEST,
-    RoomInfo
+    RoomInfo,
 } from './types';
 
 export const sendRoom = (room: RoomInfo) => {

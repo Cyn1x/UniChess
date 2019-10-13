@@ -26,6 +26,7 @@ interface ICurrentGamesDispatchProps {
 
 interface ICurrentGames {
     updateActivityState: (room: ActivityState) => void;
+    activity: ActivityState;
     gameRooms: RoomInfo[];
 }
 
@@ -35,18 +36,19 @@ function CurrentGames(props: ICurrentGames) {
             <div>
                 <h5>Game Rooms</h5>
                 {props.gameRooms.map(room => (
-                    <LinkContainer to={`/dashboard/play?gameId=${room.link}`} key={room.time} >
+                    <LinkContainer to={`/dashboard/play?gameId=${room.gameId}`} key={room.timeCreated} >
                         <Button variant="primary" onClick={() => {
-                            props.updateActivityState({
-                                isHosting: false,
-                                isJoining: true,
-                                isPlaying: true
-                            })
-                        }}>{room.link}</Button>
+                            if (!props.activity.isHosting) {
+                                props.updateActivityState({
+                                    isHosting: false,
+                                    isJoining: true,
+                                    isPlaying: true
+                                });
+                            }
+                        }}>{room.gameId}</Button>
                     </LinkContainer>
                 ))}
             </div>
-            
         </Styles>
     );
 };
@@ -57,7 +59,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>): ICurrentGamesDispatchProps => ({
-    updateActivityState: (action: ActivityState) => dispatch(updateActivityState(action)),
+    updateActivityState: (action: ActivityState) => dispatch(updateActivityState(action))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentGames);

@@ -9,7 +9,7 @@ const EVENTS = {
     DISCONNECT: "disconnect",
     MESSAGE: "message",
     ROOM: "room",
-    GAME: "game",
+    GAME: "game"
 };
 
 export default class Socket {

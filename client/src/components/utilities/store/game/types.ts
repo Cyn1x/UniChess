@@ -1,4 +1,5 @@
 export interface GameState {
+    nextFenString: string;
     nextPlayerTurn: string;
     movePieceFrom: string;
     movePieceTo: string;

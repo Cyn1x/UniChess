@@ -1,6 +1,7 @@
 import { GameState, SEND_GAME_RESPONSE } from './types';
 
 const initialGameState: GameState = {
+    nextFenString: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     nextPlayerTurn: "White",
     movePieceFrom: "",
     movePieceTo: ""

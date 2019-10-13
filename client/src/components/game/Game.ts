@@ -14,9 +14,9 @@ class Game {
     private previousActivePiecePos!: string;
     private nextActivePiecePos!: string;
 
-    constructor(player: string) {
+    constructor(player: string, fen: string, turn: string) {
         this.chessBoard = new Board();
-        this.fenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        this.fenString = fen;
         this.isSquareClicked = false;
         this.validMoves = [];
         
@@ -26,9 +26,9 @@ class Game {
             this.currentPlayer = new Player('Black');
         }
 
-        this.currentTurn = "White";
+        this.currentTurn = turn;
     }
-
+    
     initialise(cw: number, ch: number) {
         const files = this.chessBoard.getFiles();
         const ranks = this.chessBoard.getRanks();
@@ -64,7 +64,7 @@ class Game {
         const piecesArray = this.fenParser(startingFen);
         let currentRank = 0;
         let currentFile = 0;
-
+        
         piecesArray.forEach( (pieceRequired: string, index: number) => {
             if (index % 8 === 0 && index !== 0) {
                 currentRank = currentRank + 1;

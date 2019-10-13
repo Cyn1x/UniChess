@@ -47,43 +47,46 @@ class Canvas extends React.Component<ICanvas, IState> {
                 ratio: this.ratio
             }
         };
-        this.game = new Game(this.props.player);
+        this.game = new Game(this.props.player, this.props.game.nextFenString, this.props.game.nextPlayerTurn);
         this.initialise();
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.resizeCallback, false);
         this.update();
+        window.addEventListener('resize', this.resizeCallback, false);
         this.state.canvas.current.addEventListener("click", (event: EventTarget) => { this.interceptClick(event) }, false);
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resizeCallback, false);
-        this.state.canvas.current.removeEventListener("click", (event: EventTarget) => { this.interceptClick(event) }, false);
-    }
+    componentWillUnmount() {}
 
     componentDidUpdate() {
-        const squaresArray = this.game.getChessboard().getSquaresArray();
+        if (this.props.game.nextPlayerTurn === this.game.getCurrentPlayer().getColour() && this.game.getFenString() !== this.props.game.nextFenString) {
+            const squaresArray = this.game.getChessboard().getSquaresArray();
 
-        if (this.props.game.nextPlayerTurn !== this.game.getCurrentTurn()) {
-            for (let i = 0; i < squaresArray.length; i++) {
-                if (squaresArray[i].getPosition() === this.props.game.movePieceFrom) {
-                    this.game.getChessboard().setActiveSquare(squaresArray[i]);
-                    for (let j = 0; j < squaresArray.length; j++) {
-                        if (squaresArray[j].getPosition() === this.props.game.movePieceTo) {
-                            this.game.setCurrentTurn(this.props.game.nextPlayerTurn);
-                            this.overwriteSquare(squaresArray[j]);
-                            const newFenSequence = this.game.fenCreator();
-                            this.game.setFenString(newFenSequence);
-                            
+            if (this.props.game.nextPlayerTurn !== this.game.getCurrentTurn()) {
+                for (let i = 0; i < squaresArray.length; i++) {
+                    if (squaresArray[i].getPosition() === this.props.game.movePieceFrom) {
+                        this.game.getChessboard().setActiveSquare(squaresArray[i]);
+                        for (let j = 0; j < squaresArray.length; j++) {
+                            if (squaresArray[j].getPosition() === this.props.game.movePieceTo) {
+                                this.game.setCurrentTurn(this.props.game.nextPlayerTurn);
+                                this.overwriteSquare(squaresArray[j]);
+                                this.game.setFenString(this.props.game.nextFenString);
+                            }
                         }
                     }
                 }
             }
         }
+        console.log(this.game.getCurrentTurn())
     }
 
     resizeCallback = () => setTimeout(this.update, 500);
+
+    initialise() {
+        const {cw, ch} = this.getCellDimensions();
+        this.game.initialise(cw, ch);
+    }
 
     update() {
         this.width = (boardSize() ? window.innerWidth: window.innerHeight) / 2.5
@@ -100,11 +103,6 @@ class Canvas extends React.Component<ICanvas, IState> {
         this.game.updateSquareSizeProps(cw, ch);
         this.drawBoard();
         this.drawPieces();
-    }
-
-    initialise() {
-        const {cw, ch} = this.getCellDimensions();
-        this.game.initialise(cw, ch);
     }
 
     drawBoard() {
@@ -200,8 +198,11 @@ class Canvas extends React.Component<ICanvas, IState> {
                         if (!this.game.checkRequestedMove(squaresArray[i])) {
                             return;
                         }
+                        const prevActiveSquarePos = this.game.getChessboard().getActiveSquare().getPosition();
+                        const nextActiveSquarePos = squaresArray[i].getPosition();
                         this.game.setSquareActive(false);
-                        this.processValidMove(squaresArray[i]);
+                        this.overwriteSquare(squaresArray[i]);
+                        this.setNextState(prevActiveSquarePos, nextActiveSquarePos);
                     }
                 }
 
@@ -376,15 +377,17 @@ class Canvas extends React.Component<ICanvas, IState> {
         return {cw, ch}
     }
 
-    processValidMove(activeSquare: Square) {
-        const prevActiveSquarePos = this.game.getChessboard().getActiveSquare().getPosition();
-        const nextActiveSquarePos = activeSquare.getPosition();
+    setNextState(prevPos: string, nextPos: string) {
+        const newFenSequence = this.game.fenCreator();
         const nextPlayerMove = this.game.getNextMove();
 
+        this.game.setCurrentTurn(nextPlayerMove);
+        
         this.props.sendGame({
+            nextFenString: newFenSequence,
             nextPlayerTurn: nextPlayerMove,
-            movePieceFrom: prevActiveSquarePos,
-            movePieceTo: nextActiveSquarePos
+            movePieceFrom: prevPos,
+            movePieceTo: nextPos
         })
     }
     

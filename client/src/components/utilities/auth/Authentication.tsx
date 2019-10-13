@@ -53,7 +53,7 @@ class Authenticate extends React.Component<IAuthenticate> {
                 session: "sessionId",
                 userName: this.state.userName
             });
-        })
+        });
     }
 
     signout = () => {
