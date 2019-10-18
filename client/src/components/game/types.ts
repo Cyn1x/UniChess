@@ -30,10 +30,3 @@ export interface ICanvas {
     },
     player: string;
 }
-
-export interface ClickedSquare {
-    sx: number,
-    sy: number,
-    sw: number,
-    sh: number
-}
