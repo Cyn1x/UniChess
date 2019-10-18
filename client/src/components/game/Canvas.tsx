@@ -60,21 +60,10 @@ class Canvas extends React.Component<ICanvas, IState> {
 
     componentDidUpdate() {
         if (this.props.game.nextPlayerTurn === this.game.getCurrentPlayer().getColour() && this.game.getFenString() !== this.props.game.nextFenString) {
-            const squaresArray = this.game.getChessboard().getSquaresArray();
-
-            if (this.props.game.nextPlayerTurn !== this.game.getCurrentTurn()) {
-                for (let i = 0; i < squaresArray.length; i++) {
-                    if (squaresArray[i].getPosition() === this.props.game.movePieceFrom) {
-                        this.game.getChessboard().setActiveSquare(squaresArray[i]);
-                    }
-                }
-                for (let i = 0; i < squaresArray.length; i++) {
-                    if (squaresArray[i].getPosition() === this.props.game.movePieceTo) {
-                        this.game.setCurrentTurn(this.props.game.nextPlayerTurn);
-                        this.overwriteSquare(squaresArray[i]);
-                        this.game.setFenString(this.props.game.nextFenString);
-                    }
-                }
+            
+            const updatedSquare = this.game.updateGameState(this.props.game);
+            if (updatedSquare) {
+                this.overwriteSquare(updatedSquare);
             }
         }
     }

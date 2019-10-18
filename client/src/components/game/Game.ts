@@ -1,4 +1,6 @@
 import { IPiece } from './pieces/types';
+import { GameState } from '../utilities/store/game/types';
+
 import PiecesFactory from './PiecesFactory';
 import Board from './Board';
 import Square from './Square';
@@ -40,6 +42,25 @@ class Game {
         }
         this.chessBoard.setSquaresArray(squaresArray);
         this.setPiecePositions();
+    }
+
+    updateGameState(gameProps: GameState) {
+        const squaresArray = this.chessBoard.getSquaresArray();
+
+        if (gameProps.nextPlayerTurn !== this.getCurrentTurn()) {
+            for (let i = 0; i < squaresArray.length; i++) {
+                if (squaresArray[i].getPosition() === gameProps.movePieceFrom) {
+                    this.chessBoard.setActiveSquare(squaresArray[i]);
+                }
+            }
+            for (let i = 0; i < squaresArray.length; i++) {
+                if (squaresArray[i].getPosition() === gameProps.movePieceTo) {
+                    this.setCurrentTurn(gameProps.nextPlayerTurn);
+                    this.setFenString(gameProps.nextFenString);
+                    return squaresArray[i];
+                }
+            }
+        }
     }
 
     updateSquareSizeProps(cw: number, ch: number) {
