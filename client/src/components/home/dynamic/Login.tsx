@@ -20,7 +20,7 @@ const Styles = styled.div`
 
 function Login(props: any) {
     const [email, setEmail] = useState("");
-
+    
     return(
         <Styles>
             <h3>Login</h3>

@@ -10,11 +10,11 @@ import { updateActivityState } from '../../utilities/store/system/actions';
 import { sendRoom } from '../../utilities/store/lobby/actions';
 
 import ChatWidget from '../chat/ChatWidget';
-import GameInfo from '../../game/GameInfo';
+import GameInfo from './GameInfo';
+import Game from './Game';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Canvas from '../../game/Canvas';
 
 interface IPlayAreaDispatchProps {
     updateActivityState: (room: ActivityState) => void;
@@ -105,7 +105,7 @@ class PlayArea extends React.Component<IPlayArea> {
                         <GameInfo />
                     </Col>
                     <Col>
-                        <Canvas player={this.state.player} />
+                        <Game player={this.state.player} />
                     </Col>
                     <Col>
                         <ChatWidget />
