@@ -8,19 +8,38 @@ import { IGameDispatchProps, IGame } from './types';
 import { updateActivityState } from '../../utilities/store/system/actions';
 import { sendGame } from '../../utilities/store/game/actions';
 
+import styled from 'styled-components';
 import { Canvas } from 'unichess-chess-engine';
+
+const Styles = styled.div`
+    canvas {
+        display: block;
+        border: 1px solid #000;
+        margin-left: auto;
+        margin-right: auto;
+    }
+`;
 
 class Game extends React.Component<IGame> {
 
+    updateState = (props: GameState) => {
+        this.props.sendGame({
+            nextFenString: props.nextFenString,
+            nextPlayerTurn: props.nextPlayerTurn,
+            movePieceFrom: props.movePieceFrom,
+            movePieceTo: props.movePieceTo
+        })
+    }
+
     render() {
         return (
-            <Canvas
-                currentPlayer={this.props.player}
-                nextFenString={this.props.game.nextFenString}
-                nextPlayerTurn={this.props.game.nextPlayerTurn}
-                movePieceFrom={this.props.game.movePieceFrom}
-                movePieceTo={this.props.game.movePieceTo}
-            />
+            <Styles>
+                <Canvas
+                    player={this.props.player}
+                    game={this.props.game}
+                    controller={this.updateState}
+                />
+            </Styles>
         );
     }
 }

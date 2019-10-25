@@ -78,11 +78,6 @@ class PlayArea extends React.Component<IPlayArea> {
     }
 
     joinGame() {
-        this.props.lobby.gameRooms.forEach(room => {
-            if (room.gameId === this.state.roomId) {
-                
-            }
-        })
         this.setState({ player: "Player 2" })
     }
 

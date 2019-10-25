@@ -8,6 +8,7 @@ export interface IGameDispatchProps {
 
 export interface IGame {
     updateActivityState: (room: ActivityState) => void;
+    sendGame: (game: GameState) => void;
     activity: ActivityState;
     game: GameState;
     player: string;
