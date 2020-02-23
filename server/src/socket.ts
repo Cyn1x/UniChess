@@ -1,26 +1,14 @@
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
 
-const socketEmitter = (socket: Socket, io: Socket) => {
-    socket.on('message', (msg: any) => {
-        io.emit('message', msg);
-    });
+import socketEmitter from './sockets/emitters';
 
-    socket.on('room', (room: any) => {
-        io.emit('room', room);
-    })
-
-    socket.on('join', (room: any) => {
-        io.emit('join', room);
-    })
-
-    socket.on('game', (game: any) => {
-        io.emit('game', game);
-    })
-    
-    socket.on('disconnect', function () {
-        console.log("A user has disconnected.")
-        io.emit('broadcast', '[Server]: A user has disconnected');
+const initialiseIO = (io: Server) => {
+    io.on('connect', (socket: Socket) => {
+        console.log("A user has connected.")
+        io.emit('broadcast', '[Server]: A user has connected');
+        
+        socketEmitter(socket, io);
     });
 }
 
-export default socketEmitter;
+export default initialiseIO;
