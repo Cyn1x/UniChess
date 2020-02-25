@@ -3,7 +3,6 @@ import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavItem from 'react-bootstrap/NavItem';
-import GitHubLogo from '../../../assets/img/site/GitHubLogo.png';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -19,19 +18,6 @@ const DashFooter = () => (
             <Navbar.Toggle aria-controls="basic-navbar-bar" />
             <Navbar.Collapse id ="basic-navbar-nav">
                 <Nav className="ml-auto">
-                    <NavItem>
-                        <a href=
-                        "https://github.com/Cyn1x/unichess" 
-                        target="_blank" 
-                        rel="noreferrer noopener"
-                        >
-                            <img
-                                src={GitHubLogo}
-                                className="d-inline-block align-top"
-                                alt="GitHub logo"
-                            />
-                        </a>
-                    </NavItem>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

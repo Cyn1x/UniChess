@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import backgroundImage from './assets/img/site/chessPieces.jpg'
+import backgroundImage from './assets/img/chess_pieces.jpg'
 
 export const GlobalStyle = createGlobalStyle`
     * {
