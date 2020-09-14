@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 
 const app: Application = express();
 const router: Router = express.Router();
-const server: Server = new http.Server(app);
+const server: http.Server = new http.Server(app);
 const io: socketio.Server = socketio(server);
 
 const corsOptions = { origin: '*' };

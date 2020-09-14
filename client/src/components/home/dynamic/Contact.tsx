@@ -32,7 +32,8 @@ const Contact = () => (
                 </Form.Group>
                 <Form.Group controlId="Form.ControlContactMessage">
                     <Form.Label>Your message</Form.Label>
-                    <Form.Control as="textarea" rows="3" />
+                    <Form.Control as="textarea" />
+                    {/* <Form.Control as="textarea" rows="3" /> */}
                 </Form.Group>
                 <Button variant="primary" onClick={
                     () => {

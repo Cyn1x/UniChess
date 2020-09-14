@@ -14,7 +14,8 @@ export function messageReducer(
             action.message = Object.assign(action.message, {type: isMessageTypeSent ? 'sent'  : 'received'});
             return {
                 ...state,
-                messages: [...state.messages, action.message] as []
+                messages: [...state.messages, action.message]
+                // messages: [...state.messages, action.message] as []
             };
             case MESSAGE_SENT:
         default:

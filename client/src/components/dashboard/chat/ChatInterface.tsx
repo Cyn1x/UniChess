@@ -42,7 +42,8 @@ const ChatInterface: React.SFC<ChatInterfaceProps> = ({
             <MessageForm>
                 <Form.Group controlId="Form.ControlContactMessage">
                     <Form.Label>{userName}</Form.Label>
-                    <Form.Control as="input" rows="0" 
+                    {/* <Form.Control as="input" rows="0" */}
+                    <Form.Control as="input"
                         value={message}
                         onChange={updateMessage}
                         onKeyPress={keyPress}
